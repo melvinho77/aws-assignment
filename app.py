@@ -42,7 +42,7 @@ def register_company():
 def login_company():
     return render_template('LoginCompany.html')
 
-@app.route('/add_student')
+@app.route('/register_student')
 def register_student():
     return render_template("RegisterStudent.html")
 
