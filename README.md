@@ -9,4 +9,4 @@ git clone https://github.com/melvinho77/aws-assignment.git
 cd aws-assignment
 yum install python-pip -y
 pip3 install flask pymysql boto3
-python3 EmpApp.py
+python3 app.py
