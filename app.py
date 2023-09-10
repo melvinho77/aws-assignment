@@ -1,14 +1,10 @@
-
-from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
-from flask import render_template, request, flash, redirect, jsonify
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, redirect, url_for
 from pymysql import connections
 import os
 import boto3
 from config import *
 
 app = Flask(__name__)
-app.secret_key = 'cc'  # Set your secret key here
 
 bucket = custombucket
 region = customregion
@@ -19,8 +15,8 @@ db_conn = connections.Connection(
     user=customuser,
     password=custompass,
     db=customdb
-)
 
+)
 output = {}
 table = 'employee'
 
@@ -44,12 +40,25 @@ def register_company():
 def login_company():
     return render_template('LoginCompany.html')
 
-#Navigate to registration student
+
+@app.route('/login_student')
+def login_student():
+    return render_template('LoginStudent.html')
+
+
+@app.route('/student_HomePage')
+def student_HomePage():
+    return render_template('StudentHomePage.html')
+# Navigate to registration student
+
+
 @app.route('/register_student')
 def register_student():
     return render_template("RegisterStudent.html")
 
-#Register a student
+# Register a student
+
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -80,62 +89,32 @@ def add_student():
     # Redirect back to the registration page with a success message
     return render_template("home.html")
 
+
 @app.route("/about", methods=['POST'])
 def about():
     return render_template('www.tarc.edu.my')
 
 
-@app.route("/addemp", methods=['POST'])
-def AddEmp():
-    emp_id = request.form['emp_id']
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    pri_skill = request.form['pri_skill']
-    location = request.form['location']
-    emp_image_file = request.files['emp_image_file']
+@app.route("/verifyLogin", methods=['POST', 'GET'])
+def verifyLogin():
+    if request.method == 'POST':
+        StudentIc = request.form['StudentIc']
+        Email = request.form['Email']
 
-    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
-    cursor = db_conn.cursor()
-
-    if emp_image_file.filename == "":
-        return "Please select a file"
-
-    try:
-
-        cursor.execute(insert_sql, (emp_id, first_name,
-                       last_name, pri_skill, location))
-        db_conn.commit()
-        emp_name = "" + first_name + " " + last_name
-        # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        s3 = boto3.resource('s3')
-
-        try:
-            print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(
-                Key=emp_image_file_name_in_s3, Body=emp_image_file)
-            bucket_location = boto3.client(
-                's3').get_bucket_location(Bucket=custombucket)
-            s3_location = (bucket_location['LocationConstraint'])
-
-            if s3_location is None:
-                s3_location = ''
-            else:
-                s3_location = '-' + s3_location
-
-            object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                custombucket,
-                emp_image_file_name_in_s3)
-
-        except Exception as e:
-            return str(e)
-
-    finally:
+        # Query the database to check if the email and IC number match a record
+        cursor = db_conn.cursor()
+        query = "SELECT * FROM student WHERE IC = %s AND email = %s"
+        cursor.execute(query, (StudentIc, Email))
+        user = cursor.fetchone()
         cursor.close()
 
-    print("all modification done...")
-    return render_template('EditCompanyProfile.html', name=emp_name)
+        if user:
+            # User found in the database, login successful
+            # Redirect to the student home page
+            return render_template('StudentHomePage.html')
+        else:
+            # User not found, login failed
+            return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
 
 
 if __name__ == '__main__':
