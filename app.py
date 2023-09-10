@@ -44,12 +44,12 @@ def register_company():
 def login_company():
     return render_template('LoginCompany.html')
 
-
+#Navigate to registration student
 @app.route('/register_student')
 def register_student():
     return render_template("RegisterStudent.html")
 
-
+#Register a student
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:

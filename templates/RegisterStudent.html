@@ -559,10 +559,12 @@
 
     <!-- ALERT MESSAGE -->
     <script>
+        // Initialize the flashed messages to empty
+        flashedMessages = [];
+
         // Check if a success message exists in the Flash messages
         var successMessage = "{{ get_flashed_messages(category_filter=['success']) }}";
-        if (successMessage !== "") {
-            alert("Registration successful!");
+        if (successMessage !== "" && flashedMessages.indexOf(successMessage) === -1) {
             // Clear the form fields by setting their values to empty
             document.getElementById("studentId").value = "";
             document.getElementById("email").value = "";
@@ -570,6 +572,12 @@
             document.getElementById("ic").value = "";
             document.getElementById("mobile").value = "";
             // Add code to clear other fields if needed
+
+            // Add the success message to the flashed messages array
+            flashedMessages.push(successMessage);
+
+            // Show the success message pop-up
+            alert(successMessage);
         }
     </script>
 </body>
