@@ -1,4 +1,5 @@
 
+from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
 from flask import render_template, request, flash, redirect, jsonify
 from flask import Flask, render_template, request, flash
 from pymysql import connections
@@ -43,11 +44,12 @@ def register_company():
 def login_company():
     return render_template('LoginCompany.html')
 
+
 @app.route('/register_student')
 def register_student():
     return render_template("RegisterStudent.html")
 
-# Add Student
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -66,28 +68,24 @@ def add_student():
         cursor = db_conn.cursor()
 
         cursor.execute(insert_sql, (student_id, name, ic, mobile,
-                       gender, address, email, level, programme, cohort))
+                                    gender, address, email, level, programme, cohort))
         db_conn.commit()
 
         flash("Registration successful!", "success")  # Flash a success message
 
-        # Return a JSON response to trigger the success popup
-        return jsonify({"success": True})
+        # Redirect back to the registration page with a success message
+        return render_template("RegisterStudent.html")
 
     except Exception as e:
         flash(f"Registration failed: {str(e)}",
               "error")  # Flash an error message
         db_conn.rollback()
 
-        # Return a JSON response to indicate the failure
-        return jsonify({"success": False, "error": str(e)})
+        # Redirect back to the registration page with an error message
+        return render_template("RegisterStudent.html")
 
     finally:
         cursor.close()
-
-    # Redirect to the registration page
-    return render_template("RegisterStudent.html")
-
 
 @app.route("/about", methods=['POST'])
 def about():

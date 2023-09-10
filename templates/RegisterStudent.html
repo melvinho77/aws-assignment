@@ -461,8 +461,7 @@
                                 <label class="col-sm-4 col-form-label"><b>Gender</b></label>
                                 <div class="col-sm-8">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gender" id="male"
-                                            value="M">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="M">
                                         <label class="form-check-label" for="male">Male</label>
                                     </div>
                                     <div class="form-check form-check-inline">
@@ -517,6 +516,8 @@
     </footer>
 
     <script src="{{ url_for('static', filename='script/master.js') }}"></script>
+
+    <!-- DDL CONTENTS -->
     <script>
         const levelDropdown = document.getElementById("level");
         const cohortDropdown = document.getElementById("cohort");
@@ -554,6 +555,21 @@
                 programmeDropdown.innerHTML += '<option value="RMM">RMM</option>';
             }
         });
+    </script>
+
+    <!-- ALERT MESSAGE -->
+    <script>
+        // Check if a success message exists in the Flash messages
+        if ("{{ get_flashed_messages(category_filter=['success']) }}" !== "") {
+            alert("Registration successful!");
+            // Clear the form fields by setting their values to empty
+            document.getElementById("studentId").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("ic").value = "";
+            document.getElementById("mobile").value = "";
+            // Add code to clear other fields if needed
+        }
     </script>
 </body>
 
