@@ -238,6 +238,59 @@
     .details-item input[type="text"] {
         flex: 2;
     } */
+
+    /* Declaration */
+    .details .declaration-content {
+        text-align: justify;
+        color: #9e1e0d;
+        padding-top: 10px;
+    }
+
+    .details .declaration-button {
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    .details .declaration-button button {
+        margin: 0 10px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: none;
+        color: #FFF;
+    }
+
+    .acc-btn {
+        background-color: #00cc00;
+        /* Green */
+        color: #fff;
+        /* White text */
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .acc-btn:hover {
+        background-color: #009900;
+        /* Darker Green on hover */
+    }
+
+    /* Decline button */
+    .dec-btn {
+        background-color: #ff0000;
+        /* Red */
+        color: #fff;
+        /* White text */
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .dec-btn:hover {
+        background-color: #cc0000;
+        /* Darker Red on hover */
+    }
 </style>
 
 <head>
@@ -323,7 +376,7 @@
                             <label for="studentId" class="col-sm-4 col-form-label"><b>Student ID</b></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="studentId" name="studentId"
-                                    placeholder="e.g: 99WMR9999">
+                                    placeholder="e.g: 99WMR9999" maxlength="10">
                             </div>
                         </div>
                     </div>
@@ -363,7 +416,7 @@
                         <div class="form-group row">
                             <label for="ic" class="col-sm-4 col-form-label"><b>NRIC</b></label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="ic" name="ic" placeholder="999999-99-9999">
+                                <input type="text" class="form-control" id="ic" name="ic" placeholder="e.g: 999999-99-9999" maxlength="14">
                             </div>
                         </div>
                     </div>
@@ -372,7 +425,8 @@
                         <div class="form-group row">
                             <label for="mobile" class="col-sm-4 col-form-label"><b>Mobile Number</b></label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="e.g: 012-3456789">
+                                <input type="text" class="form-control" id="mobile" name="mobile"
+                                    placeholder="e.g: 012-3456789" maxlength="14">
                             </div>
                         </div>
                     </div>
@@ -398,7 +452,8 @@
                         <div class="form-group row">
                             <label for="address" class="col-sm-4 col-form-label"><b>Address</b></label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" id="address" name="address" rows="4" placeholder="Current Term Address"></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="4"
+                                    placeholder="Current Term Address"></textarea>
                             </div>
                         </div>
                     </div>
@@ -406,14 +461,33 @@
             </div>
         </div>
 
-        <!-- Technical Knowledge -->
-        <div class="details">
-        </div>
-
         <!-- Declaration -->
         <div class="details">
+            <div class="details-content-title">
+                Declaration
+            </div>
+
+            <div class="details-content-body">
+                <div class="declaration-content">
+                    I UNDERSTAND THAT I MUST COMPLETE THE FULL DURATION OF THE INDUSTRIAL TRAINING PROGRAMME PERIOD
+                    SATISFACTORILY IN ORDER TO PASS THE BAIT305C / AMIT3205 COURSE. I AGREE TO ABIDE BY THE RULES AND
+                    REGULATIONS OF THE COMPANY CONCERNED AND I WILL ALWAYS UPHOLD THE GOOD NAME OF THE UNIVERSITY
+                    COLLEGE AT ALL TIMES DURING THE WHOLE DURATION OF THE INDUSTRIAL TRAINING PROGRAMME.
+                </div>
+
+                <div class="declaration-button">
+                    <button class="acc-btn">I accept</button>
+                    <button class="dec-btn">I decline</button>
+                </div>
+            </div>
         </div>
+
+        <hr>
     </div>
+
+    <footer>
+        <p>© 2023 - TAR UMT FOCS ITP</p>
+    </footer>
 
     <script src="{{ url_for('static', filename='script/master.js') }}"></script>
 </body>
