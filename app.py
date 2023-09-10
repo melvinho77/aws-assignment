@@ -1,5 +1,6 @@
 
-from flask import Flask, render_template, request
+from flask import render_template, request, flash, redirect, jsonify
+from flask import Flask, render_template, request, flash
 from pymysql import connections
 import os
 import boto3
@@ -21,25 +22,73 @@ db_conn = connections.Connection(
 output = {}
 table = 'employee'
 
+
 @app.route('/')
 def index():
     return render_template('home.html', number=1)
+
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
 
+
 @app.route('/register_company')
 def register_company():
     return render_template('RegisterCompany.html')
+
 
 @app.route('/login_company')
 def login_company():
     return render_template('LoginCompany.html')
 
 
+# Assuming you have already imported the necessary modules
+
+# Add Student
+
+# ...
 
 
+@app.route("/addstud", methods=['POST'])
+def add_student():
+    try:
+        level = request.form['level']
+        cohort = request.form['cohort']
+        programme = request.form['programme']
+        student_id = request.form['studentId']
+        email = request.form['email']
+        name = request.form['name']
+        ic = request.form['ic']
+        mobile = request.form['mobile']
+        gender = request.form['gender']
+        address = request.form['address']
+
+        insert_sql = "INSERT INTO student (studentId, studentName, IC, mobileNumber, gender, address, email, level, programme, cohort) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor = db_conn.cursor()
+
+        cursor.execute(insert_sql, (student_id, name, ic, mobile,
+                       gender, address, email, level, programme, cohort))
+        db_conn.commit()
+
+        flash("Registration successful!", "success")  # Flash a success message
+
+        # Return a JSON response to trigger the success popup
+        return jsonify({"success": True})
+
+    except Exception as e:
+        flash(f"Registration failed: {str(e)}",
+              "error")  # Flash an error message
+        db_conn.rollback()
+
+        # Return a JSON response to indicate the failure
+        return jsonify({"success": False, "error": str(e)})
+
+    finally:
+        cursor.close()
+
+    # Redirect to the registration page
+    return render_template("RegisterStudent.html")
 
 
 @app.route("/about", methods=['POST'])
@@ -64,7 +113,8 @@ def AddEmp():
 
     try:
 
-        cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
+        cursor.execute(insert_sql, (emp_id, first_name,
+                       last_name, pri_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
         # Uplaod image file in S3 #
@@ -73,8 +123,10 @@ def AddEmp():
 
         try:
             print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
-            bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
+            s3.Bucket(custombucket).put_object(
+                Key=emp_image_file_name_in_s3, Body=emp_image_file)
+            bucket_location = boto3.client(
+                's3').get_bucket_location(Bucket=custombucket)
             s3_location = (bucket_location['LocationConstraint'])
 
             if s3_location is None:
