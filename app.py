@@ -71,21 +71,14 @@ def add_student():
                                     gender, address, email, level, programme, cohort))
         db_conn.commit()
 
-        flash("Registration successful!", "success")  # Flash a success message
-
-        # Redirect back to the registration page with a success message
-        return render_template("RegisterStudent.html")
-
     except Exception as e:
-        flash(f"Registration failed: {str(e)}",
-              "error")  # Flash an error message
         db_conn.rollback()
-
-        # Redirect back to the registration page with an error message
-        return render_template("RegisterStudent.html")
 
     finally:
         cursor.close()
+
+    # Redirect back to the registration page with a success message
+    return render_template("home.html")
 
 @app.route("/about", methods=['POST'])
 def about():
