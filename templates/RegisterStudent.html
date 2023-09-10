@@ -560,7 +560,8 @@
     <!-- ALERT MESSAGE -->
     <script>
         // Check if a success message exists in the Flash messages
-        if ("{{ get_flashed_messages(category_filter=['success']) }}" !== "") {
+        var successMessage = "{{ get_flashed_messages(category_filter=['success']) }}";
+        if (successMessage !== "") {
             alert("Registration successful!");
             // Clear the form fields by setting their values to empty
             document.getElementById("studentId").value = "";
