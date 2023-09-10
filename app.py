@@ -42,14 +42,11 @@ def register_company():
 def login_company():
     return render_template('LoginCompany.html')
 
-
-# Assuming you have already imported the necessary modules
+@app.route('/add_student')
+def register_student():
+    return render_template("RegisterStudent.html")
 
 # Add Student
-
-# ...
-
-
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
