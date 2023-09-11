@@ -343,8 +343,7 @@ submitBtn{
         padding-top: 10px;
     }
 
-    .details .declaration-button {
-        padding: 10px 0;
+    .declaration-button {
         text-align: center;
     }
 
@@ -365,6 +364,7 @@ submitBtn{
         padding: 10px 20px;
         cursor: pointer;
         transition: background-color 0.3s;
+        border-radius: 10px;
     }
 
     .acc-btn:hover {
@@ -477,8 +477,9 @@ submitBtn{
         </div>
 
         <!-- Student details -->
-        <div class="container">
-            <form action="/addstud" autocomplete="on" method="POST" enctype="multipart/form-data">
+        <form action="/addstud" autocomplete="on" method="POST" enctype="multipart/form-data">
+
+            <div class="container">
                 <div class="details">
                     <div class="details-content-title">
                         Student Details
@@ -514,12 +515,10 @@ submitBtn{
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <!-- Personal details -->
-        <div class="container">
-            <form>
+            <!-- Personal details -->
+            <div class="container">
                 <div class="details">
                     <div class="details-content-title">
                         Personal Details
@@ -562,7 +561,10 @@ submitBtn{
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
+        <div class="declaration-button">
+            <button class="acc-btn">Update</button>
         </div>
         <hr>
     </div>
