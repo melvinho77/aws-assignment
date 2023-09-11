@@ -37,32 +37,32 @@ def register_company():
     return render_template('RegisterCompany.html')
 
 
-@app.route('/login_company')
+@app.route('/login_company', methods=['GET', 'POST'])
 def login_company():
     return render_template('LoginCompany.html')
 
 
-@app.route('/login_student')
+@app.route('/login_student', methods=['GET', 'POST'])
 def login_student():
     return render_template('LoginStudent.html')
 
 # Navigation to Student Home Page
-@app.route('/student_home')
+@app.route('/student_home', methods=['GET', 'POST'])
 def student_home():
     return render_template('StudentHome.html')
 
 # Navigation to Edit Student Page
-@app.route('/edit_student')
+@app.route('/edit_student', methods=['GET', 'POST'])
 def edit_student():
     return render_template('EditStudentProfile.html', id=session('logggedInStudent'))
 
 # Navigate to Upload Resume Page
-@app.route('/upload_resume')
+@app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
     return render_template('UploadResume.html')
 
 # Navigate to Student Registration
-@app.route('/register_student')
+@app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
 
