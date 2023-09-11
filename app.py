@@ -46,20 +46,27 @@ def login_company():
 def login_student():
     return render_template('LoginStudent.html')
 
-
-@app.route('/student_HomePage')
-def student_HomePage():
+# Navigation to Student Home Page
+@app.route('/student_home')
+def student_home():
     return render_template('StudentHomePage.html')
-# Navigate to registration student
 
+# Navigation to Edit Student Page
+@app.route('/edit_student')
+def student_home():
+    return render_template('EditStudentProfile.html', id=session('logggedInStudent'))
 
+# Navigate to Upload Resume Page
+@app.route('/upload_resume')
+def upload_resume():
+    return render_template('UploadResume.html')
+
+# Navigate to Student Registration
 @app.route('/register_student')
 def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
-
-
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -96,8 +103,6 @@ def about():
     return render_template('www.tarc.edu.my')
 
 # Verify login
-
-
 @app.route("/verifyLogin", methods=['POST', 'GET'])
 def verifyLogin():
     if request.method == 'POST':
@@ -119,7 +124,6 @@ def verifyLogin():
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
