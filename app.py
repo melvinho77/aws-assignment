@@ -53,7 +53,7 @@ def student_home():
 
 # Navigation to Edit Student Page
 @app.route('/edit_student')
-def student_home():
+def edit_student():
     return render_template('EditStudentProfile.html', id=session('logggedInStudent'))
 
 # Navigate to Upload Resume Page
