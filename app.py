@@ -47,26 +47,61 @@ def login_student():
     return render_template('LoginStudent.html')
 
 # Navigation to Student Home Page
+
+
 @app.route('/student_home', methods=['GET', 'POST'])
 def student_home():
     return render_template('StudentHome.html')
 
 # Navigation to Edit Student Page
+
+
 @app.route('/edit_student', methods=['GET', 'POST'])
 def edit_student():
-    return render_template('EditStudentProfile.html', id=session('logggedInStudent'))
+    id = session['loggedInStudent']
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+
+        if not student:
+            return "No such student exist."
+
+    except Exception as e:
+        return str(e)
+
+    return render_template('EditStudentProfile.html', studentId=student[0],
+                           studentName=student[1],
+                           IC=student[2],
+                           mobileNumber=student[3],
+                           gender=student[4],
+                           address=student[5],
+                           email=student[6],
+                           level=student[7],
+                           programme=student[8],
+                           supervisor=student[9],
+                           cohort=student[10])
 
 # Navigate to Upload Resume Page
+
+
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
     return render_template('UploadResume.html')
 
 # Navigate to Student Registration
+
+
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
+
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -103,6 +138,8 @@ def about():
     return render_template('www.tarc.edu.my')
 
 # Verify login
+
+
 @app.route("/verifyLogin", methods=['POST', 'GET'])
 def verifyLogin():
     if request.method == 'POST':
@@ -124,6 +161,7 @@ def verifyLogin():
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
