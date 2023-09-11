@@ -51,7 +51,7 @@ def login_student():
 
 @app.route('/student_home', methods=['GET', 'POST'])
 def student_home():
-    return render_template('StudentHome.html')
+    return render_template('studentHome.html')
 
 # Navigation to Edit Student Page
 
