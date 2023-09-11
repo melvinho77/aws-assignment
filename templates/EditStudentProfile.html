@@ -448,103 +448,123 @@ submitBtn{
             </div>
         </div>
 
-    <div class="container">
-        <div class="details-header">
-            <h2>Welcome! {{ studentName }}</h2>
-            <div class="options">
-                <div class="upload-resume">
-                    <i class="fa fa-id-card" aria-hidden="true"></i>
-                    <a href="#">Upload your resume here!</a>
+        <div class="container">
+            <div class="details-header">
+                <h2>Welcome! {{ studentName }}</h2>
+                <div class="options">
+                    <div class="upload-resume">
+                        <i class="fa fa-id-card" aria-hidden="true"></i>
+                        <a href="#">Upload your resume here!</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Company details-->
-        <div class="details">
-            <div class="details-content-title">
-                Profile details
-            </div>
+            <!-- Company details-->
+            <div class="details">
+                <div class="details-content-title">
+                    Profile details
+                </div>
 
-            <div class="details-content-body">
-                <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data"
-                    class="company-details">
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
-                            <div style="padding-top: 5px;">
-                                <a href="#">Apply a company</a>
+                <div class="details-content-body">
+                    <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data"
+                        class="company-details">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" readonly required>
+                                <div style="padding-top: 5px;">
+                                    <a href="#">Apply a company</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Address</strong></label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="4" style="resize: vertical;" readonly
+                                    required></textarea>
                             </div>
                         </div>
-
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Address</strong></label>
-                        <div class="col-md-10">
-                            <textarea class="form-control" rows="4" style="resize: vertical;" readonly
-                                required></textarea>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" readonly required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Comp Supervisor Name</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" readonly required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Name</strong></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Comp Supervisor Email</strong></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" readonly required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Email</strong></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Comp. Acceptance Form</strong></label>
+                            <div class="col-md-10">
+                                <input type="file" class="form-control-file" name="acceptanceForm">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Comp. Acceptance Form</strong></label>
-                        <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="acceptanceForm">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Parent Ack. Form</strong></label>
+                            <div class="col-md-10">
+                                <input type="file" class="form-control-file" name="acknowledgementForm">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Parent Ack. Form</strong></label>
-                        <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="acknowledgementForm">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Letter of Indemnity</strong></label>
+                            <div class="col-md-10">
+                                <input type="file" class="form-control-file" name="indemnityLetter">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Letter of Indemnity</strong></label>
-                        <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="indemnityLetter">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label"><strong>Hired Evidence (If any)</strong></label>
+                            <div class="col-md-10">
+                                <input type="file" class="form-control-file" name="hiredEvidence">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2 col-form-label"><strong>Hired Evidence (If any)</strong></label>
-                        <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="hiredEvidence">
+                        <div class="form-group row">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-success">Save and Submit</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-12 text-center">
-                            <button type="submit" class="btn btn-success">Save and Submit</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+
+            <hr>
         </div>
 
-        <hr>
-    </div>
+        <footer>
+            <p>© 2023 - TAR UMT FOCS ITP</p>
+        </footer>
 
-    <footer>
-        <p>© 2023 - TAR UMT FOCS ITP</p>
-    </footer>
+        <script src="{{ url_for('static', filename='script/master.js') }}"></script>
+        <script>
+            function toggleDropdown() {
+                var dropdownOptions = document.getElementById("dropdownOptions");
+                if (dropdownOptions.style.display === "block") {
+                    dropdownOptions.style.display = "none";
+                } else {
+                    dropdownOptions.style.display = "block";
+                }
+            }
 
-    <script src="{{ url_for('static', filename='script/master.js') }}"></script>
+            // Add a click event listener to the document
+            document.addEventListener("click", function (event) {
+                var dropdown = document.querySelector(".dropdown");
+                if (!dropdown.contains(event.target)) {
+                    // Clicked outside the dropdown, so close it
+                    var dropdownOptions = document.getElementById("dropdownOptions");
+                    dropdownOptions.style.display = "none";
+                }
+            });
+        </script>
 </body>
 
 </html>
