@@ -49,7 +49,7 @@ def login_student():
 # Navigation to Student Home Page
 @app.route('/student_home')
 def student_home():
-    return render_template('StudentHomePage.html')
+    return render_template('StudentHome.html')
 
 # Navigation to Edit Student Page
 @app.route('/edit_student')
