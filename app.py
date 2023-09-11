@@ -85,6 +85,12 @@ def edit_student():
                            supervisor=student[9],
                            cohort=student[10])
 
+# Update student profile
+
+# @app.route('/update_student', methods=['GET', 'POST'])
+# def update_student():
+
+
 # Navigate to Upload Resume Page
 
 
