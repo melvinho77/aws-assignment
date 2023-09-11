@@ -58,6 +58,8 @@ def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
+
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -93,7 +95,9 @@ def add_student():
 def about():
     return render_template('www.tarc.edu.my')
 
-#Verify login
+# Verify login
+
+
 @app.route("/verifyLogin", methods=['POST', 'GET'])
 def verifyLogin():
     if request.method == 'POST':
@@ -111,10 +115,11 @@ def verifyLogin():
             # User found in the database, login successful
             # Redirect to the student home page
             session['loggedInStudent'] = user[0]
-            return render_template('studentHome.html', id = session['loggedInStudent'])
+            return render_template('studentHome.html', studentId=user[0], studentName=user[1], IC=user[2], mobileNumber=user[3], gender=user[4], address=user[5], email=user[6], level=user[7], programme=user[8], supervisor=user[9], cohort=user[10])
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
-        
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
