@@ -711,6 +711,9 @@ submitBtn{
                 dropdownOptions.style.display = "none";
             }
         });
+
+        // Attach the toggleDropdown() function to the dropdown button
+        document.querySelector(".dropdown a.dropdown-button").addEventListener("click", toggleDropdown);
     </script>
 </body>
 
