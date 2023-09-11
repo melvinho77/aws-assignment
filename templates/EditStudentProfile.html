@@ -447,125 +447,271 @@ submitBtn{
                 </div>
             </div>
         </div>
+    </nav>
 
-        <div class="container">
-            <div class="details-header">
-                <h2>Welcome! {{ studentName }}</h2>
-                <div class="options">
-                    <div class="upload-resume">
-                        <i class="fa fa-id-card" aria-hidden="true"></i>
-                        <a href="/upload_resume">Upload your resume here!</a>
+    <div class="container">
+        <div class="details-header">
+            <h2>Welcome! {{ studentName }}</h2>
+            <div class="options">
+                <div class="upload-resume">
+                    <i class="fa fa-id-card" aria-hidden="true"></i>
+                    <a href="/upload_resume">Upload your resume here!</a>
+                </div>
+                <div class="edit-profile">
+                    <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                    <a href="/edit_student">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="details">
+            <div class="details-content-title">
+                Summary
+            </div>
+
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Cohort</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ cohort }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Intern Period</strong>
+                    </div>
+                    <div class="col-md-10">
+                        19 Feb 2024 - 04 Aug 2024
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Status</strong>
+                    </div>
+                    <div class="col-md-10">
+                        Pending
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Remark</strong>
+                    </div>
+                    <div class="col-md-10">
+                        <!-- Add your remark here -->
                     </div>
                 </div>
             </div>
-
-            <!-- Company details-->
-            <div class="details">
-                <div class="details-content-title">
-                    Profile details
-                </div>
-
-                <div class="details-content-body">
-                    <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data"
-                        class="company-details">
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" readonly required>
-                                <div style="padding-top: 5px;">
-                                    <a href="#">Apply a company</a>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Address</strong></label>
-                            <div class="col-md-10">
-                                <textarea class="form-control" rows="4" style="resize: vertical;" readonly
-                                    required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" readonly required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Comp Supervisor Name</strong></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" readonly required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Comp Supervisor Email</strong></label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" readonly required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Comp. Acceptance Form</strong></label>
-                            <div class="col-md-10">
-                                <input type="file" class="form-control-file" name="acceptanceForm">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Parent Ack. Form</strong></label>
-                            <div class="col-md-10">
-                                <input type="file" class="form-control-file" name="acknowledgementForm">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Letter of Indemnity</strong></label>
-                            <div class="col-md-10">
-                                <input type="file" class="form-control-file" name="indemnityLetter">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2 col-form-label"><strong>Hired Evidence (If any)</strong></label>
-                            <div class="col-md-10">
-                                <input type="file" class="form-control-file" name="hiredEvidence">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-success">Save and Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <hr>
         </div>
 
-        <footer>
-            <p>© 2023 - TAR UMT FOCS ITP</p>
-        </footer>
+        <!-- Student details -->
+        <div class="details">
+            <div class="details-content-title">
+                Student Details
+            </div>
 
-        <script src="/bundles/bootstrap?v=lescQEuG5u4jd-GcVDBcbpUOSyTDIg0Kk9zHDX55GCw1"></script>
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student Name</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ studentName }}
+                    </div>
+                </div>
 
-        <script>
-            function toggleDropdown() {
-                var dropdownOptions = document.getElementById("dropdownOptions");
-                if (dropdownOptions.style.display === "block") {
-                    dropdownOptions.style.display = "none";
-                } else {
-                    dropdownOptions.style.display = "block";
-                }
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student ID</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ session['loggedInStudent'] }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>NRIC No.</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ IC }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Gender</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ gnnder }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Programme</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ programme }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student Email</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ email }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Mobile Number</strong>
+                    </div>
+                    <div class="col-md-10">
+                        {{ mobileNumber }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- UC Supervisor -->
+        <div class="details">
+            <div class="details-content-title">
+                UC Supervisor
+            </div>
+
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Uni Supervisor</strong>
+                    </div>
+                    <div class="col-md-10">
+                        ANUREHKA A/P MAGHESWARAN
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Uni Supervisor Email</strong>
+                    </div>
+                    <div class="col-md-10">
+                        anurehkam@tarc.edu.my
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company details-->
+        <div class="details">
+            <div class="details-content-title">
+                Company details
+            </div>
+
+            <div class="details-content-body">
+                <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data"
+                    class="company-details">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                            <div style="padding-top: 5px;">
+                                <a href="#">Apply a company</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Address</strong></label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="4" style="resize: vertical;" readonly
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Name</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Email</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp. Acceptance Form</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="acceptanceForm">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Parent Ack. Form</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="acknowledgementForm">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Letter of Indemnity</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="indemnityLetter">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Hired Evidence (If any)</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="hiredEvidence">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success">Save and Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+    </div>
+
+    <footer>
+        <p>© 2023 - TAR UMT FOCS ITP</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script/master.js') }}"></script>
+    <script>
+        function toggleDropdown() {
+            var dropdownOptions = document.getElementById("dropdownOptions");
+            if (dropdownOptions.style.display === "block") {
+                dropdownOptions.style.display = "none";
+            } else {
+                dropdownOptions.style.display = "block";
             }
+        }
 
-            // Add a click event listener to the document
-            document.addEventListener("click", function (event) {
-                var dropdown = document.querySelector(".dropdown");
-                if (!dropdown.contains(event.target)) {
-                    // Clicked outside the dropdown, so close it
-                    var dropdownOptions = document.getElementById("dropdownOptions");
-                    dropdownOptions.style.display = "none";
-                }
-            });
-        </script>
+        // Add a click event listener to the document
+        document.addEventListener("click", function (event) {
+            var dropdown = document.querySelector(".dropdown");
+            if (!dropdown.contains(event.target)) {
+                // Clicked outside the dropdown, so close it
+                var dropdownOptions = document.getElementById("dropdownOptions");
+                dropdownOptions.style.display = "none";
+            }
+        });
+    </script>
 </body>
 
 </html>
