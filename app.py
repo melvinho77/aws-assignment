@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from pymysql import connections
 import os
 import boto3
@@ -57,8 +57,6 @@ def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
-
-
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -94,7 +92,7 @@ def add_student():
 def about():
     return render_template('www.tarc.edu.my')
 
-
+#Verify login
 @app.route("/verifyLogin", methods=['POST', 'GET'])
 def verifyLogin():
     if request.method == 'POST':
@@ -111,11 +109,11 @@ def verifyLogin():
         if user:
             # User found in the database, login successful
             # Redirect to the student home page
-            return render_template('StudentHomePage.html')
+            session['loggedInStudent'] = user[0]
+            return render_template('studentHome.html', id = session['loggedInStudent'])
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
-
-
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
