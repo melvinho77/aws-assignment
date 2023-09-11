@@ -281,12 +281,39 @@ submitBtn{
     /* Title of the website */
     .container .details-header {
         margin: 20px 0;
+        display: flex;
+        align-items: center;
+        /* Center vertically */
+        justify-content: flex-start;
+        border-bottom: 1px solid #ccc;
+        /* Add border to .details-header */
     }
 
     .container .details-header h1 {
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 20px;
         margin: 0;
+        padding-bottom: 20px;
+        /* Remove border-bottom and padding */
+    }
+
+    .container .details-header .upload-resume {
+        display: flex;
+        align-items: center;
+        /* Center vertically */
+        margin-left: 20px;
+        /* Add some space between h1 and upload icon/text */
+        color: #2a43d1;
+    }
+
+    .container .details-header .upload-resume i {
+        font-size: 24px;
+        /* Adjust the icon size as needed */
+        margin-right: 10px;
+        /* Add space between icon and text */
+
+    }
+
+    .container .details-header .upload-resume p {
+        margin-bottom: 0;
     }
 
     /* Details & Body CSS */
@@ -354,6 +381,23 @@ submitBtn{
         background-color: #cc0000;
         /* Darker Red on hover */
     }
+
+    /* Bootstrap display field CSS */
+    /* Add vertical spacing between each field in the details-content-body */
+    .details-content-body .row {
+        margin-bottom: 10px;
+        /* Adjust this value to your desired spacing */
+    }
+
+    /* Optional: Add some padding inside each field for better visual separation */
+    .details-content-body .row .col-md-2,
+    .details-content-body .row .col-md-10 {
+        padding: 5px 10px;
+    }
+
+    .details-content-body .row .col-md-2 {
+        text-align: right;
+    }
 </style>
 
 <head>
@@ -362,6 +406,8 @@ submitBtn{
     <title>Student SignUp - TARUMT ITP</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 
 <body>
@@ -385,7 +431,166 @@ submitBtn{
 
     <div class="container">
         <div class="details-header">
-            <h1>Welcome! </h1>
+            <h1>Welcome! {{ name }}</h1>
+            <div class="upload-resume">
+                <i class="fa fa-id-card" aria-hidden="true"></i>
+                <a href="#">Upload your resume here!</a>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="details">
+            <div class="details-content-title">
+                Summary
+            </div>
+
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Cohort</strong>
+                    </div>
+                    <div class="col-md-10">
+                        JUL2022Y2
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Intern Period</strong>
+                    </div>
+                    <div class="col-md-10">
+                        19 Feb 2024 - 04 Aug 2024
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Status</strong>
+                    </div>
+                    <div class="col-md-10">
+                        Pending
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Remark</strong>
+                    </div>
+                    <div class="col-md-10">
+                        <!-- Add your remark here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student details -->
+        <div class="details">
+            <div class="details-content-title">
+                Student Details
+            </div>
+
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student Name</strong>
+                    </div>
+                    <div class="col-md-10">
+                        Ho Hong Meng
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student ID</strong>
+                    </div>
+                    <div class="col-md-10">
+                        22WMR05652
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>NRIC No.</strong>
+                    </div>
+                    <div class="col-md-10">
+                        020606-10-2203
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Gender</strong>
+                    </div>
+                    <div class="col-md-10">
+                        M
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Programme</strong>
+                    </div>
+                    <div class="col-md-10">
+                        RSW
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Student Email</strong>
+                    </div>
+                    <div class="col-md-10">
+                        hohm-wm20@student.tarc.edu.my
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Mobile Number</strong>
+                    </div>
+                    <div class="col-md-10">
+                        011-10757383
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- UC Supervisor -->
+        <div class="details">
+            <div class="details-content-title">
+                UC Supervisor
+            </div>
+
+            <div class="details-content-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Uni Supervisor</strong>
+                    </div>
+                    <div class="col-md-10">
+                        ANUREHKA A/P MAGHESWARAN
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <strong>Uni Supervisor Email</strong>
+                    </div>
+                    <div class="col-md-10">
+                        anurehkam@tarc.edu.my
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company details-->
+        <div class="details">
+            <div class="details-content-title">
+                Company details
+            </div>
+
+            <div class="details-content-body">
+                <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data">
+
+                </form>
+            </div>
         </div>
     </div>
 
@@ -394,46 +599,6 @@ submitBtn{
     </footer>
 
     <script src="{{ url_for('static', filename='script/master.js') }}"></script>
-
-    <!-- DDL CONTENTS -->
-    <script>
-        const levelDropdown = document.getElementById("level");
-        const cohortDropdown = document.getElementById("cohort");
-        const programmeDropdown = document.getElementById("programme");
-
-        // Add event listener to the "Level" dropdown
-        levelDropdown.addEventListener("change", function () {
-            // Clear the existing options in "Cohort" and "Programme" dropdowns
-            cohortDropdown.innerHTML = '<option value="">-- Select One --</option>';
-            programmeDropdown.innerHTML = '<option value="">-- Select One --</option>';
-
-            const selectedLevel = levelDropdown.value;
-
-            if (selectedLevel === "diploma") {
-                // Populate "Cohort" and "Programme" options for Diploma
-                cohortDropdown.innerHTML += '<option value="JUN2023Y3">JUN2023Y3 (20/11/23 - 28/01/24)</option>';
-                programmeDropdown.innerHTML += '<option value="DCS">DCS</option>';
-                programmeDropdown.innerHTML += '<option value="DFT">DFT</option>';
-                programmeDropdown.innerHTML += '<option value="DIS">DIS</option>';
-                programmeDropdown.innerHTML += '<option value="DIT">DIT</option>';
-                programmeDropdown.innerHTML += '<option value="DST">DST</option>';
-            } else if (selectedLevel === "bachelor") {
-                // Populate "Cohort" and "Programme" options for Bachelor
-                cohortDropdown.innerHTML += '<option value="OCT2020Y2">OCT2020Y2 (19/06/23 - 03/12/24)</option>';
-                cohortDropdown.innerHTML += '<option value="JAN2021Y1">JAN2021Y1 (03/07/23 - 17/12/23)</option>';
-                cohortDropdown.innerHTML += '<option value="JUL2022Y2">JUL2022Y2 (13/02/24 - 29/07/24)';
-                programmeDropdown.innerHTML += '<option value="RDS">RDS</option>';
-                programmeDropdown.innerHTML += '<option value="REI">REI</option>';
-                programmeDropdown.innerHTML += '<option value="RIS">RIS</option>';
-                programmeDropdown.innerHTML += '<option value="RIT">RIT</option>';
-                programmeDropdown.innerHTML += '<option value="RSD">RSD</option>';
-                programmeDropdown.innerHTML += '<option value="RSW">RSW</option>';
-                programmeDropdown.innerHTML += '<option value="RST">RST</option>';
-                programmeDropdown.innerHTML += '<option value="RMI">RMI</option>';
-                programmeDropdown.innerHTML += '<option value="RMM">RMM</option>';
-            }
-        });
-    </script>
 </body>
 
 </html>
