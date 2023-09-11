@@ -275,45 +275,50 @@ submitBtn{
         margin: 30px 0;
         border: 1px solid #ccc;
         border-radius: 10px;
+        font-size: 14px;
         /* padding: 20px; */
     }
 
-    /* Title of the website */
     .container .details-header {
         margin: 20px 0;
         display: flex;
         align-items: center;
-        /* Center vertically */
-        justify-content: flex-start;
+        justify-content: space-between;
         border-bottom: 1px solid #ccc;
-        /* Add border to .details-header */
     }
 
     .container .details-header h1 {
         margin: 0;
         padding-bottom: 20px;
-        /* Remove border-bottom and padding */
     }
 
-    .container .details-header .upload-resume {
+    .container .details-header .upload-resume,
+    .container .details-header .edit-profile {
         display: flex;
         align-items: center;
-        /* Center vertically */
         margin-left: 20px;
-        /* Add some space between h1 and upload icon/text */
         color: #2a43d1;
     }
 
-    .container .details-header .upload-resume i {
+    .container .details-header .upload-resume i,
+    .container .details-header .edit-profile i {
         font-size: 24px;
-        /* Adjust the icon size as needed */
         margin-right: 10px;
-        /* Add space between icon and text */
-
     }
 
-    .container .details-header .upload-resume p {
+    .container .details-header .upload-resume p,
+    .container .details-header .edit-profile p {
         margin-bottom: 0;
+    }
+
+    .container .details-header .edit-profile {
+        border-left: 1px solid #ccc;
+    }
+
+    .container .details-header .options {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
     }
 
     /* Details & Body CSS */
@@ -322,6 +327,7 @@ submitBtn{
         padding: 15px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
+        font-size: 16px;
         margin: 0;
     }
 
@@ -387,6 +393,7 @@ submitBtn{
     .details-content-body .row {
         margin-bottom: 10px;
         /* Adjust this value to your desired spacing */
+        font-size: 14px;
     }
 
     /* Optional: Add some padding inside each field for better visual separation */
@@ -397,6 +404,10 @@ submitBtn{
 
     .details-content-body .row .col-md-2 {
         text-align: right;
+    }
+
+    .details-content-body .row .col-md-10 input {
+        font-size: 14px;
     }
 </style>
 
@@ -432,9 +443,15 @@ submitBtn{
     <div class="container">
         <div class="details-header">
             <h1>Welcome! {{ name }}</h1>
-            <div class="upload-resume">
-                <i class="fa fa-id-card" aria-hidden="true"></i>
-                <a href="#">Upload your resume here!</a>
+            <div class="options">
+                <div class="upload-resume">
+                    <i class="fa fa-id-card" aria-hidden="true"></i>
+                    <a href="#">Upload your resume here!</a>
+                </div>
+                <div class="edit-profile">
+                    <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                    <a href="#">Edit Profile</a>
+                </div>
             </div>
         </div>
 
@@ -501,7 +518,7 @@ submitBtn{
                         <strong>Student ID</strong>
                     </div>
                     <div class="col-md-10">
-                        22WMR05652
+                        {{ session['loggedInStudent'] }}
                     </div>
                 </div>
 
@@ -587,11 +604,78 @@ submitBtn{
             </div>
 
             <div class="details-content-body">
-                <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data">
+                <form action="/updateCompanyDetails" autocomplete="on" method="POST" enctype="multipart/form-data"
+                    class="company-details">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                            <div style="padding-top: 5px;">
+                                <a href="#">Apply a company</a>
+                            </div>
+                        </div>
 
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Address</strong></label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="4" style="resize: vertical;" readonly
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Name</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp Supervisor Email</strong></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Comp. Acceptance Form</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="acceptanceForm">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Parent Ack. Form</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="acknowledgementForm">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Letter of Indemnity</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="indemnityLetter">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label"><strong>Hired Evidence (If any)</strong></label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="hiredEvidence">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success">Save and Submit</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
+
+        <hr>
     </div>
 
     <footer>
