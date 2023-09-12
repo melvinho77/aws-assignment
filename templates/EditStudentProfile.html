@@ -421,10 +421,6 @@ submitBtn{
         display: flex;
         justify-content: flex-end;
     }
-
-    .acc-btn.disabled {
-        background-color: lightgrey;
-    }
 </style>
 
 <head>
@@ -583,8 +579,7 @@ submitBtn{
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label address-label"><strong>Address</strong></label>
                             <div class="col-md-10">
-                                <textarea type="text" class="form-control" cols="8" rows="6"
-                                    name="address">{{ address }}</textarea>
+                                <textarea type="text" class="form-control" cols="8" rows="6" name="address">{{ address }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -620,16 +615,6 @@ submitBtn{
                 var dropdownOptions = document.getElementById("dropdownOptions");
                 dropdownOptions.style.display = "none";
             }
-        });
-
-        const button = document.querySelector('.acc-btn');
-
-        button.addEventListener('disabled', () => {
-            button.style.backgroundColor = 'lightgrey';
-        });
-
-        button.addEventListener('enabled', () => {
-            button.style.backgroundColor = '#00cc00';
         });
     </script>
 </body>

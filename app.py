@@ -158,14 +158,13 @@ def update_student():
     newMobileNumber = request.form['mobileNumber']
     newAddress = request.form['address']
 
-
     # Compare with the old fields
     # Student name
     if student[1] != newStudentName:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('studentName', newStudentName,
-                    'pending', None, session['loggedInStudent']))
+                                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Gender
@@ -173,7 +172,7 @@ def update_student():
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('gender', newGender, 'pending',
-                    None, session['loggedInStudent']))
+                                    None, session['loggedInStudent']))
         db_conn.commit()
 
     # Mobile number
@@ -181,7 +180,7 @@ def update_student():
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('mobileNumber', newMobileNumber,
-                    'pending', None, session['loggedInStudent']))
+                                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Address
@@ -189,7 +188,7 @@ def update_student():
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('address', newAddress,
-                    'pending', None, session['loggedInStudent']))
+                                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     return redirect('/edit_student')
@@ -227,7 +226,50 @@ def upload_resume():
                            cohort=student[10])
 
 
+@app.route('/uploadResume', methods=['GET', 'POST'])
+def uploadResume():
+    id = session['loggedInStudent']
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
+
+    student_resume_file = request.files['resume']
+    s3 = boto3.resource('s3')
+
+    if student_resume_file.filename == "":
+        return "*Please select a file"
+
+    try:
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+        db_conn.commit()
+
+        print("Data inserted in MySQL RDS... uploading resume to S3...")
+        s3.Bucket(custombucket).put_object(
+            Key=stud_resume_file_name_in_s3, Body=student_resume_file)
+        bucket_location = boto3.client(
+            's3').get_bucket_location(Bucket=custombucket)
+        s3_location = (bucket_location['LocationConstraint'])
+
+        if s3_location is None:
+            s3_location = ''
+        else:
+            s3_location = '-' + s3_location
+
+        object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+            s3_location,
+            custombucket,
+            stud_resume_file_name_in_s3)
+
+    except Exception as e:
+        return str(e)
+
+    print("Resume uploaded complete.")
+    return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
+
 # Navigate to Student View Report
+
+
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
