@@ -232,8 +232,9 @@ def uploadResume():
 
     select_sql = "SELECT * FROM student WHERE studentId = %s"
     cursor = db_conn.cursor()
-
+    stud_resume_file_name_in_s3 = id + "_resume"
     student_resume_file = request.files['resume']
+
     s3 = boto3.resource('s3')
 
     if student_resume_file.filename == "":
