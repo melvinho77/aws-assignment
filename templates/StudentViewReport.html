@@ -81,6 +81,7 @@
     .row {
         margin-right: -15px;
         margin-left: -15px;
+        margin-bottom: 0 !important;
     }
 
     .container .jumbotron,
@@ -277,6 +278,7 @@ submitBtn{
         border: 1px solid #ccc;
         border-radius: 10px;
         font-size: 16px;
+        cursor: pointer;
         /* padding: 20px; */
     }
 
@@ -391,23 +393,23 @@ submitBtn{
 
     /* Bootstrap display field CSS */
     /* Add vertical spacing between each field in the details-content-body */
-    .details-content-body .row {
+    .row {
         margin-bottom: 10px;
         /* Adjust this value to your desired spacing */
         font-size: 14px;
     }
 
     /* Optional: Add some padding inside each field for better visual separation */
-    .details-content-body .row .col-md-2,
-    .details-content-body .row .col-md-10 {
+    .row .col-md-2,
+    .row .col-md-10 {
         padding: 5px 10px;
     }
 
-    .details-content-body .row .col-md-2 {
+    .row .col-md-2 {
         text-align: right;
     }
 
-    .details-content-body .row .col-md-10 input {
+    .row .col-md-10 input {
         font-size: 14px;
     }
 
@@ -428,6 +430,40 @@ submitBtn{
         justify-content: space-between;
         align-items: center;
         padding: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        /* Add background color transition */
+    }
+
+    /* Style for the expanded header */
+    .report-header.expanded {
+        background-color: lightgrey;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Style for the report-content */
+    .report-content {
+        display: none;
+        padding: 15px;
+        border-top: 1px solid #ccc;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: #fff;
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+        /* Add transition for max-height and padding */
+        overflow: hidden;
+        /* Hide content overflow */
+    }
+
+    /* Style for the arrow icon */
+    .report-header .fa {
+        transition: transform 0.3s;
+    }
+
+    /* Style for the arrow icon when expanded */
+    .report-header.expanded .fa {
+        transform: rotate(180deg);
     }
 
     .due-details {
@@ -443,6 +479,31 @@ submitBtn{
 
     .due-details .due-date {
         color: #cc0000;
+    }
+
+    .report-content-details {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    /* Style for the Submit Button */
+    .submit-button {
+        background-color: #4CAF50;
+        /* Green background */
+        color: #fff;
+        /* White text */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        /* 10px border radius */
+        cursor: pointer;
+        transition: background-color 0.3s;
+        /* Smooth background color transition */
+    }
+
+    .submit-button:hover {
+        background-color: #45a049;
+        /* Darker green on hover */
     }
 </style>
 
@@ -499,81 +560,399 @@ submitBtn{
             </div>
         </div>
 
-        <!-- Student details -->
+        <!-- Report details -->
         <div class="container">
             <!-- Progress Report 1 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 1</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content">
+                    <!-- Content for Progress Report 1 -->
+                    <div class="report-content-details">
+                        <!-- Submission -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Submission</strong>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="file" class="upload-form" required>
+                                <div style="padding-top: 5px;">
+                                    <a href="#">View Report</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Status</strong>
+                            </div>
+                            <div class="col-md-10">
+
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Remark</strong>
+                            </div>
+                            <div class="col-md-10">
+
+                            </div>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-10">
+                                <button class="submit-button">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Report 2 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 2</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content">
+                    <!-- Content for Progress Report 2 -->
+                    <div class="report-content-details">
+                        <!-- Submission -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Submission</strong>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="file" class="upload-form" required>
+                                <div style="padding-top: 5px;">
+                                    <a href="#">View Report</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Status</strong>
+                            </div>
+                            <div class="col-md-10">
+
+                            </div>
+                        </div>
+                        <!-- Remark -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Remark</strong>
+                            </div>
+                            <div class="col-md-10">
+
+                            </div>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="row">
+                            <div class="col-md-2">
+
+                            </div>
+                            <div class="col-md-10">
+                                <button class="submit-button">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Report 3 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 3</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content expandable">
+                    <!-- Content for Progress Report 3 -->
+                    <div class="report-content-details">
+                        <div class="report-content-details">
+                            <!-- Submission -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Submission</strong>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="file" class="upload-form" required>
+                                    <div style="padding-top: 5px;">
+                                        <a href="#">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Remark -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="submit-button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Report 4 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 4</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content">
+                    <!-- Content for Progress Report 4 -->
+                    <div class="report-content-details">
+                        <div class="report-content-details">
+                            <!-- Submission -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Submission</strong>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="file" class="upload-form" required>
+                                    <div style="padding-top: 5px;">
+                                        <a href="#">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Remark -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="submit-button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Report 5 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 5</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content">
+                    <!-- Content for Progress Report 5 -->
+                    <div class="report-content-details">
+                        <div class="report-content-details">
+                            <!-- Submission -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Submission</strong>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="file" class="upload-form" required>
+                                    <div style="padding-top: 5px;">
+                                        <a href="#">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Remark -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="submit-button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Progress Report 6 -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Progress Report 6</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </div>
                 </div>
+                <div class="report-content">
+                    <!-- Content for Progress Report 6 -->
+                    <div class="report-content-details">
+                        <div class="report-content-details">
+                            <!-- Submission -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Submission</strong>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="file" class="upload-form" required>
+                                    <div style="padding-top: 5px;">
+                                        <a href="#">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Remark -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="submit-button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Final Report -->
             <div class="details">
-                <div class="report-header">
+                <div class="report-header expandable">
                     <div class="report-title">Final Report</div>
                     <div class="due-details">
                         <div class="due-date">Due: <b>[1-1-2023]</b></div>
                         <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="report-content">
+                    <!-- Content for Final Report -->
+                    <div class="report-content-details">
+                        <div class="report-content-details">
+                            <!-- Submission -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Submission</strong>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="file" class="upload-form" required>
+                                    <div style="padding-top: 5px;">
+                                        <a href="#">View Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Status</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Remark -->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <strong>Remark</strong>
+                                </div>
+                                <div class="col-md-10">
+
+                                </div>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-10">
+                                    <button class="submit-button">Submit</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -605,6 +984,28 @@ submitBtn{
                 var dropdownOptions = document.getElementById("dropdownOptions");
                 dropdownOptions.style.display = "none";
             }
+        });
+    </script>
+
+    <script>
+        //EXPAND REPORT CONTENTS
+        // Get all elements with the class "expandable"
+        const expandableElements = document.querySelectorAll('.expandable');
+
+        // Add click event listeners to each expandable element
+        expandableElements.forEach((element) => {
+            element.addEventListener('click', () => {
+                // Toggle the "expanded" class to change the background color and expand/collapse content
+                element.classList.toggle('expanded');
+
+                // Find the associated content and toggle its visibility
+                const content = element.nextElementSibling;
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                } else {
+                    content.style.display = 'block';
+                }
+            });
         });
     </script>
 </body>
