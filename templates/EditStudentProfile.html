@@ -554,12 +554,14 @@ submitBtn{
                             <div class="col-md-10">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="male" value="M" {% if
-                                        gender=='M' %} checked {% endif %}>
+                                        gender=='M' %} checked {% endif %} {% if pendingRequestCount> 0 %} readonly {%
+                                    endif %}>
                                     <label class="form-check-label" for="male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="female" value="F" {%
-                                        if gender=='F' %} checked {% endif %}>
+                                        if gender=='F' %} checked {% endif %} {% if pendingRequestCount> 0 %} readonly
+                                    {% endif %}>
                                     <label class="form-check-label" for="female">Female</label>
                                 </div>
                             </div>
