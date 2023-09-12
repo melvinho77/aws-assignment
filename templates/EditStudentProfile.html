@@ -512,23 +512,14 @@ submitBtn{
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label center-label"><strong>Level</strong></label>
                             <div class="col-md-10">
-                                <select class="form-control" id="level" name="level">
-                                    <option value="">-- Select One --</option>
-                                    <option value="diploma" {% if level=='diploma' %} selected {% endif %} {% if
-                                        pendingRequestCount> 0 %} readonly {% endif %}>Diploma
-                                    </option>
-                                    <option value="bachelor" {% if level=='bachelor' %} selected {% endif %}>Bachelor
-                                    </option>
-                                </select>
+                                <input type="text" class="form-control" value="{{ level }}" readonly>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label center-label"><strong>Programme</strong></label>
                             <div class="col-md-10">
-                                <select class="form-control" id="programme" name="programme">
-                                    <option value="">-- Select One --</option>
-                                </select>
+                                <input type="text" class="form-control" value="{{ programme }}" readonly>
                             </div>
                         </div>
                     </div>
