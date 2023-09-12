@@ -506,8 +506,10 @@ submitBtn{
                             <div class="col-md-10">
                                 <select class="form-control" id="level" name="level">
                                     <option value="">-- Select One --</option>
-                                    <option value="diploma">Diploma</option>
-                                    <option value="bachelor">Bachelor</option>
+                                    <option value="diploma" {% if level=='diploma' %} selected {% endif %}>Diploma
+                                    </option>
+                                    <option value="bachelor" {% if level=='bachelor' %} selected {% endif %}>Bachelor
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -604,22 +606,22 @@ submitBtn{
 
             if (selectedLevel === "diploma") {
                 // Populate "Programme" options for Diploma
-                programmeDropdown.innerHTML += '<option value="DCS">DCS</option>';
-                programmeDropdown.innerHTML += '<option value="DFT">DFT</option>';
-                programmeDropdown.innerHTML += '<option value="DIS">DIS</option>';
-                programmeDropdown.innerHTML += '<option value="DIT">DIT</option>';
-                programmeDropdown.innerHTML += '<option value="DST">DST</option>';
+                programmeDropdown.innerHTML += '<option value="DCS"{% if programme=="DCS" %} selected {% endif %}>DCS</option>';
+                programmeDropdown.innerHTML += '<option value="DFT"{% if programme=="DFT" %} selected {% endif %}>DFT</option>';
+                programmeDropdown.innerHTML += '<option value="DIS"{% if programme=="DIS" %} selected {% endif %}>DIS</option>';
+                programmeDropdown.innerHTML += '<option value="DIT"{% if programme=="DIT" %} selected {% endif %}>DIT</option>';
+                programmeDropdown.innerHTML += '<option value="DST"{% if programme=="DST" %} selected {% endif %}>DST</option>';
             } else if (selectedLevel === "bachelor") {
                 // Populate "Programme" options for Bachelor
-                programmeDropdown.innerHTML += '<option value="RDS">RDS</option>';
-                programmeDropdown.innerHTML += '<option value="REI">REI</option>';
-                programmeDropdown.innerHTML += '<option value="RIS">RIS</option>';
-                programmeDropdown.innerHTML += '<option value="RIT">RIT</option>';
-                programmeDropdown.innerHTML += '<option value="RSD">RSD</option>';
-                programmeDropdown.innerHTML += '<option value="RSW">RSW</option>';
-                programmeDropdown.innerHTML += '<option value="RST">RST</option>';
-                programmeDropdown.innerHTML += '<option value="RMI">RMI</option>';
-                programmeDropdown.innerHTML += '<option value="RMM">RMM</option>';
+                programmeDropdown.innerHTML += '<option value="RDS"{% if programme=="RDS" %} selected {% endif %}>RDS</option>';
+                programmeDropdown.innerHTML += '<option value="REI"{% if programme=="REI" %} selected {% endif %}>REI</option>';
+                programmeDropdown.innerHTML += '<option value="RIS"{% if programme=="RIS" %} selected {% endif %}>RIS</option>';
+                programmeDropdown.innerHTML += '<option value="RIT"{% if programme=="RIT" %} selected {% endif %}>RIT</option>';
+                programmeDropdown.innerHTML += '<option value="RSD"{% if programme=="RSD" %} selected {% endif %}>RSD</option>';
+                programmeDropdown.innerHTML += '<option value="RSW"{% if programme=="RSW" %} selected {% endif %}>RSW</option>';
+                programmeDropdown.innerHTML += '<option value="RST"{% if programme=="RST" %} selected {% endif %}>RST</option>';
+                programmeDropdown.innerHTML += '<option value="RMI"{% if programme=="RMI" %} selected {% endif %}>RMI</option>';
+                programmeDropdown.innerHTML += '<option value="RMM"{% if programme=="RMM" %} selected {% endif %}>RMM</option>';
             }
         });
     </script>
