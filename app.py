@@ -113,7 +113,7 @@ def edit_student():
 
 # CHECK REQUEST EDIT PENDING
 def check_pending_requests(id):
-    pending_request_sql = "SELECT COUNT(*) FROM request r, student s WHERE r.studentId = s.studentId AND r.studentId = %s AND status = %s"
+    pending_request_sql = "SELECT COUNT(*) FROM request WHERE studentId = %s AND status = %s"
     cursor = db_conn.cursor()
 
     try:

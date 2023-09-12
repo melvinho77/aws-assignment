@@ -476,6 +476,13 @@ submitBtn{
             </div>
         </div>
 
+        {% if pendingRequestCount > 0 %}
+        <div class="alert alert-danger" style="padding: 10px; margin: 10px;">
+            You have <strong>{{ pendingRequestCount }}</strong> pending requests. Please complete them before editing
+            your profile.
+        </div>
+        {% endif %}
+
         <!-- Student details -->
         <form action="/addstud" autocomplete="on" method="POST" enctype="multipart/form-data">
 
@@ -501,12 +508,14 @@ submitBtn{
                             </div>
                         </div>
 
+                        <!-- LEVEL AND PROGRAMME NO NEED UPDATE -->
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label center-label"><strong>Level</strong></label>
                             <div class="col-md-10">
                                 <select class="form-control" id="level" name="level">
                                     <option value="">-- Select One --</option>
-                                    <option value="diploma" {% if level=='diploma' %} selected {% endif %}>Diploma
+                                    <option value="diploma" {% if level=='diploma' %} selected {% endif %} {% if
+                                        pendingRequestCount> 0 %} readonly {% endif %}>Diploma
                                     </option>
                                     <option value="bachelor" {% if level=='bachelor' %} selected {% endif %}>Bachelor
                                     </option>
