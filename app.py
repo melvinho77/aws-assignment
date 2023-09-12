@@ -185,7 +185,7 @@ def update_student():
         db_conn.commit()
 
     # Mobile number
-    if student[4] != newMobileNumber:
+    if student[3] != newMobileNumber:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('mobileNumber',

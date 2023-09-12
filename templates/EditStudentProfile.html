@@ -592,39 +592,6 @@ submitBtn{
     </footer>
 
     <script src="{{ url_for('static', filename='script/master.js') }}"></script>
-    <!-- DDL CONTENTS -->
-    <script>
-        const levelDropdown = document.getElementById("level");
-        const programmeDropdown = document.getElementById("programme");
-
-        // Add event listener to the "Level" dropdown
-        levelDropdown.addEventListener("change", function () {
-            // Clear the existing options "Programme" dropdowns
-            programmeDropdown.innerHTML = '<option value="">-- Select One --</option>';
-
-            const selectedLevel = levelDropdown.value;
-
-            if (selectedLevel === "diploma") {
-                // Populate "Programme" options for Diploma
-                programmeDropdown.innerHTML += '<option value="DCS"{% if programme=="DCS" %} selected {% endif %}>DCS</option>';
-                programmeDropdown.innerHTML += '<option value="DFT"{% if programme=="DFT" %} selected {% endif %}>DFT</option>';
-                programmeDropdown.innerHTML += '<option value="DIS"{% if programme=="DIS" %} selected {% endif %}>DIS</option>';
-                programmeDropdown.innerHTML += '<option value="DIT"{% if programme=="DIT" %} selected {% endif %}>DIT</option>';
-                programmeDropdown.innerHTML += '<option value="DST"{% if programme=="DST" %} selected {% endif %}>DST</option>';
-            } else if (selectedLevel === "bachelor") {
-                // Populate "Programme" options for Bachelor
-                programmeDropdown.innerHTML += '<option value="RDS"{% if programme=="RDS" %} selected {% endif %}>RDS</option>';
-                programmeDropdown.innerHTML += '<option value="REI"{% if programme=="REI" %} selected {% endif %}>REI</option>';
-                programmeDropdown.innerHTML += '<option value="RIS"{% if programme=="RIS" %} selected {% endif %}>RIS</option>';
-                programmeDropdown.innerHTML += '<option value="RIT"{% if programme=="RIT" %} selected {% endif %}>RIT</option>';
-                programmeDropdown.innerHTML += '<option value="RSD"{% if programme=="RSD" %} selected {% endif %}>RSD</option>';
-                programmeDropdown.innerHTML += '<option value="RSW"{% if programme=="RSW" %} selected {% endif %}>RSW</option>';
-                programmeDropdown.innerHTML += '<option value="RST"{% if programme=="RST" %} selected {% endif %}>RST</option>';
-                programmeDropdown.innerHTML += '<option value="RMI"{% if programme=="RMI" %} selected {% endif %}>RMI</option>';
-                programmeDropdown.innerHTML += '<option value="RMM"{% if programme=="RMM" %} selected {% endif %}>RMM</option>';
-            }
-        });
-    </script>
     <script>
         function toggleDropdown() {
             var dropdownOptions = document.getElementById("dropdownOptions");
