@@ -79,8 +79,6 @@ def student_home():
                            cohort=student[10])
 
 # Navigation to Edit Student Page
-
-
 @app.route('/edit_student', methods=['GET', 'POST'])
 def edit_student():
     id = session['loggedInStudent']
@@ -98,6 +96,8 @@ def edit_student():
     except Exception as e:
         return str(e)
 
+    pendingRequestCount = check_pending_requests(id)
+
     return render_template('EditStudentProfile.html', studentId=student[0],
                            studentName=student[1],
                            IC=student[2],
@@ -108,11 +108,27 @@ def edit_student():
                            level=student[7],
                            programme=student[8],
                            supervisor=student[9],
-                           cohort=student[10])
+                           cohort=student[10],
+                           pendingRequestCount=pendingRequestCount)
+
+# CHECK REQUEST EDIT PENDING
+def check_pending_requests(id):
+    pending_request_sql = "SELECT COUNT(*) FROM request r, student s WHERE r.studentId = s.studentId AND r.studentId = %s AND status = %s"
+    cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(pending_request_sql, (id, 'pending'))
+        foundRecords = cursor.fetchall()
+
+        if not foundRecords:
+            return 0
+
+        return foundRecords[0][0]
+
+    except Exception as e:
+        return str(e)
 
 # Update student profile (Function)
-
-
 def update_student():
     id = session['loggedInStudent']
 
@@ -154,7 +170,7 @@ def update_student():
         db_conn.commit()
 
     # Student name
-    if student[9] != newStudentName:
+    if student[1] != newStudentName:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('studentName',
@@ -162,14 +178,14 @@ def update_student():
         db_conn.commit()
 
     # Gender
-    if student[10] != newGender:
+    if student[4] != newGender:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('gender', newGender, 'pending', None, id))
         db_conn.commit()
 
     # Mobile number
-    if student[11] != newMobileNumber:
+    if student[4] != newMobileNumber:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('mobileNumber',
@@ -177,13 +193,14 @@ def update_student():
         db_conn.commit()
 
     # Address
-    if student[12] != newAddress:
+    if student[5] != newAddress:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(
             insert_sql, ('address', newAddress, 'pending', None, id))
         db_conn.commit()
 
+    return render_template('EditStudentProfile.html', id=session['loggedInStudent'])
 
 # Navigate to Upload Resume Page
 
