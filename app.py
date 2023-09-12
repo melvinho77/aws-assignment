@@ -184,7 +184,7 @@ def update_student():
     # Address
     if student[5] != newAddress:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES ('address', '123456789', 'pending', NULL, %s)"
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('address', newAddress, 'pending', None, id))
         db_conn.commit()
 
