@@ -115,8 +115,6 @@ def edit_student():
                            pendingRequestCount=pendingRequestCount)
 
 # CHECK REQUEST EDIT PENDING
-
-
 def check_pending_requests(id):
     pending_request_sql = "SELECT COUNT(*) FROM request WHERE studentId = %s AND status = %s"
     cursor = db_conn.cursor()
@@ -134,8 +132,6 @@ def check_pending_requests(id):
         return str(e)
 
 # Update student profile (Function)
-
-
 @app.route('/update_student', methods=['GET', 'POST'])
 def update_student():
     id = session['loggedInStudent']
@@ -195,8 +191,6 @@ def update_student():
     return redirect('/edit_student')
 
 # Navigate to Upload Resume Page
-
-
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
     id = session['loggedInStudent']
@@ -230,8 +224,6 @@ def upload_resume():
                            resume_url=resume_url)
 
 # Upload Resume into S3
-
-
 @app.route('/uploadResume', methods=['GET', 'POST'])
 def uploadResume():
     id = session['loggedInStudent']
@@ -275,36 +267,29 @@ def uploadResume():
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Retrieve resume from S3 (based on Student Id)
-
-
-# Retrieve resume from S3 (based on Student Id)
-@app.route('/view_resume/<student_id>', methods=['GET'])
-def view_resume(student_id):
-    # Get the pre-signed URL for the student's resume
-    resume_url = get_resume_url(student_id)
+@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
+def view_resume(id):
+    # Create an S3 URL for the student's resume
+    resume_url = get_resume_url(id)
 
     if not resume_url:
         return "Resume not found."
 
-    # Redirect the user to the pre-signed URL to view the resume in another tab
+    # Redirect the user to the S3 URL to view the resume in another tab
     return redirect(resume_url)
 
 # Get the resume url
 def get_resume_url(student_id):
-    s3_client = boto3.client('s3')
-
-    # Define the S3 bucket name and object key
+    # Generate the S3 URL for the student's resume
     resume_file_name = f"{student_id}_resume.pdf"
+    s3_location = ''  # You can set the S3 location here if needed
 
-    # Generate a pre-signed URL that expires in 1 hour (3600 seconds)
-    expiration = 3600
-    presigned_url = s3_client.generate_presigned_url(
-        'get_object',
-        Params={'Bucket': bucket, 'Key': resume_file_name},
-        ExpiresIn=expiration
-    )
+    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+        s3_location,
+        custombucket,
+        resume_file_name)
 
-    return presigned_url
+    return object_url
 
 # Navigate to Student View Report
 @app.route('/view_progress_report', methods=['GET', 'POST'])
