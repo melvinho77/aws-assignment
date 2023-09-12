@@ -158,37 +158,38 @@ def update_student():
     newMobileNumber = request.form['mobileNumber']
     newAddress = request.form['address']
 
+
     # Compare with the old fields
     # Student name
     if student[1] != newStudentName:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('studentName', newStudentName,
-                       'pending', None, session['loggedInStudent']))
+                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Gender
     if student[4] != newGender:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('gender', newGender,
-                       'pending', None, session['loggedInStudent']))
+        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('gender', newGender, 'pending',
+                    None, session['loggedInStudent']))
         db_conn.commit()
 
     # Mobile number
     if student[3] != newMobileNumber:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('mobileNumber',
-                       newMobileNumber, 'pending', None, session['loggedInStudent']))
+        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('mobileNumber', newMobileNumber,
+                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Address
     if student[5] != newAddress:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(
-            insert_sql, ('address', newAddress, 'pending', None, session['loggedInStudent']))
+        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('address', newAddress,
+                    'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     return redirect('/edit_student')
