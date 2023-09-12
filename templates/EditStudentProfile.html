@@ -421,6 +421,10 @@ submitBtn{
         display: flex;
         justify-content: flex-end;
     }
+
+    button.acc-btn.disabled {
+        background-color: gray;
+    }
 </style>
 
 <head>
@@ -477,9 +481,14 @@ submitBtn{
         </div>
 
         {% if pendingRequestCount > 0 %}
-        <div class="alert alert-danger" style="padding: 10px; margin: 10px;">
-            You have <strong>{{ pendingRequestCount }}</strong> pending requests. Please complete them before editing
-            your profile.
+        <div class="alert alert-danger" style="padding: 10px;">
+            Unable to update. Please wait for the pending request to be approved.
+        </div>
+        {% endif %}
+
+        {% if pendingRequestCount == 0 %}
+        <div class="alert alert-success" style="padding: 10px;">
+            Profile update is available.
         </div>
         {% endif %}
 
@@ -537,8 +546,7 @@ submitBtn{
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label center-label"><strong>Student Name</strong></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{ studentName }}" name="studentName" {%
-                                    if pendingRequestCount> 0 %} readonly {% endif %}>
+                                <input type="text" class="form-control" value="{{ studentName }}" name="studentName">
                             </div>
                         </div>
 
@@ -554,14 +562,12 @@ submitBtn{
                             <div class="col-md-10">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="male" value="M" {% if
-                                        gender=='M' %} checked {% endif if pendingRequestCount> 0 %} readonly {%
-                                    endif %}>
+                                        gender=='M' %} checked {% endif %}>
                                     <label class="form-check-label" for="male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="gender" id="female" value="F" {%
-                                        if gender=='F' %} checked {% endif if pendingRequestCount> 0 %} readonly {%
-                                    endif %}>
+                                        if gender=='F' %} checked {% endif %}>
                                     <label class="form-check-label" for="female">Female</label>
                                 </div>
                             </div>
@@ -570,23 +576,24 @@ submitBtn{
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label center-label"><strong>Mobile Number</strong></label>
                             <div class="col-md-10">
-                                <input type="tel" class="form-control" value="{{ mobileNumber }}" name="mobileNumber" {%
-                                    if pendingRequestCount> 0 %} readonly {% endif %}>
+                                <input type="tel" class="form-control" value="{{ mobileNumber }}" name="mobileNumber">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label address-label"><strong>Address</strong></label>
                             <div class="col-md-10">
-                                <textarea type="text" class="form-control" cols="8" rows="6" name="address" {% if
-                                    pendingRequestCount> 0 %} readonly {% endif %}>{{ address }}</textarea>
+                                <textarea type="text" class="form-control" cols="8" rows="6"
+                                    name="address">{{ address }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="declaration-button">
-                <button class="acc-btn" {% if pendingRequestCount> 0 %} disabled {% endif %}>Update</button>
+                <button class="acc-btn" {% if pendingRequestCount> 0 %} disabled {% endif %}>
+                    <span>Update</span>
+                </button>
             </div>
         </form>
         <hr>
