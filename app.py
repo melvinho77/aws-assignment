@@ -215,7 +215,7 @@ def upload_resume():
     except Exception as e:
         return str(e)
 
-    resume_url = get_resume_url(id)
+    resume_url = get_presigned_url(id)
 
     return render_template('UploadResume.html', studentId=student[0],
                            studentName=student[1],
@@ -279,33 +279,28 @@ def uploadResume():
 
 
 @app.route('/view_resume/<student_id>')
-def view_resume(studentId):
+def view_resume(student_id):
     # Get the presigned URL for the student's resume
-    resume_url = get_resume_url(studentId)
+    resume_url = get_presigned_url(student_id)
 
     if not resume_url:
         return "Resume not found."
 
-    # Redirect the user to the presigned URL to view the resume in another tab
     return redirect(resume_url)
 
 # Get the resume url
 
+def get_presigned_url(student_id):
+    s3_client = boto3.client('s3')
+    resume_file_name = f"{student_id}_resume.pdf"
 
-def get_resume_url(studentId):
-    # Define the S3 bucket and object key
-    bucket_name = custombucket
-    resume_file_name = f"{studentId}_resume.pdf"
-
-    # Generate a presigned URL for the S3 object (valid for a limited time)
     try:
-        s3_client = boto3.client('s3')
-        url = s3_client.generate_presigned_url(
+        presigned_url = s3_client.generate_presigned_url(
             'get_object',
-            Params={'Bucket': bucket_name, 'Key': resume_file_name},
-            ExpiresIn=3600  # URL expires in 1 hour, adjust as needed
+            Params={'Bucket': custombucket, 'Key': resume_file_name},
+            ExpiresIn=3600  # URL expires in 1 hour (adjust as needed)
         )
-        return url
+        return presigned_url
     except NoCredentialsError:
         return None
 
