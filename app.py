@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from pymysql import connections
 import os
 import boto3
+import datetime
 from config import *
 
 app = Flask(__name__)
@@ -274,33 +275,38 @@ def uploadResume():
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Retrieve resume from S3 (based on Student Id)
-@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
-def view_resume(id):
-    # Create an S3 URL for the student's resume
-    resume_url = get_resume_url(id)
+
+
+# Retrieve resume from S3 (based on Student Id)
+@app.route('/view_resume/<student_id>', methods=['GET'])
+def view_resume(student_id):
+    # Get the pre-signed URL for the student's resume
+    resume_url = get_resume_url(student_id)
 
     if not resume_url:
         return "Resume not found."
 
-    # Redirect the user to the S3 URL to view the resume in another tab
+    # Redirect the user to the pre-signed URL to view the resume in another tab
     return redirect(resume_url)
 
-
+# Get the resume url
 def get_resume_url(student_id):
-    # Generate the S3 URL for the student's resume
+    s3_client = boto3.client('s3')
+
+    # Define the S3 bucket name and object key
     resume_file_name = f"{student_id}_resume.pdf"
-    s3_location = ''  # You can set the S3 location here if needed
 
-    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-        s3_location,
-        custombucket,
-        resume_file_name)
+    # Generate a pre-signed URL that expires in 1 hour (3600 seconds)
+    expiration = 3600
+    presigned_url = s3_client.generate_presigned_url(
+        'get_object',
+        Params={'Bucket': bucket, 'Key': resume_file_name},
+        ExpiresIn=expiration
+    )
 
-    return object_url
+    return presigned_url
 
 # Navigate to Student View Report
-
-
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
