@@ -163,15 +163,14 @@ def update_student():
     if student[1] != newStudentName:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('studentName',
-                       newStudentName, 'pending', None, id))
+        cursor.execute(insert_sql, ('studentName', newStudentName, 'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Gender
     if student[4] != newGender:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('gender', newGender, 'pending', None, id))
+        cursor.execute(insert_sql, ('gender', newGender, 'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
     # Mobile number
@@ -179,16 +178,16 @@ def update_student():
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('mobileNumber',
-                       newMobileNumber, 'pending', None, id))
+                       newMobileNumber, 'pending', None, session['loggedInStudent']))
         db_conn.commit()
 
-    # # Address
-    # if student[5] != newAddress:
-    #     # Insert into request table
-    #     insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-    #     cursor.execute(
-    #         insert_sql, ('address', newAddress, 'pending', None, id))
-    #     db_conn.commit()
+    # Address
+    if student[5] != newAddress:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(
+            insert_sql, ('address', newAddress, 'pending', None, session['loggedInStudent']))
+        db_conn.commit()
 
     return redirect('/edit_student')
 
