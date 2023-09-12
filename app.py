@@ -153,10 +153,10 @@ def update_student():
         return str(e)
 
     # Get the newly updated input fields
-    newStudentName = request.form['studentName']
+    newStudentName = str(request.form['studentName'])
     newGender = request.form['gender']
-    newMobileNumber = request.form['mobileNumber']
-    newAddress = request.form['address']
+    newMobileNumber = str(request.form['mobileNumber'])
+    newAddress = str(request.form['address'])
 
     # Compare with the old fields
     # Student name
@@ -178,16 +178,14 @@ def update_student():
     if student[3] != newMobileNumber:
         # Insert into request table
         insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('mobileNumber',
-                       newMobileNumber, 'pending', None, id))
+        cursor.execute(insert_sql, ('mobileNumber', newMobileNumber, 'pending', None, id))
         db_conn.commit()
 
     # Address
     if student[5] != newAddress:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(
-            insert_sql, ('address', newAddress, 'pending', None, id))
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES ('address', '123456789', 'pending', NULL, %s)"
+        cursor.execute(insert_sql, ('address', newAddress, 'pending', None, id))
         db_conn.commit()
 
     return render_template('EditStudentProfile.html', id=session['loggedInStudent'])
