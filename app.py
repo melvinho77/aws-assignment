@@ -213,6 +213,8 @@ def upload_resume():
     except Exception as e:
         return str(e)
 
+    resume_url = get_resume_url(id)
+
     return render_template('UploadResume.html', studentId=student[0],
                            studentName=student[1],
                            IC=student[2],
@@ -223,7 +225,10 @@ def upload_resume():
                            level=student[7],
                            programme=student[8],
                            supervisor=student[9],
-                           cohort=student[10])
+                           cohort=student[10],
+                           resume_url=resume_url)
+
+# Upload Resume into S3
 
 
 @app.route('/uploadResume', methods=['GET', 'POST'])
@@ -267,6 +272,31 @@ def uploadResume():
 
     print("Resume uploaded complete.")
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
+
+# Retrieve resume from S3 (based on Student Id)
+@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
+def view_resume(id):
+    # Create an S3 URL for the student's resume
+    resume_url = get_resume_url(id)
+
+    if not resume_url:
+        return "Resume not found."
+
+    # Redirect the user to the S3 URL to view the resume in another tab
+    return redirect(resume_url)
+
+
+def get_resume_url(student_id):
+    # Generate the S3 URL for the student's resume
+    resume_file_name = f"{student_id}_resume.pdf"
+    s3_location = ''  # You can set the S3 location here if needed
+
+    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+        s3_location,
+        custombucket,
+        resume_file_name)
+
+    return object_url
 
 # Navigate to Student View Report
 
