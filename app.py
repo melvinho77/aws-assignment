@@ -79,6 +79,8 @@ def student_home():
                            cohort=student[10])
 
 # Navigation to Edit Student Page
+
+
 @app.route('/edit_student', methods=['GET', 'POST'])
 def edit_student():
     id = session['loggedInStudent']
@@ -112,6 +114,8 @@ def edit_student():
                            pendingRequestCount=pendingRequestCount)
 
 # CHECK REQUEST EDIT PENDING
+
+
 def check_pending_requests(id):
     pending_request_sql = "SELECT COUNT(*) FROM request WHERE studentId = %s AND status = %s"
     cursor = db_conn.cursor()
@@ -129,6 +133,9 @@ def check_pending_requests(id):
         return str(e)
 
 # Update student profile (Function)
+
+
+@app.route('/update_student', methods=['GET', 'POST'])
 def update_student():
     id = session['loggedInStudent']
 
@@ -146,29 +153,12 @@ def update_student():
         return str(e)
 
     # Get the newly updated input fields
-    newLevel = request.form['level']
-    newProgramme = request.form['programme']
     newStudentName = request.form['studentName']
     newGender = request.form['gender']
     newMobileNumber = request.form['mobileNumber']
     newAddress = request.form['address']
 
     # Compare with the old fields
-    # Level
-    if student[7] != newLevel:
-        # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(insert_sql, ('level', newLevel, 'pending', None, id))
-        db_conn.commit()
-
-    # Programme
-    if student[8] != newProgramme:
-        # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(
-            insert_sql, ('programme', newProgramme, 'pending', None, id))
-        db_conn.commit()
-
     # Student name
     if student[1] != newStudentName:
         # Insert into request table
