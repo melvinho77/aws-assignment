@@ -121,7 +121,33 @@ def edit_student():
 
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
-    return render_template('UploadResume.html')
+    id = session['loggedInStudent']
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+
+        if not student:
+            return "No such student exist."
+
+    except Exception as e:
+        return str(e)
+
+    return render_template('UploadResume.html', studentId=student[0],
+                           studentName=student[1],
+                           IC=student[2],
+                           mobileNumber=student[3],
+                           gender=student[4],
+                           address=student[5],
+                           email=student[6],
+                           level=student[7],
+                           programme=student[8],
+                           supervisor=student[9],
+                           cohort=student[10])
+
 
 # Navigate to Student View Report
 @app.route('/view_progress_report', methods=['GET', 'POST'])
