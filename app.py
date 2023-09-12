@@ -110,10 +110,79 @@ def edit_student():
                            supervisor=student[9],
                            cohort=student[10])
 
-# Update student profile
+# Update student profile (Function)
 
-# @app.route('/update_student', methods=['GET', 'POST'])
-# def update_student():
+
+def update_student():
+    id = session['loggedInStudent']
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+
+        if not student:
+            return "No such student exist."
+
+    except Exception as e:
+        return str(e)
+
+    # Get the newly updated input fields
+    newLevel = request.form['level']
+    newProgramme = request.form['programme']
+    newStudentName = request.form['studentName']
+    newGender = request.form['gender']
+    newMobileNumber = request.form['mobileNumber']
+    newAddress = request.form['address']
+
+    # Compare with the old fields
+    # Level
+    if student[7] != newLevel:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('level', newLevel, 'pending', None, id))
+        db_conn.commit()
+
+    # Programme
+    if student[8] != newProgramme:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(
+            insert_sql, ('programme', newProgramme, 'pending', None, id))
+        db_conn.commit()
+
+    # Student name
+    if student[9] != newStudentName:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('studentName',
+                       newStudentName, 'pending', None, id))
+        db_conn.commit()
+
+    # Gender
+    if student[10] != newGender:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('gender', newGender, 'pending', None, id))
+        db_conn.commit()
+
+    # Mobile number
+    if student[11] != newMobileNumber:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(insert_sql, ('mobileNumber',
+                       newMobileNumber, 'pending', None, id))
+        db_conn.commit()
+
+    # Address
+    if student[12] != newAddress:
+        # Insert into request table
+        insert_sql = "INSERT INTO request (attribute, change, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(
+            insert_sql, ('address', newAddress, 'pending', None, id))
+        db_conn.commit()
 
 
 # Navigate to Upload Resume Page
