@@ -190,7 +190,7 @@ def update_student():
     #         insert_sql, ('address', newAddress, 'pending', None, id))
     #     db_conn.commit()
 
-    return render_template('EditStudentProfile.html', id=session['loggedInStudent'])
+    return redirect('/edit_student')
 
 # Navigate to Upload Resume Page
 
