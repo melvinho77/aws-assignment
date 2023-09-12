@@ -588,8 +588,7 @@ submitBtn{
 
         // Add event listener to the "Level" dropdown
         levelDropdown.addEventListener("change", function () {
-            // Clear the existing options in "Cohort" and "Programme" dropdowns
-            cohortDropdown.innerHTML = '<option value="">-- Select One --</option>';
+            // Clear the existing options "Programme" dropdowns
             programmeDropdown.innerHTML = '<option value="">-- Select One --</option>';
 
             const selectedLevel = levelDropdown.value;
