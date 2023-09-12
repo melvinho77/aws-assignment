@@ -123,6 +123,11 @@ def edit_student():
 def upload_resume():
     return render_template('UploadResume.html')
 
+# Navigate to Student View Report
+@app.route('/view_progress_report', methods=['GET', 'POST'])
+def view_progress_report():
+    return render_template('StudentViewReport.html')
+
 # Navigate to Student Registration
 
 
