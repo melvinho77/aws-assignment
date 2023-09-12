@@ -422,8 +422,8 @@ submitBtn{
         justify-content: flex-end;
     }
 
-    button.acc-btn.disabled {
-        background-color: gray;
+    .acc-btn.disabled {
+        background-color: lightgrey;
     }
 </style>
 
@@ -591,9 +591,7 @@ submitBtn{
                 </div>
             </div>
             <div class="declaration-button">
-                <button class="acc-btn" {% if pendingRequestCount> 0 %} disabled {% endif %}>
-                    <span>Update</span>
-                </button>
+                <button class="acc-btn" {% if pendingRequestCount> 0 %} disabled {% endif %}>Update</button>
             </div>
         </form>
         <hr>
@@ -622,6 +620,16 @@ submitBtn{
                 var dropdownOptions = document.getElementById("dropdownOptions");
                 dropdownOptions.style.display = "none";
             }
+        });
+
+        const button = document.querySelector('.acc-btn');
+
+        button.addEventListener('disabled', () => {
+            button.style.backgroundColor = 'lightgrey';
+        });
+
+        button.addEventListener('enabled', () => {
+            button.style.backgroundColor = '#00cc00';
         });
     </script>
 </body>
