@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from pymysql import connections
 import os
 import boto3
-from botocore.exceptions import NoCredentialsError
-import datetime
 from config import *
 
 app = Flask(__name__)
@@ -215,7 +213,7 @@ def upload_resume():
     except Exception as e:
         return str(e)
 
-    resume_url = get_presigned_url(id)
+    resume_url = get_resume_url(id)
 
     return render_template('UploadResume.html', studentId=student[0],
                            studentName=student[1],
@@ -276,33 +274,30 @@ def uploadResume():
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Retrieve resume from S3 (based on Student Id)
-
-
-@app.route('/view_resume/<student_id>')
-def view_resume(student_id):
-    # Get the presigned URL for the student's resume
-    resume_url = get_presigned_url(student_id)
+@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
+def view_resume():
+    id = session['loggedInStudent']
+    # Create an S3 URL for the student's resume
+    resume_url = get_resume_url(id)
 
     if not resume_url:
         return "Resume not found."
 
+    # Redirect the user to the S3 URL to view the resume in another tab
     return redirect(resume_url)
 
-# Get the resume url
 
-def get_presigned_url(student_id):
-    s3_client = boto3.client('s3')
+def get_resume_url(student_id):
+    # Generate the S3 URL for the student's resume
     resume_file_name = f"{student_id}_resume.pdf"
+    s3_location = ''  # You can set the S3 location here if needed
 
-    try:
-        presigned_url = s3_client.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': custombucket, 'Key': resume_file_name},
-            ExpiresIn=3600  # URL expires in 1 hour (adjust as needed)
-        )
-        return presigned_url
-    except NoCredentialsError:
-        return None
+    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+        s3_location,
+        custombucket,
+        resume_file_name)
+
+    return object_url
 
 # Navigate to Student View Report
 
