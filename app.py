@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from botocore.exceptions import NoCredentialsError
 from pymysql import connections
 import os
 import boto3
@@ -214,6 +213,8 @@ def upload_resume():
     except Exception as e:
         return str(e)
 
+    resume_url = get_resume_url(id)
+
     return render_template('UploadResume.html', studentId=student[0],
                            studentName=student[1],
                            IC=student[2],
@@ -224,7 +225,8 @@ def upload_resume():
                            level=student[7],
                            programme=student[8],
                            supervisor=student[9],
-                           cohort=student[10],)
+                           cohort=student[10],
+                           resume_url=resume_url)
 
 # Upload Resume into S3
 
@@ -271,34 +273,44 @@ def uploadResume():
     print("Resume uploaded complete.")
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
-# View resume
+# Retrieve resume from S3 (based on Student Id)
 
 
-@app.route('/viewResume', methods=['GET'])
+@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
 def view_resume():
     id = session['loggedInStudent']
-    stud_resume_file_name_in_s3 = f"{id}_resume.pdf"
+    # Create an S3 URL for the student's resume
+    resume_url = get_resume_url(id)
 
-    s3 = boto3.client('s3')
+    if not resume_url:
+        return "Resume not found."
 
-    try:
-        # Generate a pre-signed URL for the S3 object (resume PDF)
-        presigned_url = s3.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': custombucket,
-                    'Key': stud_resume_file_name_in_s3},
-            # Set the URL to expire in 1 hour (adjust as needed)
-            ExpiresIn=3600
-        )
-        # Redirect the user to the pre-signed URL in a new tab
-        return redirect(presigned_url, code=302)
-    except NoCredentialsError:
-        return "AWS credentials not available. Please check your AWS configuration."
-    except Exception as e:
-        return str(e)
+    # Redirect the user to the S3 URL to view the resume in another tab
+    return redirect(resume_url)
 
+
+def get_resume_url(student_id):
+    # Generate the S3 URL for the student's resume
+    resume_file_name = f"{student_id}_resume.pdf"
+    bucket_location = boto3.client(
+        's3').get_bucket_location(Bucket=custombucket)
+    s3_location = (bucket_location['LocationConstraint'])
+
+    if s3_location is None:
+        s3_location = ''
+    else:
+        s3_location = '-' + s3_location
+
+    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+        s3_location,
+        custombucket,
+        resume_file_name)
+
+    return object_url
 
 # Navigate to Student View Report
+
+
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
