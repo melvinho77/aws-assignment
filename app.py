@@ -1,6 +1,6 @@
 from flask import redirect
 import mimetypes
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from botocore.exceptions import ClientError
 from pymysql import connections
 import os
@@ -270,8 +270,6 @@ def uploadResume():
 
 
 # Download resume from S3 (based on Student Id)
-
-
 @app.route('/viewResume', methods=['GET', 'POST'])
 def view_resume():
     # Retrieve student's ID
@@ -291,7 +289,6 @@ def view_resume():
             Params={
                 'Bucket': custombucket,
                 'Key': object_key,
-                'ResponseContentDisposition': 'inline',
             },
             ExpiresIn=3600  # Set the expiration time (in seconds) as needed
         )
@@ -303,10 +300,11 @@ def view_resume():
             return str(e)
 
     # Redirect the user to the URL of the PDF file
-    return redirect(response)
-
+    return send_file(response, as_attachment=False)
 
 # Navigate to Student View Report
+
+
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
