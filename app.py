@@ -270,6 +270,8 @@ def uploadResume():
 
 
 # Download resume from S3 (based on Student Id)
+
+
 @app.route('/viewResume', methods=['GET', 'POST'])
 def view_resume():
     # Retrieve student's ID
@@ -289,8 +291,7 @@ def view_resume():
             Params={
                 'Bucket': custombucket,
                 'Key': object_key,
-                'ContentDisposition': "inline",
-                'ContentType': "application/pdf"
+                'ResponseContentDisposition': 'inline',
             },
             ExpiresIn=3600  # Set the expiration time (in seconds) as needed
         )
