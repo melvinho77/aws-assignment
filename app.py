@@ -420,7 +420,7 @@ def download_StudF04():
 
 # DOWNLOAD FOCS_StudF05.docx
 @app.route('/downloadStudF05', methods=['GET'])
-def download_StudF05():
+def download_StudF04():
     # Construct the S3 object key
     object_key = f"forms/FOCS_StudF05.docx"
 
@@ -433,6 +433,7 @@ def download_StudF05():
             Params={
                 'Bucket': custombucket,
                 'Key': object_key,
+                'ResponseContentDisposition': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             },
             ExpiresIn=3600  # Set the expiration time (in seconds) as needed
         )
@@ -443,12 +444,8 @@ def download_StudF05():
         else:
             return str(e)
 
-    # Add the Content-Disposition header
-    response['Content-Disposition'] = 'inline'
-
     # Redirect the user to the URL of the PDF file
     return redirect(response)
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
