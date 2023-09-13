@@ -195,6 +195,8 @@ def update_student():
     return redirect('/edit_student')
 
 # Navigate to Upload Resume Page
+
+
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
     id = session['loggedInStudent']
@@ -265,27 +267,38 @@ def uploadResume():
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Retrieve resume from S3 (based on Student Id)
+
+
 @app.route('/viewResume', methods=['GET', 'POST'])
 def view_resume():
-    # Retrieve id
-    id = session['loggedInStudent']
-    object_name = id + "_resume"
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"{student_id}_resume.pdf"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
     try:
-        response = s3_client.generate_presigned_url('get_object',
-                                                    Params={'Bucket': custombucket,
-                                                            'Key': object_name},
-                                                    ExpiresIn=1000)
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': custombucket, 'Key': object_key},
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
     except ClientError as e:
-        return str(e)
-    # The response contains the presigned URL
-    return redirect(response, {'resume_url': response})
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the resume does not exist, return a page with a message
+            return render_template('no_resume_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the presigned URL to view the resume in a new tab
+    return redirect(response)
+
 
 # Navigate to Student View Report
-
-
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
