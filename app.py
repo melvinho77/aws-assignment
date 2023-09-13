@@ -242,13 +242,6 @@ def uploadResume():
 
     s3 = boto3.resource('s3')
 
-    if student_resume_file.filename == "":
-        return "*Please select a file"
-
-    # Check if the uploaded file has a PDF extension
-    if not student_resume_file.filename.endsw:
-        return "Uploaded file must be in PDF format"
-
     try:
         cursor.execute(select_sql, (id))
         student = cursor.fetchone()
