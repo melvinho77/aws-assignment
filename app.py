@@ -229,8 +229,6 @@ def upload_resume():
                            cohort=student[10],)
 
 # Upload Resume into S3
-
-
 @app.route('/uploadResume', methods=['GET', 'POST'])
 def uploadResume():
     id = session['loggedInStudent']
@@ -245,14 +243,23 @@ def uploadResume():
     if student_resume_file.filename == "":
         return "*Please select a file"
 
+    # Check if the uploaded file has a PDF extension
+    if not student_resume_file.filename.endswith('.pdf'):
+        return "Uploaded file must be in PDF format"
+
     try:
         cursor.execute(select_sql, (id))
         student = cursor.fetchone()
         db_conn.commit()
 
         print("Data inserted in MySQL RDS... uploading resume to S3...")
-        s3.Bucket(custombucket).put_object(
-            Key=stud_resume_file_name_in_s3, Body=student_resume_file)
+
+        # Set the content type to 'application/pdf' when uploading to S3
+        s3.Object(custombucket, stud_resume_file_name_in_s3).put(
+            Body=student_resume_file,
+            ContentType='application/pdf'
+        )
+
         bucket_location = boto3.client(
             's3').get_bucket_location(Bucket=custombucket)
         s3_location = (bucket_location['LocationConstraint'])
@@ -289,6 +296,7 @@ def view_resume():
             Params={
                 'Bucket': custombucket,
                 'Key': object_key,
+                'ResponseContentDisposition': 'inline',
             },
             ExpiresIn=3600  # Set the expiration time (in seconds) as needed
         )
@@ -300,11 +308,10 @@ def view_resume():
             return str(e)
 
     # Redirect the user to the URL of the PDF file
-    return send_file(response, as_attachment=False)
+    return redirect(response)
+
 
 # Navigate to Student View Report
-
-
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     return render_template('StudentViewReport.html')
