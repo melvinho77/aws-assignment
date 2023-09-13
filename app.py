@@ -267,11 +267,46 @@ def uploadResume():
     print("Resume uploaded complete.")
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
-# Retrieve resume from S3 (based on Student Id)
-
-
+# Retrieve resume from S3
 @app.route('/viewResume', methods=['GET', 'POST'])
 def view_resume():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"{student_id}_resume"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': custombucket, 'Key': object_key},
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+
+        # Get the content type (MIME type) of the S3 object
+        content_type = mimetypes.guess_type(object_key)[0]
+
+        if content_type == 'application/pdf':
+            # If the content type is PDF, set it in the response headers
+            response.headers['Content-Type'] = content_type
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the resume does not exist, return a page with a message
+            return render_template('no_resume_found.html')
+        else:
+            return str(e)
+
+    # Render the HTML template with the PDF file embedded in an iframe
+    return render_template('view_resume.html', pdf_url=response)
+
+# Download resume from S3 (based on Student Id)
+@app.route('/downloadResume', methods=['GET', 'POST'])
+def download_resume():
     # Retrieve student's ID
     student_id = session.get('loggedInStudent')
     if not student_id:
