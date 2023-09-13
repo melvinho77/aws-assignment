@@ -420,7 +420,7 @@ def download_StudF04():
 
 # DOWNLOAD FOCS_StudF05.docx
 @app.route('/downloadStudF05', methods=['GET'])
-def download_StudF04():
+def download_StudF05():
     # Construct the S3 object key
     object_key = f"forms/FOCS_StudF05.docx"
 
