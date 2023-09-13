@@ -389,36 +389,6 @@ def verifyLogin():
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
 
 
-@app.route('/downloadStudF03', methods=['GET'])
-def download_StudF03():
-    # Construct the S3 object key
-    object_key = f"forms/FOCS_StudF03.docx"
-
-    # Generate a presigned URL for the S3 object
-    s3_client = boto3.client('s3')
-
-    try:
-        response = s3_client.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': custombucket,
-                'Key': object_key,
-                'ResponseContentDisposition': 'inline',
-            },
-            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
-        )
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'NoSuchKey':
-            # If the resume does not exist, return a page with a message
-            return render_template('no_resume_found.html')
-        else:
-            return str(e)
-
-    # Redirect the user to the URL of the PDF file
-    return redirect(response)
-
-
-# DOWNLOAD FOCS_StudF04.docx
 @app.route('/downloadStudF04', methods=['GET'])
 def download_StudF04():
     # Construct the S3 object key
@@ -446,6 +416,39 @@ def download_StudF04():
 
     # Redirect the user to the URL of the PDF file
     return redirect(response)
+
+
+# DOWNLOAD FOCS_StudF05.docx
+@app.route('/downloadStudF05', methods=['GET'])
+def download_StudF05():
+    # Construct the S3 object key
+    object_key = f"forms/FOCS_StudF05.docx"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the resume does not exist, return a page with a message
+            return render_template('no_resume_found.html')
+        else:
+            return str(e)
+
+    # Add the Content-Disposition header
+    response['Content-Disposition'] = 'inline'
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
