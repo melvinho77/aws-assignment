@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from botocore.exceptions import ClientError
 from pymysql import connections
 import os
 import boto3
@@ -194,8 +195,6 @@ def update_student():
     return redirect('/edit_student')
 
 # Navigate to Upload Resume Page
-
-
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
     id = session['loggedInStudent']
@@ -213,8 +212,6 @@ def upload_resume():
     except Exception as e:
         return str(e)
 
-    resume_url = get_resume_url(id)
-
     return render_template('UploadResume.html', studentId=student[0],
                            studentName=student[1],
                            IC=student[2],
@@ -225,8 +222,7 @@ def upload_resume():
                            level=student[7],
                            programme=student[8],
                            supervisor=student[9],
-                           cohort=student[10],
-                           resume_url=resume_url)
+                           cohort=student[10],)
 
 # Upload Resume into S3
 
@@ -262,11 +258,6 @@ def uploadResume():
         else:
             s3_location = '-' + s3_location
 
-        object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-            s3_location,
-            custombucket,
-            stud_resume_file_name_in_s3)
-
     except Exception as e:
         return str(e)
 
@@ -274,39 +265,23 @@ def uploadResume():
     return render_template('UploadResumeOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Retrieve resume from S3 (based on Student Id)
-
-
-@app.route('/view_resume/<student_id>', methods=['GET', 'POST'])
+@app.route('/viewResume', methods=['GET', 'POST'])
 def view_resume():
+    # Retrieve id
     id = session['loggedInStudent']
-    # Create an S3 URL for the student's resume
-    resume_url = get_resume_url(id)
+    object_name = id + "_resume.pdf"
 
-    if not resume_url:
-        return "Resume not found."
-
-    # Redirect the user to the S3 URL to view the resume in another tab
-    return redirect(resume_url)
-
-
-def get_resume_url(student_id):
-    # Generate the S3 URL for the student's resume
-    resume_file_name = f"{student_id}_resume.pdf"
-    bucket_location = boto3.client(
-        's3').get_bucket_location(Bucket=custombucket)
-    s3_location = (bucket_location['LocationConstraint'])
-
-    if s3_location is None:
-        s3_location = ''
-    else:
-        s3_location = '-' + s3_location
-
-    object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-        s3_location,
-        custombucket,
-        resume_file_name)
-
-    return object_url
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.generate_presigned_url('get_object',
+                                                    Params={'Bucket': custombucket,
+                                                            'Key': object_name},
+                                                    ExpiresIn=1000)
+    except ClientError as e:
+        return str(e)
+    # The response contains the presigned URL
+    return response, {'resume_url': response}
 
 # Navigate to Student View Report
 
