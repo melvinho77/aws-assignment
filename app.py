@@ -165,7 +165,7 @@ def update_student():
     # Student name
     if student[1] != newStudentName:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        insert_sql = "INSERT INTO request (attribute, newData, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('studentName', newStudentName,
                                     'pending', None, session['loggedInStudent']))
         db_conn.commit()
@@ -173,7 +173,7 @@ def update_student():
     # Gender
     if student[4] != newGender:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        insert_sql = "INSERT INTO request (attribute, newData, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('gender', newGender, 'pending',
                                     None, session['loggedInStudent']))
         db_conn.commit()
@@ -181,7 +181,7 @@ def update_student():
     # Mobile number
     if student[3] != newMobileNumber:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        insert_sql = "INSERT INTO request (attribute, newData, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('mobileNumber', newMobileNumber,
                                     'pending', None, session['loggedInStudent']))
         db_conn.commit()
@@ -189,7 +189,7 @@ def update_student():
     # Address
     if student[5] != newAddress:
         # Insert into request table
-        insert_sql = "INSERT INTO request (attribute, `change`, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
+        insert_sql = "INSERT INTO request (attribute, newData, status, reason, studentId) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(insert_sql, ('address', newAddress,
                                     'pending', None, session['loggedInStudent']))
         db_conn.commit()
