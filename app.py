@@ -269,7 +269,7 @@ def uploadResume():
 def view_resume():
     # Retrieve id
     id = session['loggedInStudent']
-    object_name = id + "_resume.pdf"
+    object_name = id + "_resume"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
@@ -281,7 +281,7 @@ def view_resume():
     except ClientError as e:
         return str(e)
     # The response contains the presigned URL
-    return response, {'resume_url': response}
+    return redirect(response, {'resume_url': response})
 
 # Navigate to Student View Report
 
