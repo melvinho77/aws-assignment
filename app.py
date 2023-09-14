@@ -331,8 +331,8 @@ def view_progress_report():
         return str(e)
 
     # Convert start_date_str and end_date_str into datetime objects
-    start_date_str = str(cohort[1])
-    end_date_str = str(cohort[2])
+    start_date_str = str(cohort[0])
+    end_date_str = str(cohort[1])
 
     start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
