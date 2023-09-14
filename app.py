@@ -317,12 +317,12 @@ def view_progress_report():
         return "Student not logged in."
 
     # Retrieve the cohort where student belongs to
-    select_sql = "SELECT cohortId, startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
+    select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
     cursor = db_conn.cursor()
 
     try:
         cursor.execute(select_sql, (id))
-        cohort = cursor.fetchone()
+        cohort = cursor.fetchall()
 
         if not cohort:
             return "No such cohort exists."
