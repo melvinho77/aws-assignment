@@ -331,8 +331,8 @@ def view_progress_report():
         report_cursor.execute(report_sql, (id))
         report_details = report_cursor.fetchall()
 
-        if not cohort or not report_details:
-            return "No such cohort or report details exists."
+        if not cohort:
+            return "No such cohort exists."
 
     except Exception as e:
         return str(e)
@@ -373,8 +373,6 @@ def view_progress_report():
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
 # Calculate the submission dates and return in a list
-
-
 def calculate_submission_date(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -407,8 +405,6 @@ def calculate_submission_date(start_date, end_date):
     return submission_info
 
 # Upload progress report function
-
-
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
     # Retrieve all required data from forms / session
@@ -416,8 +412,7 @@ def uploadProgressReport():
     report_type = request.form.get('report-type')
     # Remove spaces and concatenate words
     report_type = report_type.replace(" ", "")
-    submission_date = request.form.get('submission-date')
-    end_date = request.form.get('end_date')
+    submission_date = request.form.get('submission_date')
     student_progress_report = request.files['progress_report']
 
     s3_client = boto3.client('s3')
@@ -446,7 +441,7 @@ def uploadProgressReport():
         cursor.execute(select_sql, (id))
 
         # Compare submission dates
-        if (datetime.date.today() > end_date):
+        if (datetime.date.today() > submission_date):
             request_cursor.execute(
                 insert_sql, (submission_date, report_type, 'pending', 1, None, id))
         else:
