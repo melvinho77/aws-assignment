@@ -1,3 +1,4 @@
+from flask import render_template
 from flask import redirect
 import mimetypes
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
@@ -311,8 +312,8 @@ def view_resume():
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     # Retrieve student's ID
-    student_id = session.get('loggedInStudent')
-    if not student_id:
+    id = session.get('loggedInStudent')
+    if not id:
         return "Student not logged in."
 
     # Retrieve the cohort where student belongs to
@@ -324,67 +325,53 @@ def view_progress_report():
         cohort = cursor.fetchone()
 
         if not cohort:
-            return "No such cohort exist."
+            return "No such cohort exists."
 
     except Exception as e:
         return str(e)
 
-    # RETRIEVE THE START DATES AND END DATES
-    # SEPERATE INTO 7 DIFFERENT SUBMISSION DATES
-    # RETURN IN A LIST
-
-    # Change the start dates and end dates to string
+    # Convert start_date_str and end_date_str into datetime objects
     start_date_str = str(cohort[1])
     end_date_str = str(cohort[2])
 
-    # Convert into dates
     start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    # RETRIEVE THE DAY MONTH AND YEAR OF START DATE AND END DATE
-    # start_date_day = start_date.day
-    # start_date_month = start_date.month
-    # start_date_year = start_date.year
+    # Calculate submission dates using the calculate_submission_date function
+    submission_dates, report_names = calculate_submission_date(
+        start_date, end_date)
 
-    # end_date_day = start_date.day
-    # end_date_month = start_date.month
-    # end_date_year = start_date.year
-
-    submission_date_list = []
-    submission_date_list = calculate_submission_date(start_date, end_date)
-
-    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), submission_date_list=submission_date_list)
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), submission_dates=submission_dates, report_names=report_names)
 
 # Calculate the submission dates and return in a list
+
+
 def calculate_submission_date(start_date, end_date):
-    """Calculates the submission date for a given report number, given the start date and end date of the cohort.
-
-    Args:
-      start_date: The start date of the cohort.
-      end_date: The end date of the cohort.
-      report_number: The report number.
-
-    Returns:
-      The submission date for the given report number.
-    """
-
     # Calculate the number of months between the start date and end date.
-    months_between_dates = (end_date - start_date).days / 30
+    months_between_dates = (end_date.year - start_date.year) * \
+        12 + (end_date.month - start_date.month) + 1
 
-    # Calculate the submission date for the given report number, adjusted to be the 4th of each month.
-    submission_date = start_date + \
-        datetime.timedelta(days=months_between_dates + 3)
-    submission_date = submission_date.replace(day=4)
-
-    # Calculate the 7 different submission dates
+    # Calculate the submission dates for progress reports, adjusted to be the 4th of each month.
     submission_dates = []
-    for i in range(1, 8):
-        submission_date = calculate_submission_date(start_date, end_date, i)
-        submission_dates.append(submission_date)
+    report_names = []
 
-    return submission_dates
+    for i in range(1, months_between_dates + 1):
+        submission_date = start_date + \
+            datetime.timedelta(days=(i - 1) * 30 + 3)
+        submission_date = submission_date.replace(day=4)
+        submission_dates.append(submission_date)
+        report_names.append(f'Progress Report {i}')
+
+    # Calculate the final report submission date, which is 1 week before the end date.
+    final_report_date = end_date - datetime.timedelta(days=7)
+    submission_dates.append(final_report_date)
+    report_names.append('Final Report')
+
+    return submission_dates, report_names
 
 # Upload progress report function
+
+
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
     # Retrieve Student ID

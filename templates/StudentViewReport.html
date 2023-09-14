@@ -562,18 +562,17 @@ submitBtn{
 
         <!-- Report details -->
         <div class="container">
-            {% for submission_date in submission_date_list %}
+            {% for submission_date, report_name in zip(submission_dates, report_names) %}
             <form action="/uploadProgressReport" autocomplete="on" method="POST" enctype="multipart/form-data">
                 <div class="details">
                     <div class="report-header expandable">
-                        <div class="report-title">Progress Report 1</div>
+                        <div class="report-title">{{ report_name }}</div>
                         <div class="due-details">
-                            <div class="due-date">Due: <b>{{ submission_date }}</b></div>
+                            <div class="due-date">Due: <b>{{ submission_date|strftime('%d-%m-%Y') }}</b></div>
                             <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="report-content">
-                        <!-- Content for Progress Report 1 -->
                         <div class="report-content-details">
                             <!-- Submission -->
                             <div class="row">
@@ -581,7 +580,7 @@ submitBtn{
                                     <strong>Submission</strong>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" class="upload-form" required>
+                                    <input type="file" name="progress_report" class="upload-form" required>
                                     <div style="padding-top: 5px;">
                                         <a href="#">View Report</a>
                                     </div>
@@ -593,7 +592,7 @@ submitBtn{
                                     <strong>Status</strong>
                                 </div>
                                 <div class="col-md-10">
-
+                                    <!-- Include status information here -->
                                 </div>
                             </div>
                             <!-- Remark -->
@@ -602,13 +601,13 @@ submitBtn{
                                     <strong>Remark</strong>
                                 </div>
                                 <div class="col-md-10">
-
+                                    <!-- Include remark information here -->
                                 </div>
                             </div>
                             <!-- Submit Button -->
                             <div class="row">
                                 <div class="col-md-2">
-
+                                    <!-- Include any additional information here -->
                                 </div>
                                 <div class="col-md-10">
                                     <button class="submit-button">Submit</button>
