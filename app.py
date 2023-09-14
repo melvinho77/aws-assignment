@@ -320,15 +320,38 @@ def view_progress_report():
     select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
     cursor = db_conn.cursor()
 
+    # Retrieve all the submission details based on student
+    report_sql = "SELECT * from report WHERE student = %s"
+    report_cursor = db_conn.cursor()
+
     try:
         cursor.execute(select_sql, (id))
         cohort = cursor.fetchone()
 
-        if not cohort:
-            return "No such cohort exists."
+        report_cursor.execute(report_sql, (id))
+        report_details = report_cursor.fetchall()
+
+        if not cohort or not report_details:
+            return "No such cohort or report details exists."
 
     except Exception as e:
         return str(e)
+
+    # Create a list to store report details
+    report_list = []
+
+    # Iterate over the fetched report rows and append them to the list
+    for row in report_details:
+        report_list.append({
+            # Adjust this to match your database structure
+            'reportId': row[0],
+            'submissionDate': row[1],
+            'reportType': row[2],
+            'status': row[3],
+            'late': row[4],
+            'remark': row[5],
+            'student': row[6],
+        })
 
     # Convert start_date_str and end_date_str into datetime objects
     start_date_str = str(cohort[0])
@@ -347,7 +370,7 @@ def view_progress_report():
 
     combined_data = list(zip(submission_dates, report_names))
 
-    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1])
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
 # Calculate the submission dates and return in a list
 
@@ -388,11 +411,74 @@ def calculate_submission_date(start_date, end_date):
 
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
-    # Retrieve Student ID
-    student_id = session.get('loggedInStudent')
+    # Retrieve all required data from forms / session
+    id = session['loggedInStudent']
+    report_type = request.form.get('report-type')
+    # Remove spaces and concatenate words
+    report_type = report_type.replace(" ", "")
+    submission_date = request.form.get('submission-date')
+    end_date = request.form.get('end_date')
+    student_progress_report = request.files['progress_report']
 
-    if not student_id:
-        return "Student not logged in"
+    s3_client = boto3.client('s3')
+    folder_name = 'progressReport/' + id  # Replace 'id' with your folder name
+
+    # Check if the folder (prefix) already exists
+    response = s3_client.list_objects_v2(
+        Bucket=custombucket, Prefix=folder_name)
+
+    # If the folder (prefix) doesn't exist, you can create it
+    if 'Contents' not in response:
+        s3_client.put_object(Bucket=custombucket, Key=(folder_name + '/'))
+
+    # UPLOAD PROGRESS FOLDER OPERATION
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
+    object_key = 'progressReport/' + id + '/' + id + "_" + report_type
+
+    s3 = boto3.resource('s3')
+
+    # Insert into Report Table
+    insert_sql = "INSERT INTO request (submissionDate, reportType, status, late, remark, student) VALUES (%s, %s, %s, %s, %s, %s)"
+    request_cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(select_sql, (id))
+
+        # Compare submission dates
+        if (datetime.date.today() > end_date):
+            request_cursor.execute(
+                insert_sql, (submission_date, report_type, 'pending', 1, None, id))
+        else:
+            request_cursor.execute(
+                insert_sql, (submission_date, report_type, 'pending', 0, None, id))
+
+        # Store into student obj
+        student = cursor.fetchone()
+        db_conn.commit()
+
+        print("Data inserted in MySQL RDS... uploading resume to S3...")
+
+        # Set the content type to 'application/pdf' when uploading to S3
+        s3.Object(custombucket, object_key).put(
+            Body=student_progress_report,
+            ContentType='application/pdf'
+        )
+
+        bucket_location = boto3.client(
+            's3').get_bucket_location(Bucket=custombucket)
+        s3_location = (bucket_location['LocationConstraint'])
+
+        if s3_location is None:
+            s3_location = ''
+        else:
+            s3_location = '-' + s3_location
+
+    except Exception as e:
+        return str(e)
+
+    print("Progress Report sucessfully submitted.")
+    return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Navigate to Student Registration
 
