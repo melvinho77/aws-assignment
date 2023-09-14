@@ -562,7 +562,7 @@ submitBtn{
 
         <!-- Report details -->
         <div class="container">
-            {% for submission_date, report_name in zip(submission_dates, report_names) %}
+            {% for submission_date, report_name in (submission_dates, report_names) %}
             <form action="/uploadProgressReport" autocomplete="on" method="POST" enctype="multipart/form-data">
                 <div class="details">
                     <div class="report-header expandable">
