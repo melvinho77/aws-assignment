@@ -505,6 +505,10 @@ submitBtn{
         background-color: #45a049;
         /* Darker green on hover */
     }
+
+    .internship-details {
+        padding: 10px;
+    }
 </style>
 
 <head>
@@ -558,6 +562,11 @@ submitBtn{
                     <a href="/student_home">View profile</a>
                 </div>
             </div>
+        </div>
+
+        <!-- Add a text says Internship period at make it centered-->
+        <div class="internship-details">
+            Internship period: {{ start_date }} - {{ end_date }}
         </div>
 
         <!-- Report details -->
