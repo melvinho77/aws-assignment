@@ -568,7 +568,7 @@ submitBtn{
                     <div class="report-header expandable">
                         <div class="report-title">{{ report_name }}</div>
                         <div class="due-details">
-                            <div class="due-date">Due: <b>{{ submission_date|strftime('%d-%m-%Y') }}</b></div>
+                            <div class="due-date">Due: <b>{{ submission_date('%d-%m-%Y') }}</b></div>
                             <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -580,7 +580,8 @@ submitBtn{
                                     <strong>Submission</strong>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="file" name="progress_report" class="upload-form" required>
+                                    <input type="file" name="progress_report" class="upload-form"
+                                        accept="application/pdf" required>
                                     <div style="padding-top: 5px;">
                                         <a href="#">View Report</a>
                                     </div>

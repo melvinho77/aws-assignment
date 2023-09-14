@@ -337,9 +337,12 @@ def view_progress_report():
     start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    # Calculate submission dates using the calculate_submission_date function
+    # Calculate submission dates and report names
     submission_dates, report_names = calculate_submission_date(
         start_date, end_date)
+
+    # Format submission dates as "day-month-year"
+    submission_dates = [date.strftime('%d-%m-%Y') for date in submission_dates]
 
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), submission_dates=submission_dates, report_names=report_names)
 
