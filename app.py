@@ -6,6 +6,7 @@ from pymysql import connections
 import os
 import boto3
 from config import *
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'cc'
@@ -314,9 +315,83 @@ def view_progress_report():
     if not student_id:
         return "Student not logged in."
 
-    
+    # Retrieve the cohort where student belongs to
+    select_sql = "SELECT cohortId, startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohortId"
+    cursor = db_conn.cursor()
 
-    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'))
+    try:
+        cursor.execute(select_sql, (id))
+        cohort = cursor.fetchone()
+
+        if not cohort:
+            return "No such cohort exist."
+
+    except Exception as e:
+        return str(e)
+
+    # RETRIEVE THE START DATES AND END DATES
+    # SEPERATE INTO 7 DIFFERENT SUBMISSION DATES
+    # RETURN IN A LIST
+
+    # Change the start dates and end dates to string
+    start_date_str = str(cohort[1])
+    end_date_str = str(cohort[2])
+
+    # Convert into dates
+    start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
+
+    # RETRIEVE THE DAY MONTH AND YEAR OF START DATE AND END DATE
+    # start_date_day = start_date.day
+    # start_date_month = start_date.month
+    # start_date_year = start_date.year
+
+    # end_date_day = start_date.day
+    # end_date_month = start_date.month
+    # end_date_year = start_date.year
+
+    submission_date_list = []
+    submission_date_list = calculate_submission_date(start_date, end_date)
+
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), submission_date_list=submission_date_list)
+
+# Calculate the submission dates and return in a list
+def calculate_submission_date(start_date, end_date):
+    """Calculates the submission date for a given report number, given the start date and end date of the cohort.
+
+    Args:
+      start_date: The start date of the cohort.
+      end_date: The end date of the cohort.
+      report_number: The report number.
+
+    Returns:
+      The submission date for the given report number.
+    """
+
+    # Calculate the number of months between the start date and end date.
+    months_between_dates = (end_date - start_date).days / 30
+
+    # Calculate the submission date for the given report number, adjusted to be the 4th of each month.
+    submission_date = start_date + \
+        datetime.timedelta(days=months_between_dates + 3)
+    submission_date = submission_date.replace(day=4)
+
+    # Calculate the 7 different submission dates
+    submission_dates = []
+    for i in range(1, 8):
+        submission_date = calculate_submission_date(start_date, end_date, i)
+        submission_dates.append(submission_date)
+
+    return submission_dates
+
+# Upload progress report function
+@app.route('/uploadProgressReport', methods=['GET', 'POST'])
+def uploadProgressReport():
+    # Retrieve Student ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in"
 
 # Navigate to Student Registration
 
