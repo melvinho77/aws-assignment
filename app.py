@@ -340,8 +340,8 @@ def view_progress_report():
     # Calculate submission dates and report names
     submission_info = calculate_submission_date(start_date, end_date)
 
-    # Format submission dates as "day-month-year"
-    submission_dates = [date.strftime('%d-%m-%Y')
+    # Format submission dates as "year-month-day"
+    submission_dates = [date.strftime('%Y-%m-%d')
                         for date, _ in submission_info]
     report_names = [report_name for _, report_name in submission_info]
 
