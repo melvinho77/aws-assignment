@@ -322,7 +322,7 @@ def view_progress_report():
 
     try:
         cursor.execute(select_sql, (id))
-        cohort = cursor.fetchall()
+        cohort = cursor.fetchone()
 
         if not cohort:
             return "No such cohort exists."
