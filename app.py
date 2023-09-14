@@ -347,7 +347,7 @@ def view_progress_report():
 
     combined_data = list(zip(submission_dates, report_names))
 
-    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=start_date, end_date=end_date)
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1])
 
 # Calculate the submission dates and return in a list
 
