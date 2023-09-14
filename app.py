@@ -309,7 +309,14 @@ def view_resume():
 # Navigate to Student View Report
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
-    return render_template('StudentViewReport.html')
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+    if not student_id:
+        return "Student not logged in."
+
+    
+
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'))
 
 # Navigate to Student Registration
 
@@ -439,6 +446,7 @@ def download_StudF05():
 
     # Redirect the user to the URL of the PDF file
     return redirect(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
