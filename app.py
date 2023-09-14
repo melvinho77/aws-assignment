@@ -332,7 +332,7 @@ def view_progress_report():
         report_details = report_cursor.fetchall()
 
         if not cohort:
-            return "No such cohort exists."
+            return "No such cohort or report details exists."
 
     except Exception as e:
         return str(e)
@@ -373,6 +373,8 @@ def view_progress_report():
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
 # Calculate the submission dates and return in a list
+
+
 def calculate_submission_date(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -405,6 +407,8 @@ def calculate_submission_date(start_date, end_date):
     return submission_info
 
 # Upload progress report function
+
+
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
     # Retrieve all required data from forms / session
@@ -511,6 +515,37 @@ def add_student():
 
     finally:
         cursor.close()
+
+    # Retrieve the cohort where student belongs to
+    select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
+    cursor = db_conn.cursor()
+
+    try:
+        cursor.execute(select_sql, (student_id))
+        cohort = cursor.fetchone()
+
+        if not cohort:
+            return "No such cohort details exists."
+
+    except Exception as e:
+        return str(e)
+
+   # Convert start_date_str and end_date_str into datetime objects
+    start_date_str = str(cohort[0])
+    end_date_str = str(cohort[1])
+
+    start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
+
+    # Calculate submission dates and report names
+    submission_info = calculate_submission_date(start_date, end_date)
+
+    # Format submission dates as "year-month-day"
+    submission_dates = [date.strftime('%Y-%m-%d')
+                        for date, _ in submission_info]
+    report_names = [report_name for _, report_name in submission_info]
+
+    combined_data = list(zip(submission_dates, report_names))
 
     # Redirect back to the registration page with a success message
     return render_template("home.html")
