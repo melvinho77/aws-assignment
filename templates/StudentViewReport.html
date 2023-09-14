@@ -562,13 +562,13 @@ submitBtn{
 
         <!-- Report details -->
         <div class="container">
-            {% for submission_date, report_name in (submission_dates, report_names) %}
+            {% for submission_date, report_name in combined_data %}
             <form action="/uploadProgressReport" autocomplete="on" method="POST" enctype="multipart/form-data">
                 <div class="details">
                     <div class="report-header expandable">
                         <div class="report-title">{{ report_name }}</div>
                         <div class="due-details">
-                            <div class="due-date">Due: <b>{{ submission_date('%d-%m-%Y') }}</b></div>
+                            <div class="due-date">Due: <b>{{ submission_date }}</b></div>
                             <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </div>
                     </div>

@@ -338,13 +338,16 @@ def view_progress_report():
     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
 
     # Calculate submission dates and report names
-    submission_dates, report_names = calculate_submission_date(
-        start_date, end_date)
+    submission_info = calculate_submission_date(start_date, end_date)
 
     # Format submission dates as "day-month-year"
-    submission_dates = [date.strftime('%d-%m-%Y') for date in submission_dates]
+    submission_dates = [date.strftime('%d-%m-%Y')
+                        for date, _ in submission_info]
+    report_names = [report_name for _, report_name in submission_info]
 
-    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), submission_dates=submission_dates, report_names=report_names)
+    combined_data = list(zip(submission_dates, report_names))
+
+    return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data)
 
 # Calculate the submission dates and return in a list
 
@@ -354,23 +357,21 @@ def calculate_submission_date(start_date, end_date):
     months_between_dates = (end_date.year - start_date.year) * \
         12 + (end_date.month - start_date.month) + 1
 
-    # Calculate the submission dates for progress reports, adjusted to be the 4th of each month.
-    submission_dates = []
-    report_names = []
+    # Initialize a list to store submission dates and report names as tuples.
+    submission_info = []
 
     for i in range(1, months_between_dates + 1):
         submission_date = start_date + \
             datetime.timedelta(days=(i - 1) * 30 + 3)
         submission_date = submission_date.replace(day=4)
-        submission_dates.append(submission_date)
-        report_names.append(f'Progress Report {i}')
+        report_name = f'Progress Report {i}'
+        submission_info.append((submission_date, report_name))
 
     # Calculate the final report submission date, which is 1 week before the end date.
     final_report_date = end_date - datetime.timedelta(days=7)
-    submission_dates.append(final_report_date)
-    report_names.append('Final Report')
+    submission_info.append((final_report_date, 'Final Report'))
 
-    return submission_dates, report_names
+    return submission_info
 
 # Upload progress report function
 
