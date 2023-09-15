@@ -705,8 +705,6 @@ def download_StudF05():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF06.pdf (Student Support Letter)
-
-
 @app.route('/downloadStudF06', methods=['GET'])
 def download_StudF06():
     id = session.get('loggedInStudent')
