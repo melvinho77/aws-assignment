@@ -22,10 +22,14 @@
 
         /* Add styles to the container */
         .container {
+            max-width: 210mm;
+            /* 8.27 inches */
             margin: 0 auto;
-            min-width: 600px;
+            /* Center the container horizontally */
             padding: 20px;
             border: 1px solid #ccc;
+            box-sizing: border-box;
+            /* Include padding and border in the width calculation */
         }
 
         /* General style for details field */
@@ -33,6 +37,7 @@
             display: block;
             margin: 20px 0;
             padding: auto;
+            text-align: justify;
         }
 
         /* Add styles to the logo-details section */
@@ -67,9 +72,17 @@
             font-weight: bold;
         }
 
-        .row .col-md-2 {
+        .row .col-md-3 {
             display: flex;
             justify-content: flex-end;
+        }
+
+        /* Style the list items within the "details" div */
+        .details ul {
+            list-style-type: square;
+            /* Use squares as list bullets */
+            padding-left: 20px;
+            /* Add some left padding for better indentation */
         }
     </style>
 </head>
@@ -82,7 +95,7 @@
                 alt="TARUMT-logo" />
             <span class="info-text">
                 <span class="tarumt-name"
-                    style="font-size: 18px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+                    style="font-size: 14px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
                     TUNKU ABDUL RAHMAN UNIVERSITY
                     OF MANAGEMENT AND TECHNOLOGY
                 </span>
@@ -118,7 +131,7 @@
         <!-- Student details -->
         <div class="details">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <strong>Student Name:</strong>
                 </div>
                 <div class="col-md-8">
@@ -126,7 +139,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <strong>Student ID:</strong>
                 </div>
                 <div class="col-md-8">
@@ -134,7 +147,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <strong>Programme:</strong>
                 </div>
                 <div class="col-md-8">
@@ -155,6 +168,59 @@
             The main objective of the industrial training programme is to provide students with practical training
             opportunities in one
             or more of the following areas:
+        </div>
+
+        <!-- Knowledge and skill bullets -->
+        <div class="details">
+            <ul>
+                <li>Programming</li>
+                <li>Networking</li>
+                <li>Technical/System Support</li>
+                <li>Other relevant IT skills</li>
+            </ul>
+        </div>
+
+        <div class="details">
+            In view of the above, we would like your esteemed organization to consider accepting our students for the
+            industrial training
+            placements. We believe with the expert guidance and experience of your esteemed organisation, our students
+            will acquire
+            relevant practical skills and experience which would be valuable to the students later in their working
+            life.
+        </div>
+
+        <div class="details">
+            In accepting our students, we understand that you have read and agree with the <b>Guidelines for
+                Companies</b>
+            which we have
+            sent to you earlier or will send to you again upon request. In selecting our students into your
+            establishment for the purpose
+            of industrial training, you are encouraged to carry out your normal practice or procedure of evaluation and
+            selection of the
+            students, such as, test and interviews. The companies involved have all the right to demand formal documents
+            (eg. ID card,
+            transcripts) from the students for verification purposes. Please deal with the students <b>directly</b> for
+            the
+            entire process but do
+            not hesitate to contact our Industrial Training Programme (ITP) committee should you have any queries or
+            problems arising.
+            All the relevant contacts can be found in the Guidelines for Companies.
+        </div>
+
+        <div class="details">
+            Thank you.
+        </div>
+
+        <div class="details" style="margin: 50px 0;">
+            Yours faithfully,
+        </div>
+
+        <div class="details">
+            Ms Kong Hooi Ming<br>
+            Associate Dean<br>
+            Department of Information Systems and Security<br>
+            Faculty of Computing and Information Technology<br>
+            Tunku Abdul Rahman University of Management and Technology
         </div>
     </div>
 </body>
