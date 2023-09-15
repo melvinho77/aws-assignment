@@ -539,8 +539,6 @@ def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
-
-
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
