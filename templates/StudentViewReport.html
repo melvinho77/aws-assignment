@@ -583,7 +583,7 @@ submitBtn{
                 {% if report.reportType == report_name|replace(" ", "") %}
                 <div class="details">
                     <!-- STORE REPORT TYPE HERE -->
-                    <input type="hidden" value="{{ report.report_type }}" name="report_type">
+                    <input type="hidden" value="{{ report.reportType }}" name="report_type">
                     <div class="report-header expandable">
                         <div class="report-title">{{ report_name }}</div>
                         <div class="due-details">
