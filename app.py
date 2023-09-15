@@ -501,6 +501,7 @@ def viewProgressReport():
     # Retrieve student's ID
     student_id = session.get('loggedInStudent')
     reportType = request.form.get('report_type')
+    
     if not student_id:
         return "Student not logged in."
 
