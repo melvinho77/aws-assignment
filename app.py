@@ -496,7 +496,7 @@ def uploadProgressReport():
     print("Progress Report sucessfully submitted.")
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
-@app.route('viewProgressReport', methods=['GET', 'POST'])
+@app.route('/viewProgressReport', methods=['GET', 'POST'])
 def viewProgressReport():
     # Retrieve student's ID
     student_id = session.get('loggedInStudent')
