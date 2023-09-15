@@ -353,12 +353,12 @@ def view_progress_report():
             'student': row[6],
         })
 
-    # Convert start_date_str and end_date_str into datetime objects
+    # Convert start_date_str and end_date_str into datetime.date objects
     start_date_str = str(cohort[0])
     end_date_str = str(cohort[1])
 
-    start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
-    end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
+    start_date = datetime.date.fromisoformat(start_date_str)
+    end_date = datetime.date.fromisoformat(end_date_str)
 
     # Calculate submission dates and report names
     submission_info = calculate_submission_date(start_date, end_date)
