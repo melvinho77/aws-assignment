@@ -719,7 +719,7 @@ def download_StudF06():
         student = cursor.fetchone()
 
         # Retrieve cohort data
-        cursor.execute(cohort_sql, (student['cohort']))
+        cursor.execute(cohort_sql, (student[10]))
         cohort = cursor.fetchone()
 
         db_conn.commit()
@@ -734,9 +734,9 @@ def download_StudF06():
             'todayDate': todayDate,
             'startDate': startDate,
             'endDate': endDate,
-            'studentId': student['studentId'],
-            'studentName': student['studentName'],
-            'programme': student['programme']
+            'studentId': student[0],
+            'studentName': student[1],
+            'programme': student[8]
         }
 
     except Exception as e:
