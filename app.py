@@ -9,9 +9,6 @@ import boto3
 from config import *
 import datetime
 
-#To generate dynamic PDF
-from weasyprint import HTML
-
 app = Flask(__name__)
 app.secret_key = 'cc'
 
