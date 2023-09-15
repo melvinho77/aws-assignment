@@ -514,15 +514,18 @@ submitBtn{
 
     /* Status styles */
     .status-pending {
-        color: yellow;
+        color: darkgoldenrod;
+        font-weight: bold;
     }
 
     .status-submitted {
         color: darkgreen;
+        font-weight: bold;
     }
 
     .status-rejected {
         color: red;
+        font-weight: bold;
     }
 </style>
 
@@ -644,9 +647,6 @@ submitBtn{
                                     <span class="status-submitted">Submitted</span>
                                     {% elif report.status == 'rejected' %}
                                     <span class="status-rejected">Rejected</span>
-                                    {% else %}
-                                    <!-- Handle other status values or provide a default -->
-                                    {{ report.status }}
                                     {% endif %}
                                 </div>
                             </div>
