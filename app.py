@@ -363,12 +363,11 @@ def view_progress_report():
     # Calculate submission dates and report names
     submission_info = calculate_submission_date(start_date, end_date)
 
-    # Format submission dates as "year-month-day"
-    submission_dates = [date.strftime('%Y-%m-%d')
-                        for date, _ in submission_info]
-    report_names = [report_name for _, report_name in submission_info]
+    # Format submission date as "year-month-day"
+    submission_date = [date.strftime('%Y-%m-%d') for date, _ in submission_info]
+    report_name = [report_name for _, report_name in submission_info]
 
-    combined_data = list(zip(submission_dates, report_names))
+    combined_data = list(zip(submission_date, report_name))
 
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
