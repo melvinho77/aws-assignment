@@ -18,6 +18,16 @@
     .container {
         margin: 15px;
         padding: 10px;
+        border: 1px solid gray;
+    }
+
+    .logo-details {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid grey;
     }
 </style>
 
@@ -34,8 +44,11 @@
     <!-- Whole body -->
     <div class="container">
         <div class="logo-details">
-            <img src="/static/images/tarumt.png" alt="TARUMT-logo" />
-            
+            <img alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.jpg')}}" alt="TARUMT-logo" />
+            <span>
+                TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGMENT AND TECHONOLOGY DU058(W) Wholly owned by the TARC Education
+                (Reg. No.: 201301003979 (1033820-M))
+            </span> 
         </div>
     </div>
 </body>
