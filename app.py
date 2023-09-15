@@ -393,9 +393,9 @@ def calculate_submission_date(start_date, end_date):
 
         # If the start date is before the 4th day of the current month,
         # adjust the submission date to the 4th day of the next month
-        if start_date.day < 4 and submission_date > start_date:
-            submission_date = datetime.date(
-                target_year, target_month + 2, 4)
+    if start_date.day < 4 and submission_date > start_date.date():
+        submission_date = datetime.date(
+            target_year, target_month + 2, 4)
 
         report_name = f'Progress Report {i}'
         submission_info.append((submission_date, report_name))

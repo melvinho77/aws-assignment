@@ -612,6 +612,9 @@ submitBtn{
                                 </div>
                                 <div class="col-md-10">
                                     {{ report.submissionDate }}
+                                    {% if report.late == 1 %}
+                                    <b style="color: red;">(Late)</b>
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- Status -->
