@@ -725,9 +725,9 @@ def download_StudF06():
         db_conn.commit()
 
         # Format dates
-        todayDate = datetime.now().strftime('%d %B %Y')
-        startDate = cohort['startDate'].strftime('%d %B %Y')
-        endDate = cohort['endDate'].strftime('%d %B %Y')
+        todayDate = datetime.datetime.now().strftime('%d-%B-%Y')
+        startDate = cohort[0].strftime('%d-%B-%Y')
+        endDate = cohort[1].strftime('%d-%B-%Y')
 
         # Prepare the data as a list
         data = {
