@@ -608,7 +608,6 @@ def add_student():
     # Redirect back to the registration page with a success message
     return render_template("home.html")
 
-
 @app.route("/about", methods=['POST'])
 def about():
     return render_template('www.tarc.edu.my')
@@ -668,7 +667,6 @@ def download_StudF04():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF05.docx
-
 
 @app.route('/downloadStudF05', methods=['GET'])
 def download_StudF05():
