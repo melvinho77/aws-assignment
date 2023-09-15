@@ -1,36 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-<!-- CSS Properties -->
-<style>
-    html {
-        margin: 0;
-        padding: 0;
-        text-decoration: none;
-    }
-
-    body {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 12pt;
-        line-height: 1.5;
-    }
-
-    .container {
-        margin: 15px;
-        padding: 10px;
-        border: 1px solid gray;
-    }
-
-    .logo-details {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px;
-        border-bottom: 1px solid grey;
-    }
-</style>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,17 +8,58 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Reset some default styles */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        /* Add styles to the container */
+        .container {
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        /* Add styles to the logo-details section */
+        .logo-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Style the logo image */
+        .logo-img {
+            max-width: 300px;
+            height: auto;
+        }
+
+        /* Style the information text */
+        .info-text {
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Whole body -->
     <div class="container">
         <div class="logo-details">
-            <img alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.png') }}" alt="TARUMT-logo" />
-            <span>
-                TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGMENT AND TECHONOLOGY DU058(W) Wholly owned by the TARC Education
+            <img class="logo-img" alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.png') }}"
+                alt="TARUMT-logo" />
+            <span class="info-text">
+                TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY DU058(W) Wholly owned by the TARC Education
                 (Reg. No.: 201301003979 (1033820-M))
-            </span> 
+            </span>
         </div>
     </div>
 </body>
