@@ -602,7 +602,9 @@ submitBtn{
                                     <input type="file" name="progress_report" class="upload-form"
                                         accept="application/pdf" required>
                                     <div style="padding-top: 5px;">
-                                        <a href="/viewProgressReport" target="_blank">View Report</a>
+                                        <form method="post" action="/viewProgressReport" target="_blank">
+                                            <button type="submit">View Report</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
