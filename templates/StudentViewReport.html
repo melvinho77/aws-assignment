@@ -518,7 +518,8 @@ submitBtn{
         font-weight: bold;
     }
 
-    .status-submitted {
+    .status-submitted,
+    .status-approved {
         color: darkgreen;
         font-weight: bold;
     }
@@ -526,6 +527,12 @@ submitBtn{
     .status-rejected {
         color: red;
         font-weight: bold;
+    }
+
+    .submission-remark {
+        padding: 10px 0;
+        color: red;
+        text-align: start;
     }
 </style>
 
@@ -587,6 +594,11 @@ submitBtn{
             Internship period: <b>{{ start_date }} to {{ end_date }}</b>
         </div>
 
+        <!-- Add a text says Internship period at make it centered-->
+        <div class="submission-remark">
+            <b>*Please submit the report in PDF format.</b>
+        </div>
+
         <!-- Report details -->
         <div class="container">
             {% for submission_date, report_name in combined_data %}
@@ -643,8 +655,10 @@ submitBtn{
                                 <div class="col-md-10">
                                     {% if report.status == 'pending' %}
                                     <span class="status-pending">Pending</span>
-                                    {% elif report.status in ['submitted', 'approved'] %}
+                                    {% elif report.status == 'submitted' %}
                                     <span class="status-submitted">Submitted</span>
+                                    {% elif report.status == 'approved' %}
+                                    <span class="status-approved">Approved</span>
                                     {% elif report.status == 'rejected' %}
                                     <span class="status-rejected">Rejected</span>
                                     {% endif %}
@@ -665,7 +679,8 @@ submitBtn{
                                     <!-- Include any additional information here -->
                                 </div>
                                 <div class="col-md-10">
-                                    <button class="submit-button">Submit</button>
+                                    <button class="submit-button" {% if report.status=='approved' %}disabled{% endif
+                                        %}>Submit</button>
                                 </div>
                             </div>
                         </div>
