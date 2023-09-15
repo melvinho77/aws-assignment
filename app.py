@@ -406,6 +406,19 @@ def calculate_submission_date(start_date, end_date):
 
     return submission_info
 
+# Calculate the submission counts (INSERT AFTER REGISTER)
+
+
+def calculate_submission_count(start_date, end_date):
+    # Calculate the number of months between the start date and end date.
+    months_between_dates = (end_date.year - start_date.year) * \
+        12 + (end_date.month - start_date.month) + 1
+
+    # Calculate the count of submission reports including the final report
+    report_count = months_between_dates + 1  # +1 for the final report
+
+    return report_count
+
 # Upload progress report function
 
 
@@ -437,23 +450,22 @@ def uploadProgressReport():
 
     s3 = boto3.resource('s3')
 
-    # Insert into Report Table
-    insert_sql = "INSERT INTO request (submissionDate, reportType, status, late, remark, student) VALUES (%s, %s, %s, %s, %s, %s)"
+    # Update the Report Table
+    update_sql = "UPDATE report SET submissionDate = %s, status = %s, late = %s WHERE student = %s AND reportType = %s"
     request_cursor = db_conn.cursor()
 
     try:
         cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
 
         # Compare submission dates
-        if (datetime.date.today() > submission_date):
+        if datetime.date.today() > submission_date:
             request_cursor.execute(
-                insert_sql, (submission_date, report_type, 'pending', 1, None, id))
+                update_sql, (datetime.date.today(), 'submitted', 1, id, report_type))
         else:
             request_cursor.execute(
-                insert_sql, (submission_date, report_type, 'pending', 0, None, id))
+                update_sql, (datetime.date.today(), 'submitted', 0, id, report_type))
 
-        # Store into student obj
-        student = cursor.fetchone()
         db_conn.commit()
 
         print("Data inserted in MySQL RDS... uploading resume to S3...")
@@ -474,14 +486,13 @@ def uploadProgressReport():
             s3_location = '-' + s3_location
 
     except Exception as e:
+        db_conn.rollback()
         return str(e)
 
     print("Progress Report sucessfully submitted.")
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Navigate to Student Registration
-
-
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
@@ -530,26 +541,32 @@ def add_student():
     except Exception as e:
         return str(e)
 
-   # Convert start_date_str and end_date_str into datetime objects
+    # Retrieve start date and end date
+    # Convert start_date_str and end_date_str into datetime objects
     start_date_str = str(cohort[0])
     end_date_str = str(cohort[1])
 
     start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d")
 
-    # Calculate submission dates and report names
-    submission_info = calculate_submission_date(start_date, end_date)
+    # Calculate the report count for the student
+    report_count = calculate_submission_count(start_date, end_date)
 
-    # Format submission dates as "year-month-day"
-    submission_dates = [date.strftime('%Y-%m-%d')
-                        for date, _ in submission_info]
-    report_names = [report_name for _, report_name in submission_info]
-
-    combined_data = list(zip(submission_dates, report_names))
+    # Loop and insert the details into the report table
+    for i in range(1, report_count + 1):
+        report_type = f'ProgressReport{i}' if i != report_count else 'FinalReport'
+        
+        # You can customize this insert SQL query based on your database schema
+        insert_report_sql = "INSERT INTO report (submissionDate, reportType, status, late, remark, student) VALUES (%s, %s, %s, %s, %s, %s)"
+        
+        try:
+            cursor.execute(insert_report_sql, (None, report_type, 'pending', 0, None, student_id))
+            db_conn.commit()
+        except Exception as e:
+            db_conn.rollback()
 
     # Redirect back to the registration page with a success message
     return render_template("home.html")
-
 
 @app.route("/about", methods=['POST'])
 def about():
