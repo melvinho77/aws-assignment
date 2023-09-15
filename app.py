@@ -1,13 +1,15 @@
-from flask import render_template
+from flask import render_template, make_response
 from flask import redirect
 import mimetypes
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from botocore.exceptions import ClientError
 from pymysql import connections
-import os
 import boto3
 from config import *
 import datetime
+from flask import render_template
+from flask import make_response
+import pdfkit
 
 app = Flask(__name__)
 app.static_folder = 'static'  # The name of your static folder
@@ -713,6 +715,60 @@ def download_StudF05():
     # Redirect the user to the URL of the PDF file
     return redirect(response)
 
+# DOWNLOAD FOCS_StudF06.pdf (Student Support Letter)
+
+
+@app.route('/downloadStudF06', methods=['GET'])
+def download_StudF06():
+    id = session.get('loggedInStudent')
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cohort_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
+    cursor = db_conn.cursor()
+
+    try:
+        # Retrieve student data
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+
+        # Retrieve cohort data
+        cursor.execute(cohort_sql, (student['cohort']))
+        cohort = cursor.fetchone()
+
+        db_conn.commit()
+
+        # Format dates
+        todayDate = datetime.now().strftime('%d %B %Y')
+        startDate = cohort['startDate'].strftime('%d %B %Y')
+        endDate = cohort['endDate'].strftime('%d %B %Y')
+
+        # Prepare the data as a list
+        data = {
+            'todayDate': todayDate,
+            'startDate': startDate,
+            'endDate': endDate,
+            'studentId': student['studentId'],
+            'studentName': student['studentName'],
+            'programme': student['programme']
+        }
+
+    except Exception as e:
+        db_conn.rollback()
+        return str(e)
+
+        # Render the HTML template with the data
+    rendered_template = render_template(
+        'student_support_letter.html', data=data)
+
+    # Use pdfkit to generate the PDF
+    pdf = pdfkit.from_string(rendered_template, False)
+
+    # Create a response object with the PDF data
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename={id}_SupportLetter.pdf'
+
+    return response
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)

@@ -87,12 +87,14 @@
 
         /* Footer */
         .footer {
+            font-family: Arial, Helvetica, sans-serif;
+            color: darkslateblue;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            /* padding: 10px; */
+            padding: 10px;
             /* Add padding to the footer */
             background-color: #f0f0f0;
             /* Add a background color for the footer */
@@ -153,7 +155,7 @@
         </div>
 
         <div class="details">
-            <span class="today-date">02 September 2023</span>
+            <span class="today-date">{{ data['todayDate'] }}</span>
         </div>
 
         <div class="details">
@@ -181,7 +183,7 @@
                     <strong>Student Name:</strong>
                 </div>
                 <div class="col-md-8">
-                    XXX (Replace with the actual student name)
+                    <b>{{ data['studentName'] }}</b>
                 </div>
             </div>
             <div class="row">
@@ -189,15 +191,15 @@
                     <strong>Student ID:</strong>
                 </div>
                 <div class="col-md-8">
-                    XXX (Replace with the actual student ID)
+                    <b>{{ data['studentId'] }}</b>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <strong>Programme:</strong>
+                    <b>{{ data['programme'] }}</b>
                 </div>
                 <div class="col-md-8">
-                    XXX (Replace with the actual programme name)
+                    {{ }}
                 </div>
             </div>
         </div>
@@ -207,7 +209,7 @@
             Information
             Technology, Tunku Abdul Rahman University of Management and Technology (TAR UMT) to undergo a period of
             industrial training with the industry. The above mentioned student has to undergo Industrial Training
-            programme which will commence on <b>start_date</b> and ends on <b>end_date</b>.
+            programme which will commence on <b>{{ data['startDate'] }}</b> and ends on <b>{{ data['endDate'] }}</b>.
         </div>
 
         <div class="details">
@@ -269,7 +271,7 @@
             Tunku Abdul Rahman University of Management and Technology
         </div>
 
-        <div class="details">
+        <div class="details" style="padding-bottom: 0;">
             <div class="footer">
                 <!-- Address -->
                 <div class="footer-item">
@@ -279,8 +281,8 @@
                 </div>
                 <!-- Contact details -->
                 <div class="footer-item">
-                    TEL : (6) 03 4145 0100/23<br>
-                    WEBSITE : www.tarc.edu.my
+                    TEL: (6) 03 4145 0100/23<br>
+                    WEBSITE: www.tarc.edu.my
                 </div>
                 <!-- Sponsored companies -->
                 <div class="footer-item">
