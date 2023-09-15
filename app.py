@@ -10,6 +10,8 @@ from config import *
 import datetime
 
 app = Flask(__name__)
+app.static_folder = 'static'  # The name of your static folder
+app.static_url_path = '/static'  # The URL path to serve static files
 app.secret_key = 'cc'
 
 bucket = custombucket
@@ -40,9 +42,11 @@ table = 'employee'
 def index():
     return render_template('StudentSupportLetter.html', number=1)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('StudentSupportLetter.html')
+
 
 @app.route('/register_company')
 def register_company():
@@ -541,11 +545,15 @@ def viewProgressReport():
     return redirect(response)
 
 # Navigate to Student Registration
+
+
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
+
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -615,6 +623,7 @@ def add_student():
     # Redirect back to the registration page with a success message
     return render_template("home.html")
 
+
 @app.route("/about", methods=['POST'])
 def about():
     return render_template('www.tarc.edu.my')
@@ -674,6 +683,7 @@ def download_StudF04():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF05.docx
+
 
 @app.route('/downloadStudF05', methods=['GET'])
 def download_StudF05():
