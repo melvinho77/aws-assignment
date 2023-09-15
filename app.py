@@ -496,11 +496,13 @@ def uploadProgressReport():
     print("Progress Report sucessfully submitted.")
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
+
 @app.route('/viewProgressReport', methods=['GET', 'POST'])
 def viewProgressReport():
     # Retrieve student's ID
     student_id = session.get('loggedInStudent')
-    report_type = request.form.get('report_type')
+    # Use request.args to get query parameters
+    report_type = request.args.get('report_type')
     # Remove spaces and concatenate words
     report_type = report_type.replace(" ", "")
 
@@ -525,8 +527,8 @@ def viewProgressReport():
         )
     except ClientError as e:
         if e.response['Error']['Code'] == 'NoSuchKey':
-            # If the resume does not exist, return a page with a message
-            return render_template('no_resume_found.html')
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
         else:
             return str(e)
 
@@ -539,6 +541,8 @@ def register_student():
     return render_template("RegisterStudent.html")
 
 # Register a student
+
+
 @app.route("/addstud", methods=['POST'])
 def add_student():
     try:
@@ -608,11 +612,14 @@ def add_student():
     # Redirect back to the registration page with a success message
     return render_template("home.html")
 
+
 @app.route("/about", methods=['POST'])
 def about():
     return render_template('www.tarc.edu.my')
 
 # Verify login
+
+
 @app.route("/verifyLogin", methods=['POST', 'GET'])
 def verifyLogin():
     if request.method == 'POST':
@@ -634,6 +641,7 @@ def verifyLogin():
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
+
 
 @app.route('/downloadStudF04', methods=['GET'])
 def download_StudF04():
@@ -664,6 +672,8 @@ def download_StudF04():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF05.docx
+
+
 @app.route('/downloadStudF05', methods=['GET'])
 def download_StudF05():
     # Construct the S3 object key
@@ -691,6 +701,7 @@ def download_StudF05():
 
     # Redirect the user to the URL of the PDF file
     return redirect(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
