@@ -578,7 +578,7 @@ submitBtn{
                 <!-- STORE REPORT NAME -->
                 <input type="hidden" value="{{ report_name|replace(" ", "") }}" name="report_type" style="display: none;">
                 <input type="hidden" value="{{ submission_date }}" name="submission_date" style="display: none;">
-                
+
                 <!-- Iterate over the report_list and display report details -->
                 {% for report in report_list %}
                 {% if report.reportType == report_name|replace(" ", "") %}
@@ -601,7 +601,7 @@ submitBtn{
                                     <input type="file" name="progress_report" class="upload-form"
                                         accept="application/pdf" required>
                                     <div style="padding-top: 5px;">
-                                        <a href="#">View Report</a>
+                                        <a href="/viewProgressReport" target="_blank">View Report</a>
                                     </div>
                                 </div>
                             </div>

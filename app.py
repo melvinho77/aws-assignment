@@ -307,8 +307,9 @@ def view_resume():
     # Redirect the user to the URL of the PDF file
     return redirect(response)
 
-
 # Navigate to Student View Report
+
+
 @app.route('/view_progress_report', methods=['GET', 'POST'])
 def view_progress_report():
     # Retrieve student's ID
@@ -364,7 +365,8 @@ def view_progress_report():
     submission_info = calculate_submission_date(start_date, end_date)
 
     # Format submission dates as "year-month-day"
-    submission_dates = [date.strftime('%Y-%m-%d') for date, _ in submission_info]
+    submission_dates = [date.strftime('%Y-%m-%d')
+                        for date, _ in submission_info]
     report_names = [report_name for _, report_name in submission_info]
 
     combined_data = list(zip(submission_dates, report_names))
@@ -372,6 +374,8 @@ def view_progress_report():
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
 # Calculate the submission dates and return in a list
+
+
 def calculate_submission_date(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -404,6 +408,8 @@ def calculate_submission_date(start_date, end_date):
     return submission_info
 
 # Calculate the submission counts (INSERT AFTER REGISTER)
+
+
 def calculate_submission_count(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -427,7 +433,7 @@ def uploadProgressReport():
     submission_date = request.form.get('submission_date')
     student_progress_report = request.files['progress_report']
 
-    #Change submission date into datetime obj
+    # Change submission date into datetime obj
     submission_date_obj = datetime.date.fromisoformat(submission_date)
 
     s3_client = boto3.client('s3')
@@ -490,6 +496,40 @@ def uploadProgressReport():
     print("Progress Report sucessfully submitted.")
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
+@app.route('viewProgressReport', methods=['GET', 'POST'])
+def viewProgressReport():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+    reportType = request.form.get('report_type')
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_{reportType}"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the resume does not exist, return a page with a message
+            return render_template('no_resume_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
 # Navigate to Student Registration
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
@@ -551,12 +591,13 @@ def add_student():
     # Loop and insert the details into the report table
     for i in range(1, report_count + 1):
         report_type = f'ProgressReport{i}' if i != report_count else 'FinalReport'
-        
+
         # You can customize this insert SQL query based on your database schema
         insert_report_sql = "INSERT INTO report (submissionDate, reportType, status, late, remark, student) VALUES (%s, %s, %s, %s, %s, %s)"
-        
+
         try:
-            cursor.execute(insert_report_sql, (None, report_type, 'pending', 0, None, student_id))
+            cursor.execute(insert_report_sql, (None, report_type,
+                           'pending', 0, None, student_id))
             db_conn.commit()
         except Exception as e:
             db_conn.rollback()
@@ -591,7 +632,6 @@ def verifyLogin():
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
 
-
 @app.route('/downloadStudF04', methods=['GET'])
 def download_StudF04():
     # Construct the S3 object key
@@ -619,7 +659,6 @@ def download_StudF04():
 
     # Redirect the user to the URL of the PDF file
     return redirect(response)
-
 
 # DOWNLOAD FOCS_StudF05.docx
 @app.route('/downloadStudF05', methods=['GET'])
@@ -649,7 +688,6 @@ def download_StudF05():
 
     # Redirect the user to the URL of the PDF file
     return redirect(response)
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
