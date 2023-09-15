@@ -505,7 +505,7 @@ def viewProgressReport():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"/progressReport/{student_id}/{student_id}_{reportType}"
+    object_key = f"progressReport/{student_id}/{student_id}_{reportType}"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
