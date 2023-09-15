@@ -503,8 +503,6 @@ def viewProgressReport():
     student_id = session.get('loggedInStudent')
     # Use request.args to get query parameters
     report_type = request.args.get('report_type')
-    # Remove spaces and concatenate words
-    report_type = report_type.replace(" ", "")
 
     if not student_id:
         return "Student not logged in."
