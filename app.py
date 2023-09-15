@@ -31,24 +31,13 @@ output = {}
 table = 'employee'
 
 
-# @app.route('/')
-# def index():
-#     return render_template('home.html', number=1)
-
-# @app.route("/", methods=['GET', 'POST'])
-# def home():
-#     return render_template('home.html')
-
-
 @app.route('/')
 def index():
-    return render_template('StudentSupportLetter.html', number=1)
-
+    return render_template('home.html', number=1)
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('StudentSupportLetter.html')
-
+    return render_template('home.html')
 
 @app.route('/register_company')
 def register_company():
