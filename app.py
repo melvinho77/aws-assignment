@@ -745,7 +745,7 @@ def download_StudF06():
 
         # Render the HTML template with the data
     rendered_template = render_template(
-        'student_support_letter.html', data=data)
+        'StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
     pdf = pdfkit.from_string(rendered_template, False)
