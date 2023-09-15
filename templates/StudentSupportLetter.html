@@ -23,9 +23,16 @@
         /* Add styles to the container */
         .container {
             margin: 0 auto;
-            min-width: auto;
+            min-width: 600px;
             padding: 20px;
             border: 1px solid #ccc;
+        }
+
+        /* General style for details field */
+        .details {
+            display: block;
+            margin: 20px 0;
+            padding: auto;
         }
 
         /* Add styles to the logo-details section */
@@ -36,12 +43,13 @@
             justify-content: space-between;
             padding: 10px 10px 20px 10px;
             /* top right bottom left */
-            border-bottom: 1px solid #f5f5f5;
+            border-bottom: 1px solid #cdcdcd;
+            color: darkslateblue;
         }
 
         /* Style the logo image */
         .logo-img {
-            max-width: 350px;
+            max-width: 325px;
             height: auto;
         }
 
@@ -51,6 +59,17 @@
             flex-direction: column;
             text-align: right;
             font-size: 14px;
+        }
+
+        .today-date {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .row .col-md-2 {
+            display: flex;
+            justify-content: flex-end;
         }
     </style>
 </head>
@@ -62,8 +81,9 @@
             <img class="logo-img" alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.png') }}"
                 alt="TARUMT-logo" />
             <span class="info-text">
-                <span class="tarumt-name" style="font-size: 18px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
-                    TUNKU ABDUL RAHMAN UNIVERSITY 
+                <span class="tarumt-name"
+                    style="font-size: 18px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
+                    TUNKU ABDUL RAHMAN UNIVERSITY
                     OF MANAGEMENT AND TECHNOLOGY
                 </span>
                 <span class="tarumt-details" style="font-family: Arial, Helvetica, sans-serif;">
@@ -71,6 +91,70 @@
                     (Reg. No.: 201301003979 (1033820-M))
                 </span>
             </span>
+        </div>
+
+        <div class="details">
+            <span class="today-date">02 September 2023</span>
+        </div>
+
+        <div class="details">
+            <b>To whom it may concern</b>
+        </div>
+
+        <!-- Letter title -->
+        <div class="details" style="text-decoration: underline;">
+            <b>Industrial Training Programme offered by the Faculty of Computing and Information Technology, Tunku Abdul
+                Rahman University of Management and Technology (TAR UMT)
+            </b>
+        </div>
+
+        <!-- Letter description -->
+        <div class="details">
+            This is to acknowledge that the following student is a TAR UMT student currently undergoing the programme as
+            mentioned
+            below:
+        </div>
+
+        <!-- Student details -->
+        <div class="details">
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>Student Name:</strong>
+                </div>
+                <div class="col-md-8">
+                    XXX (Replace with the actual student name)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>Student ID:</strong>
+                </div>
+                <div class="col-md-8">
+                    XXX (Replace with the actual student ID)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <strong>Programme:</strong>
+                </div>
+                <div class="col-md-8">
+                    XXX (Replace with the actual programme name)
+                </div>
+            </div>
+        </div>
+
+        <div class="details">
+            It is a requirement for students pursuing a Bachelor Degree (Honours) in the Faculty of Computing and
+            Information
+            Technology, Tunku Abdul Rahman University of Management and Technology (TAR UMT) to undergo a period of
+            industrial training with the industry. The above mentioned student has to undergo Industrial Training
+            programme which will commence on <b>start_date</b> and ends on <b>end_date</b>.
+        </div>
+
+        <div class="details">
+            The main objective of the industrial training programme is to provide students with practical training
+            opportunities in one
+            or more of the following areas:
         </div>
     </div>
 </body>
