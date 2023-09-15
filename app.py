@@ -746,12 +746,13 @@ def download_StudF06():
     rendered_template = render_template('StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
-    pdf = pdfkit.from_string(rendered_template, False)
+    config = pdfkit.configuration(wkhtmltopdf="/usr/local/lib/python3.9/site-packages/wkhtmltopdf")
+    pdf = pdfkit.from_string(rendered_template, False, configuration=config)
 
     # Create a response object with the PDF data
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'attachment; filename={id}_SupportLetter.pdf'
+    response.headers['Content-Disposition'] = f'attachment;filename={id}_SupportLetter.pdf'
 
     return response
 
