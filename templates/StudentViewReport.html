@@ -576,8 +576,8 @@ submitBtn{
             {% for submission_date, report_name in combined_data %}
             <form action="/uploadProgressReport" autocomplete="on" method="POST" enctype="multipart/form-data">
                 <!-- STORE REPORT NAME -->
-                <input type="hidden" value="{{ report_name|replace(" ", "") }}" name="report_type" style="display: none;">
-                <input type="hidden" value="{{ submission_date }}" name="submission_date" style="display: none;">
+                <input type="hidden" value="{{ report_name|replace(" ", "") }}" name="report_type">
+                <input type="hidden" value="{{ submission_date }}" name="submission_date">
 
                 <!-- Iterate over the report_list and display report details -->
                 {% for report in report_list %}

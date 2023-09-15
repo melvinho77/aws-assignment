@@ -500,14 +500,13 @@ def uploadProgressReport():
 def viewProgressReport():
     # Retrieve student's ID
     student_id = session.get('loggedInStudent')
-    reportType = request.form.get('report_name')
+    reportType = request.form.get('report_type')
     if not student_id:
         return "Student not logged in."
 
     # Construct the S3 object key
-    # object_key = f"progressReport/{student_id}/{student_id}_{reportType}"
-    object_key = "progressReport/22WMR05652/22WMR05652_ProgressReport1"
-    
+    object_key = f"progressReport/{student_id}/{student_id}_{reportType}"
+
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
 
