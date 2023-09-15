@@ -12,7 +12,7 @@ from flask import make_response
 import pdfkit
 
 app = Flask(__name__)
-app.config['WKHTMLTOPDF_PATH'] = '/usr/local/lib/python3.9/site-packages/wkhtmltopdf'  # Adjust the path as per your installation
+# app.config['WKHTMLTOPDF_PATH'] = '/usr/local/lib/python3.9/site-packages/wkhtmltopdf'  # Adjust the path as per your installation
 app.static_folder = 'static'  # The name of your static folder
 app.static_url_path = '/static'  # The URL path to serve static files
 app.secret_key = 'cc'
@@ -424,8 +424,6 @@ def calculate_submission_count(start_date, end_date):
     return report_count
 
 # Upload progress report function
-
-
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
     # Retrieve all required data from forms / session
@@ -745,8 +743,7 @@ def download_StudF06():
         return str(e)
 
         # Render the HTML template with the data
-    rendered_template = render_template(
-        'StudentSupportLetter.html', data=data)
+    rendered_template = render_template('StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
     pdf = pdfkit.from_string(rendered_template, False)
@@ -754,7 +751,7 @@ def download_StudF06():
     # Create a response object with the PDF data
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'inline; filename={id}_SupportLetter.pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename={id}_SupportLetter.pdf'
 
     return response
 
