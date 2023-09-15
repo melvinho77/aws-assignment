@@ -582,10 +582,10 @@ submitBtn{
 
                 <!-- Iterate over the report_list and display report details -->
                 {% for report in report_list %}
-                {% if report.reportType == report_name %}
+                {% if report.reportType|replace(" ", "") == report_name %}
                 <div class="details">
                     <div class="report-header expandable">
-                        <div class="report-title">{{ report.report_type }}</div>
+                        <div class="report-title">{{ report.reportType }}</div>
                         <div class="due-details">
                             <div class="due-date">Due: <b>{{ submission_date }}</b></div>
                             <i class="fa fa-arrow-down" aria-hidden="true"></i>
