@@ -396,12 +396,12 @@ def calculate_submission_date(start_date, end_date):
             submission_date = datetime.date(
                 target_year, target_month + 2, 4)
 
-        report_name = f'Progress Report {i}'
+        report_name = f'ProgressReport{i}'
         submission_info.append((submission_date, report_name))
 
     # Calculate the final report submission date, which is 1 week before the end date.
     final_report_date = end_date - datetime.timedelta(days=7)
-    submission_info.append((final_report_date, 'Final Report'))
+    submission_info.append((final_report_date, 'FinalReport'))
 
     return submission_info
 
