@@ -393,9 +393,8 @@ def calculate_submission_date(start_date, end_date):
 
         # If the start date is before the 4th day of the current month,
         # adjust the submission date to the 4th day of the next month
-        if start_date.day < 4 and submission_date > start_date:
-            submission_date = datetime.date(
-                target_year, target_month + 2, 4)
+        if start_date.day < 4 and submission_date > datetime.date(target_year, target_month + 1, start_date.day):
+            submission_date = datetime.date(target_year, target_month + 2, 4)
 
         report_name = f'Progress Report {i}'
         submission_info.append((submission_date, report_name))
@@ -407,8 +406,6 @@ def calculate_submission_date(start_date, end_date):
     return submission_info
 
 # Calculate the submission counts (INSERT AFTER REGISTER)
-
-
 def calculate_submission_count(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -493,6 +490,8 @@ def uploadProgressReport():
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Navigate to Student Registration
+
+
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
@@ -555,18 +554,20 @@ def add_student():
     # Loop and insert the details into the report table
     for i in range(1, report_count + 1):
         report_type = f'ProgressReport{i}' if i != report_count else 'FinalReport'
-        
+
         # You can customize this insert SQL query based on your database schema
         insert_report_sql = "INSERT INTO report (submissionDate, reportType, status, late, remark, student) VALUES (%s, %s, %s, %s, %s, %s)"
-        
+
         try:
-            cursor.execute(insert_report_sql, (None, report_type, 'pending', 0, None, student_id))
+            cursor.execute(insert_report_sql, (None, report_type,
+                           'pending', 0, None, student_id))
             db_conn.commit()
         except Exception as e:
             db_conn.rollback()
 
     # Redirect back to the registration page with a success message
     return render_template("home.html")
+
 
 @app.route("/about", methods=['POST'])
 def about():
