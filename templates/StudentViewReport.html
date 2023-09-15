@@ -578,6 +578,7 @@ submitBtn{
                 <!-- STORE REPORT NAME -->
                 <input type="hidden" value="{{ report_name }}" name="report_type" style="display: none;">
                 <input type="hidden" value="{{ submission_date }}" name="submission_date" style="display: none;">
+                <input type="hidden" value="{{ report_list[0].reportType }}" name="submission_date" style="display: none;">
 
                 <!-- Iterate over the report_list and display report details -->
                 {% for report in report_list %}
