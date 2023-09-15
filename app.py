@@ -9,6 +9,9 @@ import boto3
 from config import *
 import datetime
 
+#To generate dynamic PDF
+from weasyprint import HTML
+
 app = Flask(__name__)
 app.secret_key = 'cc'
 
@@ -27,9 +30,13 @@ output = {}
 table = 'employee'
 
 
+# @app.route('/')
+# def index():
+#     return render_template('home.html', number=1)
+
 @app.route('/')
 def index():
-    return render_template('home.html', number=1)
+    return render_template('StudentSupportLetter.html', number=1)
 
 
 @app.route("/", methods=['GET', 'POST'])
