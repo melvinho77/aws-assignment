@@ -582,7 +582,7 @@ submitBtn{
 
                 <!-- Iterate over the report_list and display report details -->
                 {% for report in report_list %}
-                {% if report.report_type == report_name %}
+                {% if report.reportType == report_name %}
                 <div class="details">
                     <div class="report-header expandable">
                         <div class="report-title">{{ report.report_type }}</div>
