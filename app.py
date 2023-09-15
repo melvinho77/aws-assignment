@@ -372,8 +372,6 @@ def view_progress_report():
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
 # Calculate the submission dates and return in a list
-
-
 def calculate_submission_date(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -429,6 +427,9 @@ def uploadProgressReport():
     submission_date = request.form.get('submission_date')
     student_progress_report = request.files['progress_report']
 
+    #Change submission date into datetime obj
+    submission_date_obj = datetime.date.fromisoformat(submission_date)
+
     s3_client = boto3.client('s3')
     folder_name = 'progressReport/' + id  # Replace 'id' with your folder name
 
@@ -456,7 +457,7 @@ def uploadProgressReport():
         student = cursor.fetchone()
 
         # Compare submission dates
-        if datetime.date.today() > submission_date:
+        if datetime.date.today() > submission_date_obj:
             request_cursor.execute(
                 update_sql, (datetime.date.today(), 'submitted', 1, id, report_type))
         else:
