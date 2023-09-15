@@ -511,6 +511,19 @@ submitBtn{
         color: #2a43d1;
         text-align: center;
     }
+
+    /* Status styles */
+    .status-pending {
+        color: yellow;
+    }
+
+    .status-submitted {
+        color: darkgreen;
+    }
+
+    .status-rejected {
+        color: red;
+    }
 </style>
 
 <head>
@@ -602,7 +615,8 @@ submitBtn{
                                     <input type="file" name="progress_report" class="upload-form"
                                         accept="application/pdf" required>
                                     <div style="padding-top: 5px;">
-                                        <a href="{{ url_for('viewProgressReport', report_type=report.reportType) }}" target="_blank">View Report</a>
+                                        <a href="{{ url_for('viewProgressReport', report_type=report.reportType) }}"
+                                            target="_blank">View Report</a>
                                     </div>
                                 </div>
                             </div>
@@ -624,7 +638,16 @@ submitBtn{
                                     <strong>Status</strong>
                                 </div>
                                 <div class="col-md-10">
+                                    {% if report.status == 'pending' %}
+                                    <span class="status-pending">Pending</span>
+                                    {% elif report.status in ['submitted', 'approved'] %}
+                                    <span class="status-submitted">Submitted</span>
+                                    {% elif report.status == 'rejected' %}
+                                    <span class="status-rejected">Rejected</span>
+                                    {% else %}
+                                    <!-- Handle other status values or provide a default -->
                                     {{ report.status }}
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- Remark -->
