@@ -363,11 +363,11 @@ def view_progress_report():
     # Calculate submission dates and report names
     submission_info = calculate_submission_date(start_date, end_date)
 
-    # Format submission date as "year-month-day"
-    submission_date = [date.strftime('%Y-%m-%d') for date, _ in submission_info]
-    report_name = [report_name for _, report_name in submission_info]
+    # Format submission dates as "year-month-day"
+    submission_dates = [date.strftime('%Y-%m-%d') for date, _ in submission_info]
+    report_names = [report_name for _, report_name in submission_info]
 
-    combined_data = list(zip(submission_date, report_name))
+    combined_data = list(zip(submission_dates, report_names))
 
     return render_template('StudentViewReport.html', student_id=session.get('loggedInStudent'), combined_data=combined_data, start_date=cohort[0], end_date=cohort[1], report_list=report_list)
 
@@ -406,8 +406,6 @@ def calculate_submission_date(start_date, end_date):
     return submission_info
 
 # Calculate the submission counts (INSERT AFTER REGISTER)
-
-
 def calculate_submission_count(start_date, end_date):
     # Calculate the number of months between the start date and end date.
     months_between_dates = (end_date.year - start_date.year) * \
@@ -425,7 +423,7 @@ def calculate_submission_count(start_date, end_date):
 def uploadProgressReport():
     # Retrieve all required data from forms / session
     id = session['loggedInStudent']
-    report_type = request.form.get('report-type')
+    report_type = request.form.get('report_type')
     # Remove spaces and concatenate words
     report_type = report_type.replace(" ", "")
     submission_date = request.form.get('submission_date')
