@@ -75,17 +75,63 @@ def student_home():
     except Exception as e:
         return str(e)
 
-    return render_template('studentHome.html', studentId=student[0],
-                           studentName=student[1],
-                           IC=student[2],
-                           mobileNumber=student[3],
-                           gender=student[4],
-                           address=student[5],
-                           email=student[6],
-                           level=student[7],
-                           programme=student[8],
-                           supervisor=student[9],
-                           cohort=student[10])
+    if student:
+        # Student found in the database, login successful
+
+        # Retrieve the cohort where student belongs to
+        select_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
+        cursor = db_conn.cursor()
+        cursor.execute(select_sql, (user[10]))
+        cohort = cursor.fetchone()
+        cursor.close()
+
+        # Convert start_date_str and end_date_str into datetime.date objects
+        start_date_str = str(cohort[0])
+        end_date_str = str(cohort[1])
+        start_date = datetime.date.fromisoformat(start_date_str)
+        end_date = datetime.date.fromisoformat(end_date_str)
+
+        #######################################################################
+        # Retrieve supervisor details
+        supervisor_query = "SELECT l.name, l.email FROM lecturer l, student s WHERE s.supervisor = l.lectId AND studentId = %s"
+        cursor = db_conn.cursor()
+        cursor.execute(supervisor_query, (user[0]))
+        supervisor = cursor.fetchone()
+        cursor.close()
+
+        # Retrieve the company details
+        company_query = "SELECT c.name, j.jobLocation, salary, jobPosition, jobDesc FROM company c, job j, companyApplication ca, student s WHERE c.companyId = j.company AND ca.student = s.studentId AND ca.job = j.jobId AND s.studentId = %s AND ca.`status` = 'approved'"
+        cursor = db_conn.cursor()
+        cursor.execute(company_query, (user[0]))
+        companyDetails = cursor.fetchone()
+        cursor.close()
+        #######################################################################
+
+        # Create a list to store all the retrieved data
+        user_data = {
+            'studentId': student[0],
+            'studentName': student[1],
+            'IC': student[2],
+            'mobileNumber': student[3],
+            'gender': student[4],
+            'address': student[5],
+            'email': student[6],
+            'level': student[7],
+            'programme': student[8],
+            'cohort': student[10],
+            'start_date': start_date,
+            'end_date': end_date,
+            # Default values if supervisor is not found
+            'supervisor': supervisor if supervisor else ("N/A", "N/A"),
+            # Default values if company details are not found
+            'companyDetails': companyDetails if companyDetails else ("N/A", "N/A", "N/A", "N/A", "N/A")
+        }
+
+        # Set the loggedInStudent session
+        session['loggedInStudent'] = student[0]
+
+        # Redirect to the student home page with the user_data
+        return render_template('studentHome.html', data=user_data)
 
 # Navigation to Edit Student Page
 
