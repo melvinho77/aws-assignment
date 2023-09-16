@@ -934,7 +934,7 @@ def verifyLogin():
 
             #######################################################################
             # Retrieve supervisor details
-            supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
+            supervisor_query = "SELECT l.name, l.email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
             cursor = db_conn.cursor()
             cursor.execute(supervisor_query, (user[0]))
             supervisor = cursor.fetchone()
