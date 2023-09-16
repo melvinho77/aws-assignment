@@ -1027,7 +1027,6 @@ def verifyLogin():
 # GWEE YONG SEAN
 # Function to create a database connection context
 
-
 def get_db_connection():
     customhost = 'employee.cgtpcksgf7rv.us-east-1.rds.amazonaws.com'
     customuser = 'aws_user'
