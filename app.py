@@ -7,9 +7,7 @@ from pymysql import connections
 import boto3
 from config import *
 import datetime
-from flask import render_template
-from flask import make_response
-import pdfkit
+from weasyprint import HTML
 
 app = Flask(__name__)
 # app.config['WKHTMLTOPDF_PATH'] = '/usr/local/lib/python3.9/site-packages/wkhtmltopdf'  # Adjust the path as per your installation
@@ -746,8 +744,7 @@ def download_StudF06():
     rendered_template = render_template('StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
-    config = pdfkit.configuration(wkhtmltopdf="/usr/local/lib/python3.9/site-packages")
-    pdf = pdfkit.from_string(rendered_template, False, configuration=config)
+    pdf = HTML(string=rendered_template).write_pdf()
 
     # Create a response object with the PDF data
     response = make_response(pdf)
