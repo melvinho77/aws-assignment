@@ -33,9 +33,11 @@ table = 'employee'
 def index():
     return render_template('home.html', number=1)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
+
 
 @app.route('/register_company')
 def register_company():
@@ -421,6 +423,8 @@ def calculate_submission_count(start_date, end_date):
     return report_count
 
 # Upload progress report function
+
+
 @app.route('/uploadProgressReport', methods=['GET', 'POST'])
 def uploadProgressReport():
     # Retrieve all required data from forms / session
@@ -701,6 +705,8 @@ def download_StudF05():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF06.pdf (Student Support Letter)
+
+
 @app.route('/downloadStudF06', methods=['GET'])
 def download_StudF06():
     id = session.get('loggedInStudent')
@@ -739,12 +745,11 @@ def download_StudF06():
         db_conn.rollback()
         return str(e)
 
-        # Render the HTML template with the data
+    # Render the HTML template with the data
     rendered_template = render_template('StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
-    html = HTML(string=rendered_template, base_url=request.build_absolute_uri())
-    # pdf = HTML(string=rendered_template, base_url=request.build_absolute_uri()).write_pdf()
+    html = HTML(string=rendered_template, base_url=request.url)
     pdf = html.write_pdf(presentational_hints=True)
 
     # Create a response object with the PDF data
@@ -753,6 +758,7 @@ def download_StudF06():
     response.headers['Content-Disposition'] = f'inline;filename={id}_SupportLetter.pdf'
 
     return response
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
