@@ -529,7 +529,7 @@ submitBtn{
 
     <div class="container">
         <div class="details-header">
-            <h2>Welcome! {{ studentName }}</h2>
+            <h2>Welcome! {{ data['studentName'] }}</h2>
             <div class="options">
                 <div class="track-application">
                     <i class="fa fa-file" aria-hidden="true"></i>
@@ -559,7 +559,7 @@ submitBtn{
                             <strong>Cohort</strong>
                         </div>
                         <div class="col-md-10">
-                            {{ cohort }}
+                            {{ data['cohort'] }}
                         </div>
                     </div>
                     <div class="row">
@@ -567,15 +567,14 @@ submitBtn{
                             <strong>Intern Period</strong>
                         </div>
                         <div class="col-md-10">
-                            {{ start_date }} - {{ end_date }}
+                            {{ data['start_date'] }} - {{ data['end_date'] }}
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-2">
                             <strong>Status</strong>
                         </div>
                         <div class="col-md-10">
-                            <!-- Add your remark here -->
                         </div>
                     </div>
                     <div class="row">
@@ -583,9 +582,8 @@ submitBtn{
                             <strong>Remark</strong>
                         </div>
                         <div class="col-md-10">
-                            <!-- Add your remark here -->
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Progress Report -->
@@ -621,7 +619,7 @@ submitBtn{
                         <strong>Student Name</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ studentName }}
+                        {{ data['studentName'] }}
                     </div>
                 </div>
 
@@ -639,7 +637,7 @@ submitBtn{
                         <strong>NRIC No.</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ IC }}
+                        {{ data['IC'] }}
                     </div>
                 </div>
 
@@ -648,7 +646,7 @@ submitBtn{
                         <strong>Gender</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ gender }}
+                        {{ data['gender'] }}
                     </div>
                 </div>
 
@@ -657,7 +655,7 @@ submitBtn{
                         <strong>Programme</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ programme }}
+                        {{ data['programme'] }}
                     </div>
                 </div>
 
@@ -666,7 +664,7 @@ submitBtn{
                         <strong>Student Email</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ email }}
+                        {{ data['email'] }}
                     </div>
                 </div>
 
@@ -675,7 +673,7 @@ submitBtn{
                         <strong>Mobile Number</strong>
                     </div>
                     <div class="col-md-10">
-                        {{ mobileNumber }}
+                        {{ data['mobileNumber'] }}
                     </div>
                 </div>
 
@@ -695,7 +693,7 @@ submitBtn{
                             <strong>Uni Supervisor</strong>
                         </div>
                         <div class="col-md-10">
-                            ANUREHKA A/P MAGHESWARAN
+                            {{ data['supervisor'][0] }}
                         </div>
                     </div>
 
@@ -704,7 +702,7 @@ submitBtn{
                             <strong>Uni Supervisor Email</strong>
                         </div>
                         <div class="col-md-10">
-                            anurehkam@tarc.edu.my
+                            {{ data['supervisor'][1] }}
                         </div>
                     </div>
                 </div>
@@ -723,7 +721,7 @@ submitBtn{
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                            <input type="text" class="form-control" value="{{ data['company'][0] }}" readonly required>
                             <div style="padding-top: 5px;">
                                 <a href="#">Apply a company</a>
                             </div>
@@ -733,26 +731,26 @@ submitBtn{
                         <label class="col-md-2 col-form-label"><strong>Company Address</strong></label>
                         <div class="col-md-10">
                             <textarea class="form-control" rows="4" style="resize: vertical;" readonly
-                                required></textarea>
+                                required>{{ data['company'][1] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                            <input type="text" class="form-control" value="{{ data['company'][2] }}" readonly required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Job Position</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" readonly required>
+                            <input type="text" class="form-control" value="{{ data['company'][3] }}" readonly required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Job Description</strong></label>
                         <div class="col-md-10">
                             <textarea class="form-control" rows="4" style="resize: vertical;" readonly
-                                required></textarea>
+                                required>{{ data['company'][4] }}</textarea>
                         </div>
                     </div>
                     <div class="form-group row">

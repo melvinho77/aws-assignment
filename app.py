@@ -916,36 +916,64 @@ def verifyLogin():
         user = cursor.fetchone()
         cursor.close()
 
-        # Retrieve the cohort where student belongs to
-        select_sql = "SELECT startDate, endDate FROM cohort c where cohortId = %s"
-        cursor = db_conn.cursor()
-
-        cursor.execute(select_sql, (user[10]))
-        cohort = cursor.fetchone()
-
-        # Convert start_date_str and end_date_str into datetime.date objects
-        start_date_str = str(cohort[0])
-        end_date_str = str(cohort[1])
-
-        start_date = datetime.date.fromisoformat(start_date_str)
-        end_date = datetime.date.fromisoformat(end_date_str)
-
-        #######################################################################
-        # # Retrieve supervisor details
-        # supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
-        # cursor.execute(supervisor_query, (user[0]))
-        # supervisor = cursor.fetchone
-        # cursor.close()
-
-        # # Retrieve the company details
-        # company_query = "SELECT c.name, c.address, salary, jobPosition, jobDesc FROM "
-        #######################################################################
-
         if user:
             # User found in the database, login successful
-            # Redirect to the student home page
+
+            # Retrieve the cohort where student belongs to
+            select_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
+            cursor = db_conn.cursor()
+            cursor.execute(select_sql, (user[10]))
+            cohort = cursor.fetchone()
+            cursor.close()
+
+            # Convert start_date_str and end_date_str into datetime.date objects
+            start_date_str = str(cohort[0])
+            end_date_str = str(cohort[1])
+            start_date = datetime.date.fromisoformat(start_date_str)
+            end_date = datetime.date.fromisoformat(end_date_str)
+
+            #######################################################################
+            # Retrieve supervisor details
+            supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
+            cursor = db_conn.cursor()
+            cursor.execute(supervisor_query, (user[0]))
+            supervisor = cursor.fetchone()
+            cursor.close()
+
+            # Retrieve the company details
+            company_query = "SELECT c.name, j.jobLocation, salary, jobPosition, jobDesc FROM company c, job j, companyApplication ca, student s WHERE c.companyId = j.company AND ca.student = s.studentId AND ca.job = j.jobId AND s.studentId = %s AND ca.`status` = 'approved'"
+            cursor = db_conn.cursor()
+            cursor.execute(company_query, (user[0]))
+            companyDetails = cursor.fetchone()
+            cursor.close()
+            #######################################################################
+
+            # Create a list to store all the retrieved data
+            user_data = {
+                'studentId': user[0],
+                'studentName': user[1],
+                'IC': user[2],
+                'mobileNumber': user[3],
+                'gender': user[4],
+                'address': user[5],
+                'email': user[6],
+                'level': user[7],
+                'programme': user[8],
+                'cohort': user[10],
+                'start_date': start_date,
+                'end_date': end_date,
+                # Default values if supervisor is not found
+                'supervisor': supervisor if supervisor else ("N/A", "N/A"),
+                # Default values if company details are not found
+                'companyDetails': companyDetails if companyDetails else ("N/A", "N/A", "N/A", "N/A", "N/A")
+            }
+
+            # Set the loggedInStudent session
             session['loggedInStudent'] = user[0]
-            return render_template('studentHome.html', studentId=user[0], studentName=user[1], IC=user[2], mobileNumber=user[3], gender=user[4], address=user[5], email=user[6], level=user[7], programme=user[8], supervisor=user[9], cohort=user[10], start_date=start_date, end_date=end_date)
+
+            # Redirect to the student home page with the user_data
+            return render_template('studentHome.html', data=user_data)
+
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
