@@ -748,7 +748,7 @@ def download_StudF06():
     # Create a response object with the PDF data
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'attachment;filename={id}_SupportLetter.pdf'
+    response.headers['Content-Disposition'] = f'inline;filename={id}_SupportLetter.pdf'
 
     return response
 
