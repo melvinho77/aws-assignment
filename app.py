@@ -498,6 +498,8 @@ def uploadProgressReport():
     print("Progress Report sucessfully submitted.")
     return render_template('UploadProgressReportOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
+# View progress report
+
 
 @app.route('/viewProgressReport', methods=['GET', 'POST'])
 def viewProgressReport():
@@ -535,13 +537,80 @@ def viewProgressReport():
     # Redirect the user to the URL of the PDF file
     return redirect(response)
 
+# Upload supporting documents
+
+
+@app.route('/uploadSupportingDocuments', methods=['GET', 'POST'])
+def uploadSupportingDocuments():
+    id = session['loggedInStudent']
+
+    # Retrieve the necessary documents
+    acceptanceForm = request.files['acceptanceForm']
+    acknowledgementForm = request.files['acknowledgementForm']
+    indemnityLetter = request.files['indemnityLetter']
+    supportLetter = request.files['supportLetter']
+    hiredEvidence = request.files['hiredEvidence']
+
+    objKey_acceptanceForm = 'supportingDocument/' + id + '/' + id + "_acceptanceForm"
+    objKey_acknowledgementForm = 'supportingDocument/' + id + '/' + id + "_acknowledgementForm"
+    objKey_indemnityLetter = 'supportingDocument/' + id + '/' + id + "_indemnityLetter"
+    objKey_supportLetter = 'supportingDocument/' + id + '/' + id + "_supportLetter"
+    objKey_hiredEvidence = 'supportingDocument/' + id + '/' + id + "_hiredEvidence"
+
+    # Create the folder if not exist
+    s3_client = boto3.client('s3')
+    folder_name = 'supportingDocument/' + id  # Replace 'id' with your folder name
+
+    # Check if the folder (prefix) already exists
+    response = s3_client.list_objects_v2(
+        Bucket=custombucket, Prefix=folder_name)
+
+    # If the folder (prefix) doesn't exist, you can create it
+    if 'Contents' not in response:
+        s3_client.put_object(Bucket=custombucket, Key=(folder_name + '/'))
+
+    s3 = boto3.resource('s3')
+
+    try:
+        # Set the content type to 'application/pdf' when uploading to S3
+        # Upload acceptance form
+        s3.Object(custombucket, objKey_acceptanceForm).put(
+            Body=acceptanceForm,
+            ContentType='application/pdf'
+        )
+
+        # Upload acceptance form
+        s3.Object(custombucket, objKey_acceptanceForm).put(
+            Body=acceptanceForm,
+            ContentType='application/pdf'
+        )
+
+        # Upload acceptance form
+        s3.Object(custombucket, objKey_acceptanceForm).put(
+            Body=acceptanceForm,
+            ContentType='application/pdf'
+        )
+
+        # Upload acceptance form
+        s3.Object(custombucket, objKey_acceptanceForm).put(
+            Body=acceptanceForm,
+            ContentType='application/pdf'
+        )
+
+        # Upload acceptance form
+        s3.Object(custombucket, objKey_acceptanceForm).put(
+            Body=acceptanceForm,
+            ContentType='application/pdf'
+        )
+
+    except Exception as e:
+        return str(e)
+
+
 # Navigate to Student Registration
-
-
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
-
 # Register a student
 
 
@@ -639,7 +708,7 @@ def verifyLogin():
         # cursor.close()
 
         # # Retrieve the company details
-        # company_query = "SELECT c.name, c.address, salary, "
+        # company_query = "SELECT c.name, c.address, salary, jobPosition, jobDesc FROM "
 
         if user:
             # User found in the database, login successful
@@ -680,6 +749,8 @@ def download_StudF04():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF05.docx
+
+
 @app.route('/downloadStudF05', methods=['GET'])
 def download_StudF05():
     # Construct the S3 object key
@@ -709,6 +780,8 @@ def download_StudF05():
     return redirect(response)
 
 # DOWNLOAD FOCS_StudF06.pdf (Student Support Letter)
+
+
 @app.route('/downloadStudF06', methods=['GET'])
 def download_StudF06():
     id = session.get('loggedInStudent')
