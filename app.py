@@ -653,7 +653,7 @@ def viewAcceptanceForm():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"progressReport/{student_id}/{student_id}_acceptanceForm"
+    object_key = f"supportingDocument/{student_id}/{student_id}_acceptanceForm"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
@@ -688,7 +688,7 @@ def viewAcknowledgementForm():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"progressReport/{student_id}/{student_id}_acknowledgementForm"
+    object_key = f"supportingDocument/{student_id}/{student_id}_acknowledgementForm"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
@@ -723,7 +723,7 @@ def viewIndemnityLetter():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"progressReport/{student_id}/{student_id}_indemnityLetter"
+    object_key = f"supportingDocument/{student_id}/{student_id}_indemnityLetter"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
@@ -758,7 +758,7 @@ def viewSupportLetter():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"progressReport/{student_id}/{student_id}_supportLetter"
+    object_key = f"supportingDocument/{student_id}/{student_id}_supportLetter"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
@@ -793,7 +793,7 @@ def viewHiredEvidence():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"progressReport/{student_id}/{student_id}_hiredEvidence"
+    object_key = f"supportingDocument/{student_id}/{student_id}_hiredEvidence"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
