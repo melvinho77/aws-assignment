@@ -917,7 +917,7 @@ def verifyLogin():
         cursor.close()
 
         # Retrieve the cohort where student belongs to
-        select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
+        select_sql = "SELECT startDate, endDate FROM cohort c where cohortId = %s"
         cursor = db_conn.cursor()
 
         cursor.execute(select_sql, (user[10]))
