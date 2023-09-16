@@ -1224,7 +1224,7 @@ def studentApplyCompany():
         applications = get_applications(
             cursor, session['loggedInStudent'], per_page, start_index, search_query)
 
-        return render_template("trackApplication.html", applications=applications, current_page=current_page, num_pages=num_pages, id=session.get['loggedInStudent'])
+        return render_template("trackApplication.html", applications=applications, current_page=current_page, num_pages=num_pages, id=id)
 
     except Exception as e:
         # Handle exceptions here
