@@ -632,14 +632,14 @@ def verifyLogin():
         user = cursor.fetchone()
         cursor.close()
 
-        # Retrieve supervisor details
-        supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
-        cursor.execute(supervisor_query, (user[0]))
-        supervisor = cursor.fetchone
-        cursor.close()
+        # # Retrieve supervisor details
+        # supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
+        # cursor.execute(supervisor_query, (user[0]))
+        # supervisor = cursor.fetchone
+        # cursor.close()
 
-        # Retrieve the company details
-        company_query = "SELECT c.name, c.address, salary, "
+        # # Retrieve the company details
+        # company_query = "SELECT c.name, c.address, salary, "
 
         if user:
             # User found in the database, login successful
