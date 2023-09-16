@@ -1195,6 +1195,8 @@ def replace_and_keep_hyphen(s):
 @app.route("/studentApplyCompany", methods=['POST', 'GET'])
 def studentApplyCompany():
 
+    id = session['loggedInStudent']
+
     # Create a cursor
     cursor = db_conn.cursor()
 
@@ -1222,7 +1224,7 @@ def studentApplyCompany():
         applications = get_applications(
             cursor, session['loggedInStudent'], per_page, start_index, search_query)
 
-        return render_template("trackApplication.html", applications=applications, current_page=current_page, num_pages=num_pages, id=id)
+        return render_template("trackApplication.html", applications=applications, current_page=current_page, num_pages=num_pages, id=session.get['loggedInStudent'])
 
     except Exception as e:
         # Handle exceptions here
