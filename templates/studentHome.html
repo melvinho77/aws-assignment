@@ -520,8 +520,8 @@ submitBtn{
                     <a href="/edit_student">Edit Profile</a>
                     <a href="/upload_resume">Upload resume</a>
                     <a href="/view_progress_report">Upload resume</a>
-                    <a href="#">Apply internship</a>
-                    <a href="#">Track application</a>
+                    <a href="/displayJobFind">Apply internship</a>
+                    <a href="/studentApplyCompany">Track application</a>
                 </div>
             </div>
         </div>
@@ -533,7 +533,7 @@ submitBtn{
             <div class="options">
                 <div class="track-application">
                     <i class="fa fa-file" aria-hidden="true"></i>
-                    <a href="#">Track Application</a>
+                    <a href="/studentApplyCompany">Track Application</a>
                 </div>
                 <div class="upload-resume">
                     <i class="fa fa-id-card" aria-hidden="true"></i>
@@ -721,9 +721,10 @@ submitBtn{
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Company Name</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="{{ data['companyDetails'][0] }}" readonly required>
+                            <input type="text" class="form-control" value="{{ data['companyDetails'][0] }}" readonly
+                                required>
                             <div style="padding-top: 5px;">
-                                <a href="#">Apply a company</a>
+                                <a href="/displayJobFind">Apply a company</a>
                             </div>
                         </div>
                     </div>
@@ -737,13 +738,15 @@ submitBtn{
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Monthly Allowance</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="{{ data['companyDetails'][2] }}" readonly required>
+                            <input type="text" class="form-control" value="{{ data['companyDetails'][2] }}" readonly
+                                required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2 col-form-label"><strong>Job Position</strong></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="RM{{ data['companyDetails'][3] }}" readonly required>
+                            <input type="text" class="form-control" value="RM{{ data['companyDetails'][3] }}" readonly
+                                required>
                         </div>
                     </div>
                     <div class="form-group row">
