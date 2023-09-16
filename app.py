@@ -1194,13 +1194,13 @@ def replace_and_keep_hyphen(s):
 
 @app.route("/studentApplyCompany", methods=['POST', 'GET'])
 def studentApplyCompany():
+
+    # Create a cursor
+    cursor = db_conn.cursor()
+
     try:
-        id = session.get['loggedInStudent']
         # Get the search query from the request (if provided)
         search_query = request.args.get('search', '')
-
-        # Create a cursor
-        cursor = db_conn.cursor()
 
         # Get the total number of applications
         total_applications = get_total_applications(cursor, search_query)
