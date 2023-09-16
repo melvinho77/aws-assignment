@@ -978,6 +978,371 @@ def verifyLogin():
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
 
+# GWEE YONG SEAN
+# Function to create a database connection context
+
+
+def get_db_connection():
+    customhost = 'employee.cgtpcksgf7rv.us-east-1.rds.amazonaws.com'
+    customuser = 'aws_user'
+    custompass = 'Bait3273'
+    customdb = 'employee'
+
+    return connections.Connection(
+        host=customhost,
+        port=3306,
+        user=customuser,
+        password=custompass,
+        db=customdb
+    )
+
+
+@app.route("/displayJobFind", methods=['POST', 'GET'])
+def displayAllJobs():
+    # Get filter values from the form
+    search_company = request.form.get('search-company', '')
+    search_title = request.form.get('search-title', '')
+    search_state = request.form.get('search-state', 'All')
+    search_allowance = request.form.get('search-allowance', '1800')
+
+    # Construct the base SQL query with a JOIN between the job and company tables
+    select_sql = """
+        SELECT j.*, c.name AS company_name
+        FROM job j
+        LEFT JOIN company c ON j.company = c.companyId
+        WHERE 1
+    """
+
+    # Add filter conditions based on form inputs
+    if search_company:
+        select_sql += f" AND c.name LIKE '%{search_company}%'"
+
+    if search_title:
+        select_sql += f" AND j.jobPosition LIKE '%{search_title}%'"
+
+    if search_state != 'All':
+        select_sql += f" AND j.jobLocation LIKE '%{search_state}%'"
+
+    if search_allowance:
+        select_sql += f" AND j.salary <= {search_allowance}"
+
+    # Add the condition to check the company's status
+    select_sql += " AND c.status = 'activated'"
+
+    # Add the condition to check numOfOperating greater than 0
+    select_sql += " AND j.numOfOperating > 0"
+
+    try:
+        with get_db_connection() as db_conn:
+            with db_conn.cursor() as cursor:
+                cursor.execute(select_sql)
+                jobs = cursor.fetchall()
+
+                job_objects = []
+                for job in jobs:
+                    job_id = job[0]
+                    publish_date = job[1]
+                    job_type = job[2]
+                    job_position = job[3]
+                    qualification_level = job[4]
+                    job_requirement = job[6]
+                    job_location = job[7]
+                    salary = job[8]
+                    company_id = job[10]
+                    company_name = job[12]  # Extracted from the JOINed column
+
+                    # Generate the S3 image URL using custombucket and customregion
+                    company_image_file_name_in_s3 = "comp-id-" + \
+                        str(company_id)+"_image_file"
+                    s3 = boto3.client('s3', region_name=customregion)
+                    bucket_name = custombucket
+
+                    response = s3.generate_presigned_url(
+                        'get_object',
+                        Params={'Bucket': bucket_name,
+                                'Key': company_image_file_name_in_s3},
+                        ExpiresIn=1000  # Adjust the expiration time as needed
+                    )
+                    job_object = {
+                        "job_id": job_id,
+                        "publish_date": publish_date,
+                        "job_type": job_type,
+                        "job_position": job_position,
+                        "qualification_level": qualification_level,
+                        "job_requirement": job_requirement,
+                        "job_location": job_location,
+                        "salary": salary,
+                        "company_name": company_name,
+                        "company_id": company_id,
+                        "image_url": response
+                    }
+
+                    job_objects.append(job_object)
+
+        return render_template('SearchCompany.html', jobs=job_objects)
+
+    except Exception as e:
+        # Log the exception for debugging
+        print(f"Error: {str(e)}")
+        return "An error occurred while fetching job data."
+
+
+@app.route("/displayJobDetails", methods=['POST', 'GET'])
+def display_job_details():
+    if request.method == 'POST':
+        # Get the selected job_id from the form
+        selected_job_id = request.form.get('transfer-id')
+
+        apply_student_id = session.get('loggedInStudent')
+
+        select_sql = """
+        SELECT j.*, c.name AS company_name, i.name AS industry_name, c.email AS company_email, c.phone AS company_phone
+        FROM job j
+        LEFT JOIN company c ON j.company = c.companyId
+        LEFT JOIN industry i on j.industry = i.industryId
+        WHERE jobId =%s
+        """
+        cursor = db_conn.cursor()
+        try:
+            cursor.execute(select_sql, (selected_job_id,))
+            job = cursor.fetchone()
+
+            if not job:
+                return "No such job exists."
+        except Exception as e:
+            return str(e)
+
+        # Initialize job_objects as an empty list
+        job_objects = []
+
+        # Append job details to job_objects
+        job_id = job[0]
+        publish_date = job[1]
+        job_type = job[2]
+        job_position = job[3]
+        qualification_level = job[4]
+        job_description = job[5]
+        job_requirement = job[6]
+        job_location = job[7]
+        salary = job[8]
+        num_of_operate = job[9]
+        company_id = job[10]
+        company_name = job[12]  # Extracted from the JOINed column
+        industry_name = job[13]
+        company_email = job[14]
+        company_phone = job[15]
+
+        # Generate the S3 image URL using custombucket and customregion
+        company_image_file_name_in_s3 = "comp-id-" + \
+            str(company_id) + "_image_file"
+        s3 = boto3.client('s3', region_name=customregion)
+        bucket_name = custombucket
+
+        response = s3.generate_presigned_url(
+            'get_object',
+            Params={'Bucket': bucket_name,
+                    'Key': company_image_file_name_in_s3},
+            ExpiresIn=1000  # Adjust the expiration time as needed
+        )
+
+        job_object = {
+            "job_id": job_id,
+            "publish_date": publish_date,
+            "job_type": job_type,
+            "job_position": job_position,
+            "qualification_level": qualification_level,
+            "job_description": job_description,
+            "job_requirement": job_requirement,
+            "job_location": job_location,
+            "salary": salary,
+            "company_name": company_name,
+            "company_id": company_id,
+            "num_of_operate": num_of_operate,
+            "industry_name": industry_name,
+            "company_email": company_email,
+            "company_phone": company_phone,
+            "image_url": response
+        }
+
+        job_objects.append(job_object)
+
+        job_applied = False  # Initialize as False by default
+
+        # Check if the student has applied for this job
+        check_application_sql = """
+        SELECT COUNT(*) as total
+        FROM companyApplication
+        WHERE student = %s AND job = %s
+        """
+
+        cursor.execute(check_application_sql,
+                       (apply_student_id, selected_job_id))
+        application_count = cursor.fetchone()
+
+        if application_count and application_count[0] > 0:
+            job_applied = True
+
+        return render_template('JobDetail.html', jobs=job_objects, job_applied=job_applied)
+
+    return render_template('SearchCompany.html', jobs=job_objects)
+
+
+@app.template_filter('replace_and_keep_hyphen')
+def replace_and_keep_hyphen(s):
+    return s.replace('-', '<br>-').replace('<br>-', '-', 1)
+
+
+@app.route("/studentApplyCompany", methods=['POST', 'GET'])
+def studentApplyCompany():
+    try:
+        # Get the search query from the request (if provided)
+        search_query = request.args.get('search', '')
+
+        # Create a cursor
+        cursor = db_conn.cursor()
+
+        # Get the total number of applications
+        total_applications = get_total_applications(cursor, search_query)
+
+        # Define the number of applications per page
+        per_page = 6  # Adjust as needed
+
+        # Get the current page from the request or default to 1
+        current_page = request.args.get('page', default=1, type=int)
+
+        # Calculate the total number of pages
+        num_pages = (total_applications + per_page - 1) // per_page
+
+        # Calculate the start and end indices for the current page
+        start_index = (current_page - 1) * per_page
+        end_index = start_index + per_page
+
+        # Get the applications for the current page
+        applications = get_applications(
+            cursor, session['loggedInStudent'], per_page, start_index, search_query)
+
+        return render_template("trackApplication.html", applications=applications, current_page=current_page, num_pages=num_pages)
+
+    except Exception as e:
+        # Handle exceptions here
+        return "An error occurred: " + str(e)
+
+    finally:
+        cursor.close()
+
+
+def get_total_applications(cursor, search_query):
+    # Execute the SELECT COUNT(*) query to get the total row count
+    select_sql = """
+    SELECT COUNT(*) as total
+    FROM companyApplication ca
+    LEFT JOIN job j ON ca.job = j.jobId
+    LEFT JOIN company c ON j.company = c.companyId
+    WHERE ca.student=%s
+    """
+
+    if search_query:
+        select_sql += " AND c.name LIKE %s"
+        cursor.execute(
+            select_sql, (session['loggedInStudent'], f"%{search_query}%"))
+    else:
+        cursor.execute(select_sql, (session['loggedInStudent'],))
+
+    apply_result = cursor.fetchone()
+    return apply_result[0]
+
+
+def calculate_pagination(total, per_page):
+    num_pages = (total + per_page - 1) // per_page
+    current_page = request.args.get('page', 1, type=int)
+    start_index = (current_page - 1) * per_page
+    end_index = start_index + per_page
+    return num_pages, current_page, start_index, end_index
+
+
+def get_applications(cursor, student_id, per_page, start_index, search_query):
+    select_application = """
+    SELECT ca.*, c.name AS company_name, j.jobPosition AS job_position, j.jobLocation AS job_location
+    FROM companyApplication ca
+    LEFT JOIN job j ON ca.job = j.jobId
+    LEFT JOIN company c ON j.company = c.companyId
+    WHERE ca.student=%s
+    """
+
+    if search_query:
+        select_application += " AND c.name LIKE %s"
+
+    select_application += " LIMIT %s OFFSET %s"
+
+    if search_query:
+        cursor.execute(select_application, (student_id,
+                       f"%{search_query}%", per_page, start_index))
+    else:
+        cursor.execute(select_application, (student_id, per_page, start_index))
+
+    application_track = cursor.fetchall()
+
+    application_objects = []
+    for row in application_track:
+        application_id = row[0]
+        applyDateTime = row[1]
+        status = row[2]
+        student = row[3]
+        job = row[4]
+        company_name = row[5]
+        job_position = row[6]
+        job_location = row[7]
+
+        application_object = {
+            "application_id": application_id,
+            "applyDateTime": applyDateTime,
+            "status": status,
+            "student": student,
+            "job": job,
+            "company_name": company_name,
+            "job_position": job_position,
+            "job_location": job_location
+        }
+        application_objects.append(application_object)
+
+    return application_objects
+
+
+@app.route("/applyCompany", methods=['POST'])
+def applyCompany():
+    try:
+        # Get the selected job_id from the form
+        apply_job_id = request.form.get('apply-job-id')
+        apply_student_id = session['loggedInStudent']
+        now = datetime.datetime.now()
+
+        # Create a cursor
+        cursor = db_conn.cursor()
+
+        # Get the next available application ID (you may need to adjust this logic)
+        cursor.execute("SELECT MAX(applicationId) FROM companyApplication")
+        max_id = cursor.fetchone()[0]
+        company_id = max_id + 1 if max_id is not None else 1
+
+        # Insert the application record into the database
+        insert_application_sql = """
+        INSERT INTO companyApplication (applicationId, applyDateTime, status, student, job)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_application_sql, (company_id, now,
+                       'pending', apply_student_id, apply_job_id))
+        db_conn.commit()
+
+    except Exception as e:
+        db_conn.rollback()
+    # Handle the exception if needed
+
+    finally:
+        cursor.close()
+
+    # This line is outside the try-except block
+    return redirect(url_for("studentApplyCompany"))
+
 
 @app.route('/downloadStudF04', methods=['GET'])
 def download_StudF04():
