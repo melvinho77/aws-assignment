@@ -624,6 +624,10 @@ def uploadSupportingDocuments():
             ContentType='application/pdf'
         )
 
+        bucket_location = boto3.client(
+            's3').get_bucket_location(Bucket=custombucket)
+        s3_location = (bucket_location['LocationConstraint'])
+
         if s3_location is None:
             s3_location = ''
         else:
