@@ -132,6 +132,24 @@
             height: auto;
             /* Maintain aspect ratio */
         }
+
+        /* Style for student details */
+        .row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .header {
+            width: 20%;
+            text-align: right;
+            padding-right: 10px;
+            font-weight: bold;
+        }
+
+        .text {
+            width: 80%;
+            font-weight: normal;
+        }
     </style>
 </head>
 
@@ -179,26 +197,26 @@
         <!-- Student details -->
         <div class="details">
             <div class="row">
-                <div class="col-md-3">
+                <div class="header">
                     Student Name:
                 </div>
-                <div class="col-md-8">
+                <div class="text">
                     <b>{{ data['studentName'] }}</b>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="header">
                     Student ID:
                 </div>
-                <div class="col-md-8">
+                <div class="text">
                     <b>{{ data['studentId'] }}</b>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    Programme:  
+                <div class="header">
+                    Programme:
                 </div>
-                <div class="col-md-8">
+                <div class="text">
                     <b>{{ data['programme'] }}</b>
                 </div>
             </div>
@@ -292,8 +310,8 @@
                         alt="PDTI-logo" />
                     <img class="sponsorship-img" alt="MSC" src="{{ url_for('static', filename='images/MSC.png') }}"
                         alt="MSC-logo" />
-                    <img class="sponsorship-img" alt="SETARA" src="{{ url_for('static', filename='images/SETARA.png') }}"
-                        alt="SETARA-logo" />
+                    <img class="sponsorship-img" alt="SETARA"
+                        src="{{ url_for('static', filename='images/SETARA.png') }}" alt="SETARA-logo" />
                 </div>
             </div>
         </div>
