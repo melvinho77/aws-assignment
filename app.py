@@ -564,6 +564,7 @@ def add_student():
 
         cursor.execute(insert_sql, (student_id, name, ic, mobile,
                                     gender, address, email, level, programme, cohort))
+        student = cursor.fetchone()
         db_conn.commit()
 
     except Exception as e:
@@ -573,11 +574,11 @@ def add_student():
         cursor.close()
 
     # Retrieve the cohort where student belongs to
-    select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
+    select_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
     cursor = db_conn.cursor()
 
     try:
-        cursor.execute(select_sql, (student_id))
+        cursor.execute(select_sql, (student[10]))
         cohort = cursor.fetchone()
 
         if not cohort:
