@@ -569,11 +569,8 @@ def add_student():
     except Exception as e:
         db_conn.rollback()
 
-    finally:
-        cursor.close()
-
     # Retrieve the cohort where student belongs to
-    select_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
+    select_sql = "SELECT startDate, endDate FROM cohort WHERE cohortId = %s"
     cursor = db_conn.cursor()
 
     try:
