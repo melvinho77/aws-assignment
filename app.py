@@ -10,7 +10,6 @@ import datetime
 from weasyprint import HTML
 
 app = Flask(__name__)
-# app.config['WKHTMLTOPDF_PATH'] = '/usr/local/lib/python3.9/site-packages/wkhtmltopdf'  # Adjust the path as per your installation
 app.static_folder = 'static'  # The name of your static folder
 app.static_url_path = '/static'  # The URL path to serve static files
 app.secret_key = 'cc'
