@@ -297,7 +297,7 @@ def view_resume():
         return "Student not logged in."
 
     # Construct the S3 object key
-    object_key = f"{student_id}_resume"
+    object_key = f"resume/{student_id}_resume"
 
     # Generate a presigned URL for the S3 object
     s3_client = boto3.client('s3')
