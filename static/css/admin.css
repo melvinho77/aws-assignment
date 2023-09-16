@@ -1,5 +1,10 @@
 /* Reset some default browser styles */
-body, h1, h2, p, ul, li {
+body,
+h1,
+h2,
+p,
+ul,
+li {
     margin: 0;
     padding: 0;
     background-color: blue;
@@ -7,6 +12,7 @@ body, h1, h2, p, ul, li {
 
 /* Set a background color for the body */
 body {
+
     font-family: Arial, sans-serif;
     background-color: pink;
 }
