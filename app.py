@@ -241,8 +241,20 @@ def uploadResume():
 
     select_sql = "SELECT * FROM student WHERE studentId = %s"
     cursor = db_conn.cursor()
-    stud_resume_file_name_in_s3 = id + "_resume"
+    stud_resume_file_name_in_s3 = 'resume/' + id + "_resume"
     student_resume_file = request.files['resume']
+
+    # Create the folder if not exist
+    s3_client = boto3.client('s3')
+    folder_name = 'resume/'
+
+    # Check if the folder (prefix) already exists
+    response = s3_client.list_objects_v2(
+        Bucket=custombucket, Prefix=folder_name)
+
+    # If the folder (prefix) doesn't exist, you can create it
+    if 'Contents' not in response:
+        s3_client.put_object(Bucket=custombucket, Key=(folder_name + '/'))
 
     s3 = boto3.resource('s3')
 
@@ -269,6 +281,7 @@ def uploadResume():
             s3_location = '-' + s3_location
 
     except Exception as e:
+        db_conn.rollback()
         return str(e)
 
     print("Resume uploaded complete.")
@@ -552,10 +565,15 @@ def uploadSupportingDocuments():
     hiredEvidence = request.files['hiredEvidence']
 
     objKey_acceptanceForm = 'supportingDocument/' + id + '/' + id + "_acceptanceForm"
-    objKey_acknowledgementForm = 'supportingDocument/' + id + '/' + id + "_acknowledgementForm"
-    objKey_indemnityLetter = 'supportingDocument/' + id + '/' + id + "_indemnityLetter"
+    objKey_acknowledgementForm = 'supportingDocument/' + \
+        id + '/' + id + "_acknowledgementForm"
+    objKey_indemnityLetter = 'supportingDocument/' + \
+        id + '/' + id + "_indemnityLetter"
     objKey_supportLetter = 'supportingDocument/' + id + '/' + id + "_supportLetter"
     objKey_hiredEvidence = 'supportingDocument/' + id + '/' + id + "_hiredEvidence"
+
+    select_sql = "SELECT * FROM student WHERE studentId = %s"
+    cursor = db_conn.cursor()
 
     # Create the folder if not exist
     s3_client = boto3.client('s3')
@@ -572,6 +590,9 @@ def uploadSupportingDocuments():
     s3 = boto3.resource('s3')
 
     try:
+        cursor.execute(select_sql, (id))
+        student = cursor.fetchone()
+
         # Set the content type to 'application/pdf' when uploading to S3
         # Upload acceptance form
         s3.Object(custombucket, objKey_acceptanceForm).put(
@@ -579,35 +600,45 @@ def uploadSupportingDocuments():
             ContentType='application/pdf'
         )
 
-        # Upload acceptance form
-        s3.Object(custombucket, objKey_acceptanceForm).put(
-            Body=acceptanceForm,
+        # Upload acknowledgement form
+        s3.Object(custombucket, objKey_acknowledgementForm).put(
+            Body=acknowledgementForm,
             ContentType='application/pdf'
         )
 
-        # Upload acceptance form
-        s3.Object(custombucket, objKey_acceptanceForm).put(
-            Body=acceptanceForm,
+        # Upload indemnity letter
+        s3.Object(custombucket, objKey_indemnityLetter).put(
+            Body=indemnityLetter,
             ContentType='application/pdf'
         )
 
-        # Upload acceptance form
-        s3.Object(custombucket, objKey_acceptanceForm).put(
-            Body=acceptanceForm,
+        # Upload support letter
+        s3.Object(custombucket, objKey_supportLetter).put(
+            Body=supportLetter,
             ContentType='application/pdf'
         )
 
-        # Upload acceptance form
-        s3.Object(custombucket, objKey_acceptanceForm).put(
-            Body=acceptanceForm,
+        # Upload hired evidence
+        s3.Object(custombucket, objKey_hiredEvidence).put(
+            Body=hiredEvidence,
             ContentType='application/pdf'
         )
+
+        if s3_location is None:
+            s3_location = ''
+        else:
+            s3_location = '-' + s3_location
 
     except Exception as e:
+        db_conn.rollback()
         return str(e)
 
+    print("Supporting documents sucessfully submitted.")
+    return render_template('UploadSupportingDocumentsOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
 # Navigate to Student Registration
+
+
 @app.route('/register_student', methods=['GET', 'POST'])
 def register_student():
     return render_template("RegisterStudent.html")
