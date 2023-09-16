@@ -67,6 +67,8 @@ def student_home():
         cursor.execute(select_sql, (id))
         student = cursor.fetchone()
 
+        # Retrieve cohort
+
         if not student:
             return "No such student exist."
 
@@ -914,6 +916,21 @@ def verifyLogin():
         user = cursor.fetchone()
         cursor.close()
 
+        # Retrieve the cohort where student belongs to
+        select_sql = "SELECT startDate, endDate FROM cohort c, student s WHERE studentId = %s AND c.cohortId = s.cohort"
+        cursor = db_conn.cursor()
+
+        cursor.execute(select_sql, (user[10]))
+        cohort = cursor.fetchone()
+
+        # Convert start_date_str and end_date_str into datetime.date objects
+        start_date_str = str(cohort[0])
+        end_date_str = str(cohort[1])
+
+        start_date = datetime.date.fromisoformat(start_date_str)
+        end_date = datetime.date.fromisoformat(end_date_str)
+
+        #######################################################################
         # # Retrieve supervisor details
         # supervisor_query = "SELECT name, email FROM lecturer l, student s WHERE s.lectId = l.lectId AND studentId = %s"
         # cursor.execute(supervisor_query, (user[0]))
@@ -922,12 +939,13 @@ def verifyLogin():
 
         # # Retrieve the company details
         # company_query = "SELECT c.name, c.address, salary, jobPosition, jobDesc FROM "
+        #######################################################################
 
         if user:
             # User found in the database, login successful
             # Redirect to the student home page
             session['loggedInStudent'] = user[0]
-            return render_template('studentHome.html', studentId=user[0], studentName=user[1], IC=user[2], mobileNumber=user[3], gender=user[4], address=user[5], email=user[6], level=user[7], programme=user[8], supervisor=user[9], cohort=user[10])
+            return render_template('studentHome.html', studentId=user[0], studentName=user[1], IC=user[2], mobileNumber=user[3], gender=user[4], address=user[5], email=user[6], level=user[7], programme=user[8], supervisor=user[9], cohort=user[10], start_date=start_date, end_date=end_date)
         else:
             # User not found, login failed
             return render_template('LoginStudent.html', msg="Access Denied: Invalid Email or Ic Number")
