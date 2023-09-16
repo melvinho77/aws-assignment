@@ -640,6 +640,184 @@ def uploadSupportingDocuments():
     print("Supporting documents sucessfully submitted.")
     return render_template('UploadSupportingDocumentsOutput.html', studentName=student[1], id=session['loggedInStudent'])
 
+# View supporting documents
+# View acceptance form
+
+
+@app.route('/viewAcceptanceForm')
+def viewAcceptanceForm():
+  # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_acceptanceForm"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
+
+@app.route('/viewAcknowledgementForm')
+def viewAcknowledgementForm():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_acknowledgementForm"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
+
+@app.route('/viewIndemnityLetter')
+def viewIndemnityLetter():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_indemnityLetter"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
+
+@app.route('/viewSupportLetter')
+def viewSupportLetter():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_supportLetter"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
+
+@app.route('/viewHiredEvidence')
+def viewHiredEvidence():
+    # Retrieve student's ID
+    student_id = session.get('loggedInStudent')
+
+    if not student_id:
+        return "Student not logged in."
+
+    # Construct the S3 object key
+    object_key = f"progressReport/{student_id}/{student_id}_hiredEvidence"
+
+    # Generate a presigned URL for the S3 object
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': custombucket,
+                'Key': object_key,
+                'ResponseContentDisposition': 'inline',
+            },
+            ExpiresIn=3600  # Set the expiration time (in seconds) as needed
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            # If the report does not exist, return a page with a message
+            return render_template('no_report_found.html')
+        else:
+            return str(e)
+
+    # Redirect the user to the URL of the PDF file
+    return redirect(response)
+
 # Navigate to Student Registration
 
 
