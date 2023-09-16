@@ -141,7 +141,6 @@
             width: 20%;
             text-align: right;
             padding-right: 10px;
-            font-weight: bold;
         }
 
         .text {
@@ -155,8 +154,9 @@
     <!-- Whole body -->
     <div class="container">
         <div class="logo-details">
-            <img class="logo-img" alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.png') }}"
-                alt="TARUMT-logo" />
+            <!-- <img class="logo-img" alt="TAR UMT logo" src="{{ url_for('static', filename='images/tarumt.png') }}"
+                alt="TARUMT-logo" /> -->
+            <img class="logo-img" alt="TARUMT logo" src="/static/images/tarumt.png" />
             <span class="info-text">
                 <span class="tarumt-name"
                     style="font-size: 14px; font-weight: bold; font-family: Arial, Helvetica, sans-serif;">
@@ -304,12 +304,16 @@
                 <div class="footer-item">
                     <div class="img-contents">
                     </div>
-                    <img class="sponsorship-img" alt="PDTI" src="{{ url_for('static', filename='images/PDTI.png') }}"
+                    <!-- <img class="sponsorship-img" alt="PDTI" src="{{ url_for('static', filename='images/PDTI.png') }}"
                         alt="PDTI-logo" />
                     <img class="sponsorship-img" alt="MSC" src="{{ url_for('static', filename='images/MSC.png') }}"
                         alt="MSC-logo" />
                     <img class="sponsorship-img" alt="SETARA"
-                        src="{{ url_for('static', filename='images/SETARA.png') }}" alt="SETARA-logo" />
+                        src="{{ url_for('static', filename='images/SETARA.png') }}" alt="SETARA-logo" /> -->
+                    <img class="sponsorship-img" alt="PDTI" src="/static/images/PDTI.png" />
+                    <img class="sponsorship-img" alt="MSC" src="/static/images/MSC.png" />
+                    <img class="sponsorship-img" alt="SETARA" src="/static/images/SETARA.png" />
+
                 </div>
             </div>
         </div>
