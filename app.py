@@ -564,7 +564,6 @@ def add_student():
 
         cursor.execute(insert_sql, (student_id, name, ic, mobile,
                                     gender, address, email, level, programme, cohort))
-        student = cursor.fetchone()
         db_conn.commit()
 
     except Exception as e:
@@ -578,7 +577,7 @@ def add_student():
     cursor = db_conn.cursor()
 
     try:
-        cursor.execute(select_sql, (student[10]))
+        cursor.execute(select_sql, (cohort))
         cohort = cursor.fetchone()
 
         if not cohort:
