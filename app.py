@@ -690,8 +690,6 @@ def uploadSupportingDocuments():
 
 # View supporting documents
 # View acceptance form
-
-
 @app.route('/viewAcceptanceForm')
 def viewAcceptanceForm():
   # Retrieve student's ID
@@ -2773,7 +2771,6 @@ def approveCompany():
 
     if action == 'approve':
         try:
-
             for conpanyId in selected_selected_companys:
                 update_sql = "UPDATE company SET status ='activeted' WHERE companyId=%s"
                 cursorApprove.execute(update_sql, (conpanyId))
