@@ -743,7 +743,7 @@ def download_StudF06():
     rendered_template = render_template('StudentSupportLetter.html', data=data)
 
     # Use pdfkit to generate the PDF
-    pdf = HTML(string=rendered_template).write_pdf()
+    pdf = HTML(string=rendered_template, base_url=request.build_absolute_uri()).write_pdf()
 
     # Create a response object with the PDF data
     response = make_response(pdf)
