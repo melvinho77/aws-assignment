@@ -81,7 +81,7 @@ def student_home():
         # Retrieve the cohort where student belongs to
         select_sql = "SELECT startDate, endDate FROM cohort c WHERE cohortId = %s"
         cursor = db_conn.cursor()
-        cursor.execute(select_sql, (user[10]))
+        cursor.execute(select_sql, (student[10]))
         cohort = cursor.fetchone()
         cursor.close()
 
@@ -95,14 +95,14 @@ def student_home():
         # Retrieve supervisor details
         supervisor_query = "SELECT l.name, l.email FROM lecturer l, student s WHERE s.supervisor = l.lectId AND studentId = %s"
         cursor = db_conn.cursor()
-        cursor.execute(supervisor_query, (user[0]))
+        cursor.execute(supervisor_query, (student[0]))
         supervisor = cursor.fetchone()
         cursor.close()
 
         # Retrieve the company details
         company_query = "SELECT c.name, j.jobLocation, salary, jobPosition, jobDesc FROM company c, job j, companyApplication ca, student s WHERE c.companyId = j.company AND ca.student = s.studentId AND ca.job = j.jobId AND s.studentId = %s AND ca.`status` = 'approved'"
         cursor = db_conn.cursor()
-        cursor.execute(company_query, (user[0]))
+        cursor.execute(company_query, (student[0]))
         companyDetails = cursor.fetchone()
         cursor.close()
         #######################################################################
